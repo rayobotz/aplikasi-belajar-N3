@@ -1,0 +1,841 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>Aplikasi Belajar N3 — Versi GitHub Pages (Progres Tersimpan)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FDFCF8; --surface:#FFFFFF; --surface2:#FFF3D9; --surface3:#EEF1FF;
+  --ink:#1B2340; --muted:#5B647E; --line:#E7DFCE;
+  --accent:#C2392B; --accent-soft:#FDECEA; --indigo:#232F6B; --indigo-soft:#E8ECFF;
+  --gold:#B97A00; --gold-soft:#FFF0C7; --teal:#0C7668; --teal-soft:#E2F4F0;
+  --good:#1E7D32; --good-bg:#E6F4E7; --bad:#B3261E; --bad-bg:#FDECEA;
+  --shadow:0 10px 30px rgba(27,35,64,.10); --radius:18px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0F1220; --surface:#1A1F35; --surface2:#2A2416; --surface3:#1E2547;
+    --ink:#F3F0E6; --muted:#A9AEC6; --line:#333B5E;
+    --accent:#FF7A6B; --accent-soft:#3A2326; --indigo:#9DB0FF; --indigo-soft:#232B52;
+    --gold:#FFC34D; --gold-soft:#3A2F14; --teal:#4ED3BE; --teal-soft:#14332F;
+    --good:#7BD88A; --good-bg:#17351F; --bad:#FF9A92; --bad-bg:#3A2326;
+    --shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Plus Jakarta Sans",system-ui,sans-serif;line-height:1.55;-webkit-text-size-adjust:100%}
+.jp{font-family:"Noto Sans JP","Plus Jakarta Sans",sans-serif}
+h1,h2,h3,p{margin:0}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px 56px}
+.hero{padding:22px 0 8px}
+.hero-img{width:100%;height:auto;border-radius:22px;display:block;box-shadow:var(--shadow)}
+.hero-copy{padding:20px 2px 0}
+.eyebrow{display:inline-block;font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:5px 10px;border-radius:999px}
+.hero-copy h1{font-size:2rem;line-height:1.15;font-weight:800;margin:12px 0 10px}
+.hero-copy h1 .jp{color:var(--indigo)}
+.hero-copy .sub{color:var(--muted);font-size:1.02rem;max-width:62ch}
+.notice{margin:16px 0 0;border:1.5px solid var(--gold);background:var(--gold-soft);border-radius:14px;padding:12px 14px;font-size:.94rem}
+.notice strong{color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0 4px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 10px;text-align:center}
+.stat b{display:block;font-size:1.35rem;line-height:1.1}
+.stat span{font-size:.76rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.progressbar{height:10px;background:var(--surface3);border-radius:99px;overflow:hidden;margin-top:8px}
+.progressbar i{display:block;height:100%;background:var(--accent);width:0%;transition:width .4s}
+section{margin-top:30px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px}
+.sec-head h2{font-size:1.3rem;font-weight:800}
+.sec-head .hint{color:var(--muted);font-size:.88rem}
+.sec-desc{color:var(--muted);font-size:.94rem;margin-bottom:14px;max-width:66ch}
+.mission{background:var(--indigo);color:#fff;border-radius:20px;padding:18px}
+@media (prefers-color-scheme: dark){.mission{background:#232B52}}
+.mission h3{font-size:1.08rem;margin-bottom:4px}
+.mission p{opacity:.88;font-size:.93rem}
+.mission-list{display:grid;gap:10px;margin-top:14px}
+.mission-item{display:flex;gap:12px;align-items:center;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:12px}
+.mission-item .mi-body{flex:1;min-width:0}
+.mission-item .mi-title{font-weight:700}
+.mission-item .mi-meta{font-size:.82rem;opacity:.85}
+.btn{border:0;border-radius:12px;padding:12px 18px;font-weight:800;min-height:48px;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.btn-accent{background:var(--accent);color:#fff}
+@media (prefers-color-scheme: dark){.btn-accent{color:#1B0E0C}}
+.btn-ghost{background:var(--surface);color:var(--ink);border:1.5px solid var(--line)}
+.btn-indigo{background:#fff;color:#232F6B}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-small{padding:9px 14px;min-height:44px;font-size:.9rem;border-radius:10px}
+.lesson-grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:640px){.lesson-grid{grid-template-columns:1fr 1fr}}
+.lesson-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:left;width:100%;box-shadow:0 2px 10px rgba(27,35,64,.04);display:block}
+.lesson-card:active{transform:scale(.99)}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.badge{font-size:.72rem;font-weight:800;padding:4px 8px;border-radius:999px;letter-spacing:.02em}
+.b-n4{background:var(--teal-soft);color:var(--teal)}
+.b-n3{background:var(--indigo-soft);color:var(--indigo)}
+.b-skill{background:var(--surface2);color:var(--gold)}
+.b-done{background:var(--good-bg);color:var(--good)}
+.lesson-card h3{font-size:1.02rem;line-height:1.35;margin-bottom:4px}
+.lesson-card .pattern{font-size:1.05rem;font-weight:700;color:var(--accent);margin-bottom:6px}
+.lesson-card .meta{font-size:.84rem;color:var(--muted)}
+.lesson-card .src{font-size:.74rem;color:var(--muted);margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+.review-box{background:var(--surface2);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.review-box h3{margin-bottom:6px}
+.review-box p{color:var(--muted);font-size:.92rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 12px;font-size:.9rem}
+.sources{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.sources h3{margin-bottom:8px}
+.sources p,.sources li{font-size:.92rem;color:var(--muted)}
+.sources ul{margin:8px 0 0;padding-left:20px}
+.sources a{color:var(--accent);font-weight:700}
+.footer-note{margin-top:28px;color:var(--muted);font-size:.86rem;text-align:center}
+.boost-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:0 2px 10px rgba(27,35,64,.04)}
+.boost-card h3{font-size:1rem;line-height:1.35;margin-bottom:4px}
+.boost-card .pattern{font-size:1.02rem;font-weight:700;color:var(--accent);margin-bottom:6px}
+.boost-card .meta{font-size:.84rem;color:var(--muted)}
+.boost-card .src{font-size:.74rem;color:var(--muted);margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+.boost-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.boost-actions .btn{flex:1}
+/* Lesson view */
+#lessonView{display:none}
+#homeView.hidden{display:none}
+#lessonView.open{display:block}
+.lv-top{display:flex;align-items:center;gap:10px;padding:16px 0 6px;position:sticky;top:0;background:var(--bg);z-index:5}
+.lv-top .back{flex-shrink:0}
+.lv-progress{flex:1}
+.step-label{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--accent)}
+.cardbox{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow);margin-top:10px}
+.cardbox h2{font-size:1.35rem;line-height:1.3;margin:6px 0 10px}
+.cardbox .lead{color:var(--muted)}
+.example{margin-top:16px;background:var(--surface3);border-radius:14px;padding:14px}
+.example .jp-big{font-size:1.25rem;font-weight:700;line-height:1.5}
+.example .id{color:var(--muted);margin-top:4px}
+.passage{background:var(--surface2);border-radius:14px;padding:16px;margin-top:14px;white-space:pre-line}
+.passage .jp{font-size:1.08rem;line-height:1.9}
+.passage .id{color:var(--muted);margin-top:10px;font-size:.93rem}
+.flashcard{margin-top:8px;border:2px dashed var(--line);border-radius:18px;padding:28px 16px;text-align:center;cursor:pointer;background:var(--surface);width:100%}
+.flashcard .front{font-size:2rem;font-weight:900;line-height:1.3}
+.flashcard .reading{font-size:1.05rem;color:var(--accent);font-weight:700;margin-top:6px}
+.flashcard .meaning{font-size:1.05rem;margin-top:10px}
+.flashcard .tap{font-size:.8rem;color:var(--muted);margin-top:12px}
+.fc-nav{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.fc-nav .btn{flex:1}
+.q-prompt{font-size:1.05rem;font-weight:700;line-height:1.5}
+.q-prompt-jp{font-size:1.2rem;margin-top:8px;line-height:1.6}
+.choices{display:grid;gap:10px;margin-top:16px}
+.choice{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;padding:14px;text-align:left;font-size:1rem;min-height:52px;width:100%}
+.choice.correct{border-color:var(--good);background:var(--good-bg);font-weight:700}
+.choice.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.choice:disabled{cursor:default;opacity:1}
+.explain{margin-top:14px;border-radius:12px;padding:12px 14px;font-size:.94rem;display:none}
+.explain.show{display:block}
+.explain.ok{background:var(--good-bg)}
+.explain.no{background:var(--bad-bg)}
+.transcript{margin-top:12px;background:var(--surface3);border-radius:12px;padding:12px 14px;display:none}
+.transcript.show{display:block}
+.transcript .jp{font-size:1.08rem;font-weight:700}
+.audio-row{margin-top:14px;background:var(--surface2);border-radius:14px;padding:14px}
+.audio-row p{font-size:.88rem;color:var(--muted);margin-bottom:8px;font-weight:700}
+audio{width:100%;height:44px}
+.tokens{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.token{border:1.5px solid var(--indigo);color:var(--indigo);background:var(--indigo-soft);border-radius:12px;padding:11px 14px;font-size:1.05rem;font-weight:700;min-height:48px}
+.token.used{opacity:.28;pointer-events:none}
+.built{min-height:56px;border:1.5px dashed var(--line);border-radius:14px;padding:12px;margin-top:14px;font-size:1.15rem;font-weight:700;line-height:1.6}
+.built:empty::before{content:"Ketuk potongan kata di bawah…";color:var(--muted);font-weight:400;font-size:.92rem}
+.result-score{font-size:2.6rem;font-weight:800;text-align:center;line-height:1.1}
+.result-sub{text-align:center;color:var(--muted);margin-top:6px}
+.earned{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
+.actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.actions .btn{flex:1}
+.hidden{display:none !important}
+@media(max-width:520px){.stats{grid-template-columns:repeat(2,1fr)}.hero-copy h1{font-size:1.65rem}}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}.progressbar i{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HOME -->
+  <div id="homeView">
+    <header class="hero">
+      <img class="hero-img" src="assets/hero.webp" alt="Ilustrasi seorang pelajar perempuan membaca buku bahasa Jepang di dekat jendela kereta, dengan konbini dan gerbang torii terlihat di luar" width="1920" height="1280">
+      <div class="hero-copy">
+        <span class="eyebrow">Versi GitHub Pages • Progres tersimpan di HP ini • Dari Ray, buat kamu</span>
+        <h1>Belajar <span class="jp">N3</span> pelan-pelan,<br>tapi nempel beneran.</h1>
+        <p class="sub">16 misi pendek, 8–10 menit per sesi. Fondasi N4-nya dikuatkan dulu, baru naik ke N3 — mode belajarnya ganti-ganti terus: baca kilat, flashcard, kuis, susun kalimat, listening, dan reading. Nggak ada sesi ceramah panjang. Sekarang ada juga <strong>Mode Penguat</strong> dari buku yang sedang kamu pelajari, 『JLPT N3 この一冊で合格する』（日本語の森）: 70 pola bunpō pertamamu dan kosakata hari 1–12 diulang lagi di sini — karena “sudah pernah belajar” belum tentu “masih ingat”.</p>
+        <div class="notice" role="note">
+          <strong>Jujur di awal ya:</strong> di versi ini <strong>progresmu tersimpan otomatis di perangkat &amp; browser ini</strong> (pakai penyimpanan lokal browser / localStorage). Kalau halaman ditutup lalu dibuka lagi di <strong>HP dan browser yang sama</strong>, XP, level, misi yang selesai, skor, dan tumpukan kartu ulangmu akan dimuat lagi — tidak mulai dari nol. Tapi perlu tahu juga: progres ini <strong>tidak terkirim ke siapa pun dan tidak tersimpan di server</strong>. Kalau kamu ganti HP, ganti browser, memakai mode privat/incognito, atau menghapus data browser, progresnya akan hilang. Versi ini juga <strong>tidak mengirim kabar “2 hari tidak dibuka” ke Ray</strong> — jadi kalau lagi malas, nggak ada yang ngawasin diam-diam. Semangatnya tetap dari kamu sendiri (dan Ray, langsung).
+        </div>
+        <div class="stats" aria-label="Statistik progres tersimpan">
+          <div class="stat"><b id="statXp">0</b><span>XP tersimpan</span></div>
+          <div class="stat"><b id="statLevel">1</b><span>Level</span></div>
+          <div class="stat"><b id="statDone">0/16</b><span>Misi selesai</span></div>
+          <div class="stat"><b id="statReview">0</b><span>Kartu perlu diulang</span></div>
+        </div>
+        <div class="progressbar" aria-hidden="true"><i id="xpBar"></i></div>
+        <p class="sec-head" style="margin-top:8px"><span class="hint" id="xpHint">Kumpulkan 100 XP buat naik ke Level 2.</span></p>
+        <p class="sec-head" style="margin-top:4px"><span class="hint" id="saveHint">Progres tersimpan di browser ini.</span></p>
+        <div class="earned" id="badgeRow" aria-label="Lencana"></div>
+      </div>
+    </header>
+
+    <section aria-labelledby="missionTitle">
+      <div class="mission">
+        <h3 id="missionTitle">Misi hari ini — cukup dua ini dulu</h3>
+        <p>Satu fondasi N4 + satu target N3. Selesai dua-duanya, hari ini sudah menang. Sisanya bonus.</p>
+        <div class="mission-list" id="missionList"></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="reviewTitle">
+      <div class="sec-head"><h2 id="reviewTitle">Pengulangan terjadwal</h2><span class="hint">Sistem Leitner • tersimpan di browser ini</span></div>
+      <p class="sec-desc">Kartu yang kamu tandai “belum hafal” atau soal yang kamu jawab salah masuk ke tumpukan ini. Tumpukan ini <strong>tersimpan di browser ini</strong>, jadi kalau kamu tutup halamannya, kartu-kartu ini akan tetap ada saat kamu buka lagi di HP &amp; browser yang sama — bisa diulang kapan saja, tidak harus habis hari ini.</p>
+      <div class="review-box">
+        <h3 id="reviewHeading">Tumpukan ulang: 0 kartu</h3>
+        <p id="reviewText">Kerjakan satu misi dulu — kartu yang belum nempel akan berkumpul di sini buat diulang di sesi yang sama.</p>
+        <div class="chips" id="reviewChips"></div>
+        <div class="actions">
+          <button class="btn btn-accent" id="btnReview" type="button" disabled>Ulang tumpukan ini sekarang</button>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="pathTitle">
+      <div class="sec-head"><h2 id="pathTitle">Jalur belajar</h2><span class="hint">16 misi • urut dari atas</span></div>
+      <p class="sec-desc">Ikuti urutannya: N4 dulu biar fondasinya kokoh, baru grammar N3, kosakata &amp; kanji, terakhir listening dan reading ala soal beneran.</p>
+      <div id="lessonGroups"></div>
+    </section>
+
+    <section aria-labelledby="boostTitle">
+      <div class="sec-head"><h2 id="boostTitle">Mode Penguat — dari bukumu</h2><span class="hint">日本語の森『JLPT N3 この一冊で合格する』</span></div>
+      <p class="sec-desc">Posisimu di buku sekarang: <strong>kosakata hari ke-12</strong> dan <strong>bunpō sudah 70 pola</strong> (tema 1–8 dari 110 pola di Bab 2). Bagian ini bukan materi baru — isinya pengulangan dan tes buat yang 70 itu plus kosakata 12 hari pertama, biar yang sudah dipelajari nempel beneran, bukan cuma pernah lewat. Pola dan daftar katanya mengikuti urutan buku; contoh kalimat dan soalnya ditulis ulang (orisinal), bukan salinan buku.</p>
+      <h3 style="margin:16px 0 10px;font-size:1.02rem">Penguat Bunpō — 70 pola pertama (Bab 2, tema 1–8)</h3>
+      <div class="lesson-grid" id="boostGrammar"></div>
+      <div class="actions" style="margin-top:12px">
+        <button class="btn btn-accent" type="button" id="btnGramAll">Kuis campuran — semua 70 pola</button>
+      </div>
+      <h3 style="margin:22px 0 10px;font-size:1.02rem">Review Kosakata — hari 1–12 (daftar Bab 1, menurut kategori buku)</h3>
+      <div class="lesson-grid" id="boostVocab"></div>
+      <div class="boost-card" style="margin-top:12px">
+        <span class="badges"><span class="badge b-n3">N3</span><span class="badge b-skill">Kuis konteks</span></span>
+        <h3>Kuis Konteks Kosakata — model soal JLPT</h3>
+        <div class="meta">8 soal orisinal model 文脈規定（memakai kata dalam konteks) dan 漢字読み (cara baca kanji), memakai kata-kata dari bank hari 1–12 di atas.</div>
+        <div class="boost-actions"><button class="btn btn-accent btn-small" type="button" id="btnVocabCtx">Mulai kuis konteks</button></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="dataTitle">
+      <div class="sources">
+        <h3 id="dataTitle">Data tersimpan &amp; pengaturan</h3>
+        <p id="saveStatus">Progresmu (XP, level, misi/deck/kuis yang selesai, skor terakhir, kartu di tumpukan ulang, dan rentetan jawaban benar) tersimpan otomatis di penyimpanan lokal browser ini setiap kali ada perubahan. Tidak ada akun, tidak ada server, dan progresmu tidak dikirim ke siapa pun.</p>
+        <ul>
+          <li><strong>Tersimpan kalau:</strong> kamu membuka halaman ini lagi di HP yang sama dan browser yang sama.</li>
+          <li><strong>Bisa hilang kalau:</strong> ganti HP/browser, hapus data/riwayat browser, atau membuka lewat mode privat/incognito.</li>
+          <li><strong>Tips:</strong> selalu buka dari browser yang sama (jangan berganti-ganti), dan jangan hapus data situs ini kalau progresmu mau tetap ada.</li>
+        </ul>
+        <div class="actions">
+          <button class="btn btn-ghost" id="btnResetProgress" type="button">Reset progres — hapus semua simpanan</button>
+        </div>
+        <p style="margin-top:10px;font-size:.86rem">Tombol reset akan meminta konfirmasi dua kali. Setelah direset, XP, tanda selesai, skor, dan tumpukan ulang kembali ke nol dan tidak bisa dikembalikan.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="srcTitle">
+      <div class="sources">
+        <h3 id="srcTitle">Sumber &amp; kejujuran materi</h3>
+        <p>Semua soal di sini <strong>orisinal</strong> — ditulis mengikuti tipe soal dan tingkat kesulitan resmi JLPT, bukan soal bocoran dan bukan jiplakan buku. Cakupan kosakata, kanji, dan grammar disilangkan ke buku pegangan standar yang memang dipakai pelajar JLPT:</p>
+        <ul>
+          <li><strong>Buku pegangan yang sedang dipelajari: 『JLPT N3 この一冊で合格する』— 日本語の森 (Nihongo no Mori).</strong> Mode Penguat mengikuti buku ini persis: daftar kosakata Bab 1 (hlm. 10–59, dikelompokkan per kategori: 名詞・動詞・形容詞・副詞・オノマトペ・カタカナ・接続詞・接頭語/接尾語・慣用表現・敬語表現・数え方） dan 110 pola grammar Bab 2 (hlm. 126–225, 13 tema). Yang dimasukkan ke aplikasi: kosakata dari awal daftar Bab 1 (bagian yang sudah dipelajari sampai hari ke-12) dan 70 pola grammar pertama (tema 1 理由・原因 sampai tema 8 仮定・条件）. Pola dan kata mengikuti urutan buku, tetapi <strong>semua contoh kalimat dan soal ditulis ulang secara orisinal</strong> mengikuti model soal JLPT (kosakata: 漢字読み・表記・文脈規定・言い換え類義・用法； grammar: pola soal 文法 JLPT) — tidak ada teks atau soal buku yang disalin kata per kata.</li>
+          <li><em>Nihongo Sou Matome</em> N4 &amp; N3 (Grammar, Vocabulary, Kanji)</li>
+          <li><em>Shin Kanzen Master</em> N3</li>
+          <li><em>TRY! Japanese Language Proficiency Test N3</em></li>
+          <li><em>Minna no Nihongo II</em> — untuk fondasi N4</li>
+          <li>Contoh soal resmi JLPT di <a href="https://www.jlpt.jp/e/samples/sample09.html" target="_blank" rel="noopener">jlpt.jp — Sample Questions</a> dan <a href="https://www.jlpt.jp/e/samples/forteachers.html" target="_blank" rel="noopener">halaman contoh soal untuk pengajar</a></li>
+        </ul>
+        <p style="margin-top:10px">Satu hal yang perlu kamu tahu: <strong>JLPT secara resmi tidak menerbitkan daftar kosakata, kanji, atau grammar</strong> untuk tiap level. Jadi tidak ada daftar “resmi” yang bisa diklaim siapa pun — yang ada adalah cakupan dari buku-buku standar di atas, dan tiap misi di aplikasi ini mencantumkan rujukannya. Audio listening di halaman ini adalah rekaman suara yang disertakan di dalam file aplikasi (bukan suara bawaan HP), jadi tetap bunyi walau perangkatmu tidak punya suara Jepang.</p>
+      </div>
+      <p class="footer-note">Dibuat dengan sayang di Osaka. Progres di halaman ini hanya tersimpan di perangkat &amp; browser ini. Kalau ada materi yang terasa salah atau membingungkan, catat nomor misinya dan tanya Ray — nanti dibenerin bareng.</p>
+    </section>
+  </div>
+
+  <!-- LESSON VIEW -->
+  <div id="lessonView" aria-live="polite">
+    <div class="lv-top">
+      <button class="btn btn-ghost btn-small back" id="btnBack" type="button">← Kembali</button>
+      <div class="lv-progress">
+        <div style="font-weight:800;font-size:.95rem" id="lvTitle">Misi</div>
+        <div class="progressbar"><i id="lvBar"></i></div>
+      </div>
+      <div style="font-weight:800" id="lvStepText">1/4</div>
+    </div>
+    <div id="lvBody"></div>
+  </div>
+
+</div>
+
+<script>
+"use strict";
+/* ===== DATA — original items written to official JLPT item types.
+   Scope cross-checked: Sou Matome N4/N3, Shin Kanzen Master N3, TRY! N3,
+   Minna no Nihongo II (N4), JLPT official sample questions (jlpt.jp). ===== */
+var SRC_N4="Cakupan: Sou Matome N4 • Minna no Nihongo II";
+var SRC_N3_G="Cakupan: Sou Matome N3 Grammar • Shin Kanzen Master N3";
+var SRC_N3_V="Cakupan: Sou Matome N3 Vocabulary • TRY! N3";
+var SRC_N3_K="Cakupan: Sou Matome N3 Kanji • Shin Kanzen Master N3";
+var SRC_L="Format soal: contoh resmi JLPT (jlpt.jp)";
+
+var LESSONS=[
+{id:"n4-tekara",level:"N4",skill:"Grammar",group:"Fondasi N4",title:"Urutan Kejadian: 〜てから",pattern:"V-て + から",minutes:8,source:SRC_N4,
+ introTitle:"Satu selesai, baru yang lain jalan",intro:"〜てから artinya ‘setelah melakukan A, lalu B’. Urutannya tegas: A harus selesai dulu sebelum B dimulai. Ini fondasi N4 yang sering keluar lagi di soal N3.",
+ exampleJp:"手を洗ってから、ご飯を食べます。",exampleId:"Setelah mencuci tangan, (baru) makan.",exampleAudio:"assets/audio/example-tekara.mp3",
+ cards:[{front:"〜てから",reading:"〜てから",meaning:"setelah melakukan…, baru… (urutan tegas)"},{front:"洗う",reading:"あらう",meaning:"mencuci"},{front:"宿題",reading:"しゅくだい",meaning:"pekerjaan rumah (PR)"}],
+ questions:[
+  {kind:"choice",prompt:"Pilih kalimat yang benar: ‘Setelah pulang ke rumah, saya mandi.’",promptJp:"家に帰っ（　）、シャワーを浴びます。",choices:["てから","前に","ながら","たり"],answer:0,explain:"Urutan ‘pulang dulu, baru mandi’ memakai 〜てから. 〜前に justru berarti ‘sebelum’."},
+  {kind:"arrange",prompt:"Susun jadi kalimat: ‘Setelah mengerjakan PR, saya bermain game.’",tokens:["宿題をしてから","ゲームを","します"],answerJp:"宿題をしてから、ゲームをします。",explain:"Polanya: kegiatan pertama dalam bentuk て + から, lalu kegiatan berikutnya."},
+  {kind:"choice",prompt:"Mana yang paling alami?",choices:["歯を磨いてから、寝ます。","歯を磨くから、寝ます。","歯を磨いたから、寝ます。"],answer:0,explain:"〜てから dipakai untuk urutan kebiasaan. 〜から biasa menyatakan alasan, bukan urutan."},
+  {kind:"choice",prompt:"「薬を飲んでから、少し休みます。」Arti kalimat ini?",choices:["Setelah minum obat, istirahat sebentar.","Sebelum minum obat, istirahat sebentar.","Minum obat sambil istirahat."],answer:0,explain:"飲んでから = setelah minum. Jadi obat dulu, istirahat kemudian."}
+ ]},
+{id:"n4-nakereba",level:"N4",skill:"Grammar",group:"Fondasi N4",title:"Wajib & Boleh: 〜なければならない",pattern:"V-ない + ければならない",minutes:9,source:SRC_N4,
+ introTitle:"‘Harus’ dan ‘tidak harus’ tanpa drama",intro:"〜なければならない = harus. Lawannya 〜なくてもいい = tidak perlu / boleh tidak. Dalam percakapan santai, 〜なきゃ dan 〜なくちゃ sering dipakai. Keduanya kunci soal N4 dan modal buat pola N3 〜ざるを得ない nanti.",
+ exampleJp:"明日は試験があるから、勉強しなければなりません。",exampleId:"Karena besok ada ujian, saya harus belajar.",
+ cards:[{front:"〜なければならない",reading:"〜なければならない",meaning:"harus melakukan…"},{front:"〜なくてもいい",reading:"〜なくてもいい",meaning:"tidak perlu / boleh tidak"},{front:"締め切り",reading:"しめきり",meaning:"batas waktu (deadline)"}],
+ questions:[
+  {kind:"choice",prompt:"Isi bagian kosong: ‘Besok harus bangun pagi.’",promptJp:"明日は早く起き（　）。",choices:["なければなりません","なくてもいいです","たことがあります","たいです"],answer:0,explain:"起きる → 起きなければなりません untuk menyatakan kewajiban."},
+  {kind:"choice",prompt:"「今日は宿題をしなくてもいいです。」Artinya?",choices:["Hari ini tidak perlu mengerjakan PR.","Hari ini harus mengerjakan PR.","Hari ini dilarang mengerjakan PR."],answer:0,explain:"〜なくてもいい = boleh tidak melakukan. Bukan larangan, ya."},
+  {kind:"arrange",prompt:"Susun jadi kalimat: ‘Saya harus pergi ke rumah sakit.’",tokens:["病院へ","行かなければ","なりません"],answerJp:"病院へ行かなければなりません。",explain:"行く → 行かない → buang い, tambah ければなりません."},
+  {kind:"choice",prompt:"Versi santai dari 〜なければならない yang sering diucapkan adalah…",choices:["〜なきゃ","〜ちゃう","〜なさい","〜まくる"],answer:0,explain:"〜なきゃ adalah singkatan lisan dari 〜なければならない. Sering muncul di percakapan."}
+ ]},
+{id:"n4-takoto",level:"N4",skill:"Grammar",group:"Fondasi N4",title:"Pengalaman: 〜たことがある",pattern:"V-た + ことがある",minutes:8,source:SRC_N4,
+ introTitle:"‘Pernah…’ dalam satu pola gampang",intro:"〜たことがある = pernah melakukan. Bentuk た adalah bentuk lampau santai (食べた, 行った). Pasangannya untuk ‘belum pernah’ adalah 一度も〜たことがない.",
+ exampleJp:"私は富士山に登ったことがあります。",exampleId:"Saya pernah mendaki Gunung Fuji.",
+ cards:[{front:"〜たことがある",reading:"〜たことがある",meaning:"pernah melakukan…"},{front:"一度も",reading:"いちども",meaning:"satu kali pun (tidak pernah, dengan negatif)"},{front:"登る",reading:"のぼる",meaning:"mendaki / naik"}],
+ questions:[
+  {kind:"choice",prompt:"Isi: ‘Saya pernah makan natto.’",promptJp:"納豆を食べ（　）。",choices:["たことがあります","なければなりません","ているところです","すぎました"],answer:0,explain:"Pengalaman memakai bentuk た + ことがあります."},
+  {kind:"choice",prompt:"「北海道へ行ったことがありますか。」Jawaban ‘Belum pernah sama sekali’ yang benar?",choices:["いいえ、一度も行ったことがありません。","いいえ、行かなければなりません。","いいえ、行ったばかりです。"],answer:0,explain:"一度も〜ことがありません = belum pernah satu kali pun."},
+  {kind:"arrange",prompt:"Susun: ‘Saya pernah melihat salju.’",tokens:["雪を","見た","ことがあります"],answerJp:"雪を見たことがあります。",explain:"Urutan: objek + V-た + ことがあります."},
+  {kind:"choice",prompt:"Bentuk た dari 泳ぐ adalah…",choices:["泳いだ","泳った","泳いった"],answer:0,explain:"Kata kerja berakhiran ぐ berubah jadi いだ: 泳ぐ → 泳いだ."}
+ ]},
+{id:"n4-ageru",level:"N4",skill:"Grammar",group:"Fondasi N4",title:"Memberi & Menerima: あげる・くれる・もらう",pattern:"V-て + あげる／くれる／もらう",minutes:10,source:SRC_N4,
+ introTitle:"Siapa berbuat untuk siapa?",intro:"Tiga serangkai ini soal arah kebaikan: 〜てあげる (saya berbuat untuk orang lain), 〜てくれる (orang lain berbuat untuk saya), 〜てもらう (saya menerima jasa dari orang lain). Kuncinya: lihat siapa yang diuntungkan.",
+ exampleJp:"友達が駅まで車で送ってくれました。",exampleId:"Teman mengantarkan saya ke stasiun dengan mobil. (dia yang berbuat untuk saya)",
+ cards:[{front:"〜てあげる",reading:"〜てあげる",meaning:"saya berbuat sesuatu untuk orang lain"},{front:"〜てくれる",reading:"〜てくれる",meaning:"orang lain berbuat untuk saya"},{front:"〜てもらう",reading:"〜てもらう",meaning:"saya menerima jasa (dibuatkan oleh…)"}],
+ questions:[
+  {kind:"choice",prompt:"「先生に作文を直してもらいました。」Arti 直してもらいました?",choices:["dibuatkan perbaikan (oleh guru)","memperbaiki untuk guru","guru memperbaiki dirinya"],answer:0,explain:"〜てもらう dari sudut penerima jasa: saya yang menerima hasil perbaikannya."},
+  {kind:"choice",prompt:"Pilih yang benar: ‘Ibu memasakkan untuk saya.’",choices:["母が料理を作ってくれました。","母が料理を作ってあげました。","母に料理を作ってくれました。"],answer:0,explain:"Orang lain berbuat untuk saya → 〜てくれる. Subjeknya ibu (が)."},
+  {kind:"arrange",prompt:"Susun: ‘Saya meminjamkan buku kepada teman.’",tokens:["友達に","本を","貸してあげました"],answerJp:"友達に本を貸してあげました。",explain:"Saya berbuat untuk orang lain → 〜てあげました."},
+  {kind:"choice",prompt:"Kalimat mana yang artinya ‘Teman saya membelikan (untuk saya)’?",choices:["友達が買ってくれました。","友達に買ってあげました。","友達が買ってもらいました。"],answer:0,explain:"買ってくれました = dia membelikan untuk saya. Pilihan kedua arahnya terbalik."}
+ ]},
+{id:"n4-keigo",level:"N4",skill:"Kosakata",group:"Fondasi N4",title:"Keigo Dasar: Bahasa Sopan",pattern:"尊敬語・謙譲語",minutes:10,source:SRC_N4,
+ introTitle:"Kata kerja berubah total saat sopan",intro:"Di N4 kamu mulai bertemu keigo: kata kerja biasa punya bentuk khusus. 尊敬語 (sonkeigo) meninggikan lawan bicara, 謙譲語 (kenjougo) merendahkan diri sendiri. Mulai dari kata yang paling sering muncul.",
+ exampleJp:"社長は今、いらっしゃいません。",exampleId:"Direktur saat ini sedang tidak ada (di tempat).",
+ cards:[{front:"いらっしゃる",reading:"いらっしゃる",meaning:"ada / pergi / datang (sonkeigo dari いる・行く・来る)"},{front:"おっしゃる",reading:"おっしゃる",meaning:"berkata (sonkeigo dari 言う)"},{front:"参る",reading:"まいる",meaning:"pergi / datang (kenjougo dari 行く・来る)"}],
+ questions:[
+  {kind:"choice",prompt:"Bentuk sonkeigo dari 食べる adalah…",choices:["召し上がる","申す","いたす"],answer:0,explain:"召し上がる (めしあがる) = makan/minum versi meninggikan lawan bicara."},
+  {kind:"choice",prompt:"「先生がおっしゃいました。」Kata dasar おっしゃる adalah…",choices:["言う (berkata)","聞く (mendengar)","読む (membaca)"],answer:0,explain:"おっしゃる adalah sonkeigo dari 言う."},
+  {kind:"choice",prompt:"Untuk diri sendiri (kenjougo), ‘saya akan pergi’ yang sopan?",choices:["私が参ります。","私がいらっしゃいます。","私がご覧になります。"],answer:0,explain:"参る merendahkan diri sendiri. いらっしゃる untuk orang lain, bukan diri sendiri."},
+  {kind:"choice",prompt:"ご覧になる adalah sonkeigo dari…",choices:["見る (melihat)","見せる (memperlihatkan)","会う (bertemu)"],answer:0,explain:"ご覧になる = melihat (sopan, untuk lawan bicara)."}
+ ]},
+{id:"n3-vocab-hibi",level:"N3",skill:"Kosakata",group:"Kosakata & Kanji N3",title:"Kosakata Hidup Sehari-hari N3",pattern:"届く・増える・決める",minutes:8,source:SRC_N3_V,
+ introTitle:"Kata kerja yang dipakai tiap hari di Jepang",intro:"Tiga kata kerja ini muncul terus: paket yang 届く (sampai), pekerjaan yang 増える (bertambah), dan rencana yang 決める (diputuskan). Hafalkan bareng contoh situasinya, jangan sendirian.",
+ exampleJp:"注文した本が、昨日届きました。",exampleId:"Buku yang saya pesan sudah sampai kemarin.",
+ cards:[{front:"届く",reading:"とどく",meaning:"sampai (barang/pesan tiba di tujuan)"},{front:"増える",reading:"ふえる",meaning:"bertambah (jumlahnya naik sendiri)"},{front:"決める",reading:"きめる",meaning:"memutuskan / menentukan"}],
+ questions:[
+  {kind:"choice",prompt:"「来月から仕事が増えます。」Arti 増えます?",choices:["bertambah","berkurang","berhenti"],answer:0,explain:"増える = bertambah. Lawannya 減る (へる) = berkurang."},
+  {kind:"choice",prompt:"Pilih kata yang tepat: ‘Paketnya belum ___ .’",promptJp:"荷物はまだ（　）。",choices:["届いていません","増えていません","決めていません"],answer:0,explain:"Untuk paket/barang, kata yang cocok adalah 届く (sampai)."},
+  {kind:"choice",prompt:"「相談する」artinya…",promptJp:"分からないことは、先輩に相談します。",choices:["berkonsultasi / minta pendapat","menyembunyikan","melupakan"],answer:0,explain:"相談する = berdiskusi untuk minta pertimbangan, kata N3 yang sangat sering keluar."},
+  {kind:"choice",prompt:"「決して忘れません。」Kata 決して selalu berpasangan dengan…",choices:["kalimat negatif (tidak akan pernah)","kalimat perintah","kalimat tanya"],answer:0,explain:"決して〜ない = sama sekali tidak akan pernah. Pola pasangannya selalu negatif."}
+ ]},
+{id:"n3-ba-hodo",level:"N3",skill:"Grammar",group:"Grammar N3",title:"Makin… Makin…: 〜ば〜ほど",pattern:"V-ば + V辞書形 + ほど",minutes:9,source:SRC_N3_G,
+ introTitle:"Semakin A, semakin B",intro:"〜ば〜ほど menyatakan perubahan sejajar: kalau A naik, B ikut naik. Kata kerja yang sama diulang: bentuk ば lalu bentuk kamus + ほど. Untuk kata sifat: 安ければ安いほど.",
+ exampleJp:"日本語は勉強すればするほど面白くなります。",exampleId:"Bahasa Jepang, semakin dipelajari semakin menarik.",
+ cards:[{front:"〜ば〜ほど",reading:"〜ば〜ほど",meaning:"semakin…, semakin…"},{front:"早ければ早いほど",reading:"はやければはやいほど",meaning:"semakin cepat, semakin (baik)"},{front:"面白い",reading:"おもしろい",meaning:"menarik / seru"}],
+ questions:[
+  {kind:"choice",prompt:"Isi: ‘Semakin banyak berlatih, semakin pandai.’",promptJp:"練習すれば（　）上手になります。",choices:["するほど","したほど","するなら"],answer:0,explain:"Pasangan すれば adalah するほど — kata kerja yang sama, bentuk kamus + ほど."},
+  {kind:"choice",prompt:"「安ければ安いほどいいです。」Artinya?",choices:["Semakin murah, semakin baik.","Kalau murah, saya akan beli.","Walaupun murah, tidak baik."],answer:0,explain:"Kata sifat い juga bisa: 安ければ + 安いほど."},
+  {kind:"arrange",prompt:"Susun: ‘Semakin membaca, semakin mengerti.’",tokens:["読めば","読むほど","分かります"],answerJp:"読めば読むほど分かります。",explain:"読む → 読めば (bentuk ば) lalu 読むほど."},
+  {kind:"choice",prompt:"Bentuk ば dari 食べる adalah…",choices:["食べれば","食べば","食ばれば"],answer:0,explain:"Kata kerja golongan る: buang る tambah れば → 食べれば."}
+ ]},
+{id:"n3-uchi",level:"N3",skill:"Grammar",group:"Grammar N3",title:"Selagi Masih: 〜うちに",pattern:"V-ている／ない + うちに",minutes:9,source:SRC_N3_G,
+ introTitle:"Lakukan sebelum keadaannya berubah",intro:"〜うちに = selagi suatu keadaan masih berlangsung, lakukan sesuatu sebelum berubah. Pasangan klasiknya: 若いうちに (selagi muda), 明るいうちに (selagi terang), 忘れないうちに (selagi belum lupa).",
+ exampleJp:"忘れないうちに、メモしておきます。",exampleId:"Selagi belum lupa, saya catat dulu.",
+ cards:[{front:"〜うちに",reading:"〜うちに",meaning:"selagi masih…, sebelum keadaan berubah"},{front:"若い",reading:"わかい",meaning:"muda"},{front:"メモする",reading:"メモする",meaning:"mencatat"}],
+ questions:[
+  {kind:"choice",prompt:"Isi: ‘Selagi masih terang, ayo pulang.’",promptJp:"明るい（　）、帰りましょう。",choices:["うちに","あとに","ところに"],answer:0,explain:"明るいうちに = selagi masih terang (sebelum gelap)."},
+  {kind:"choice",prompt:"「子供が寝ているうちに、掃除をします。」Kapan menyapu dilakukan?",choices:["Selagi anak tidur","Setelah anak bangun","Sambil membangunkan anak"],answer:0,explain:"寝ているうちに = selama rentang waktu anak sedang tidur."},
+  {kind:"arrange",prompt:"Susun: ‘Selagi muda, saya ingin berkeliling dunia.’",tokens:["若いうちに","世界中を","旅行したいです"],answerJp:"若いうちに、世界中を旅行したいです。",explain:"若いうちに diletakkan di awal sebagai keterangan waktu."},
+  {kind:"choice",prompt:"Mana penggunaan 〜うちに yang benar?",choices:["雨が降らないうちに、買い物に行きます。","雨が降ったうちに、買い物に行きます。","雨が降るうちに、昨日買い物に行きました。"],answer:0,explain:"Untuk ‘sebelum terjadi’, pakai bentuk ない: 降らないうちに = selagi hujan belum turun."}
+ ]},
+{id:"n3-ukemi",level:"N3",skill:"Grammar",group:"Grammar N3",title:"Kalimat Pasif: 〜られる",pattern:"受け身 (ukemi)",minutes:10,source:SRC_N3_G,
+ introTitle:"Saat kamu yang kena aksinya",intro:"Pasif Jepang punya dua rasa: pasif biasa (この橋は建てられました) dan ‘pasif kena dampak’ khas Jepang (足を踏まれた — keinjakan, kesal!). Pembuatnya ditandai に. Pola ini naik daun banget di N3.",
+ exampleJp:"私は先生に褒められました。",exampleId:"Saya dipuji oleh guru.",
+ cards:[{front:"褒める",reading:"ほめる",meaning:"memuji"},{front:"踏む",reading:"ふむ",meaning:"menginjak"},{front:"建てる",reading:"たてる",meaning:"membangun / mendirikan"}],
+ questions:[
+  {kind:"choice",prompt:"Bentuk pasif dari 言う adalah…",choices:["言われる","言わせる","言える"],answer:0,explain:"言う → 言われる. 言わせる itu kausatif (menyuruh berkata), lain cerita."},
+  {kind:"choice",prompt:"「電車の中で、足を踏まれました。」Artinya?",choices:["Di dalam kereta, kaki saya diinjak (orang).","Saya menginjak kaki orang di kereta.","Saya sengaja menginjak-injak lantai kereta."],answer:0,explain:"Ini ‘pasif kena dampak’: saya menderita akibat perbuatan orang lain."},
+  {kind:"arrange",prompt:"Susun pasif: ‘Buku ini dibaca banyak orang.’",tokens:["この本は","多くの人に","読まれています"],answerJp:"この本は多くの人に読まれています。",explain:"Pelaku ditandai に: 多くの人に + 読まれています."},
+  {kind:"choice",prompt:"「雨に降られて、服が濡れてしまいました。」Kenapa pasif dipakai di sini?",choices:["Karena hujan memberi dampak buruk ke pembicara","Karena pembicara menyebabkan hujan","Karena hujan adalah manusia"],answer:0,explain:"Pasif tidak langsung: kejadian alam pun bisa ‘mengenai’ kita dan merugikan."}
+ ]},
+{id:"n3-shieki",level:"N3",skill:"Grammar",group:"Grammar N3",title:"Kausatif: 〜させる",pattern:"使役 (shieki)",minutes:10,source:SRC_N3_G,
+ introTitle:"Menyuruh & membiarkan orang berbuat",intro:"〜させる = membuat/menyuruh seseorang melakukan sesuatu (atau membiarkannya). Orang yang disuruh ditandai に. Pasangannya yang bikin pusing — kausatif-pasif 〜させられる (‘dipaksa melakukan’) — mulai dikenalkan di sini.",
+ exampleJp:"母は子供に野菜を食べさせました。",exampleId:"Ibu menyuruh anaknya makan sayur.",
+ cards:[{front:"食べさせる",reading:"たべさせる",meaning:"menyuruh/membuat makan (kausatif 食べる)"},{front:"読ませる",reading:"よませる",meaning:"menyuruh membaca (kausatif 読む)"},{front:"残業",reading:"ざんぎょう",meaning:"lembur"}],
+ questions:[
+  {kind:"choice",prompt:"Bentuk kausatif dari 行く adalah…",choices:["行かせる","行ける","行かれる"],answer:0,explain:"行く → 行かせる. 行ける = potensial, 行かれる = pasif."},
+  {kind:"choice",prompt:"「先生は学生に本を読ませました。」Artinya?",choices:["Guru menyuruh murid membaca buku.","Guru dibacakan buku oleh murid.","Guru bisa membaca buku."],answer:0,explain:"学生に = orang yang disuruh; 読ませました = menyuruh membaca."},
+  {kind:"arrange",prompt:"Susun: ‘Atasan membuat saya lembur.’",tokens:["部長は","私に","残業させました"],answerJp:"部長は私に残業させました。",explain:"する → させる. 残業する → 残業させる."},
+  {kind:"choice",prompt:"「私は母に野菜を食べさせられました。」Perasaan/nuansanya?",choices:["Saya dipaksa ibu makan sayur (kausatif-pasif)","Saya menyuruh ibu makan sayur","Saya memasakkan sayur untuk ibu"],answer:0,explain:"食べさせられました = kausatif + pasif: saya yang ‘dikenai’ suruhan itu."}
+ ]},
+{id:"n3-kanji-shigoto",level:"N3",skill:"Kanji",group:"Kosakata & Kanji N3",title:"Kanji Dunia Kerja",pattern:"働・員・局・様",minutes:9,source:SRC_N3_K,
+ introTitle:"Kanji yang kamu lihat di papan nama & kantor",intro:"Di Jepang, kanji ini nongol terus: 働く di lowongan kerja, 会社員 di formulir, 薬局 di apotek, dan 〜様 di alamat surat. Kenali dari konteks tempat kamu melihatnya.",
+ exampleJp:"兄は薬局で働いています。",exampleId:"Kakak saya bekerja di apotek.",
+ cards:[{front:"働く",reading:"はたらく",meaning:"bekerja"},{front:"会社員",reading:"かいしゃいん",meaning:"karyawan perusahaan"},{front:"薬局",reading:"やっきょく",meaning:"apotek"}],
+ questions:[
+  {kind:"choice",prompt:"Cara baca 様 dalam 「田中様」?",choices:["さま","よう","ため"],answer:0,explain:"様 setelah nama orang dibaca さま — panggilan hormat, lebih sopan dari さん."},
+  {kind:"choice",prompt:"局 dalam 「郵便局」 dibaca…",promptJp:"郵便局（ゆうびん□□□）",choices:["きょく","やく","さま"],answer:0,explain:"郵便局 = ゆうびんきょく (kantor pos). 局 dibaca キョク."},
+  {kind:"choice",prompt:"Kanji untuk はたらく (bekerja) adalah…",choices:["働く","動く","遊ぶ"],answer:0,explain:"働く = bekerja. Hati-hati, 動く (うごく) mirip tapi artinya ‘bergerak’."},
+  {kind:"choice",prompt:"「届く」artinya…",choices:["sampai / tiba (barang)","mengirim","membuka"],answer:0,explain:"届く (とどく) = barang/pesan sampai ke tujuan. Pasangan transitifnya 届ける."}
+ ]},
+{id:"n3-kanji-seikatsu",level:"N3",skill:"Kanji",group:"Kosakata & Kanji N3",title:"Kanji Kehidupan Harian",pattern:"届・慣・迎・準・備",minutes:9,source:SRC_N3_K,
+ introTitle:"Kanji di paket, jadwal, dan pintu rumah",intro:"お届け物 di slip paket, 準備 di jadwal kerja, 迎える saat menjemput seseorang di stasiun. Kanji N3 yang ini kepakai beneran, bukan cuma buat ujian.",
+ exampleJp:"友達を駅まで迎えに行きます。",exampleId:"Saya pergi menjemput teman ke stasiun.",
+ cards:[{front:"届ける",reading:"とどける",meaning:"mengantarkan / menyampaikan (barang)"},{front:"慣れる",reading:"なれる",meaning:"menjadi terbiasa"},{front:"迎える",reading:"むかえる",meaning:"menjemput / menyambut"}],
+ questions:[
+  {kind:"choice",prompt:"Cara baca 「準備」?",choices:["じゅんび","じゅんぴ","しゅんび"],answer:0,explain:"準備 (じゅんび) = persiapan. Hampir tiap hari muncul di tempat kerja."},
+  {kind:"choice",prompt:"「捨てる」artinya…",choices:["membuang","menyimpan","meminjam"],answer:0,explain:"捨てる (すてる) = membuang. Pasangan kata ゴミを捨てる."},
+  {kind:"choice",prompt:"Kanji untuk むかえる (menjemput) adalah…",choices:["迎える","慣れる","届ける"],answer:0,explain:"迎える = menjemput/menyambut kedatangan seseorang."},
+  {kind:"choice",prompt:"「日本の生活に慣れました。」Arti 慣れました?",choices:["sudah terbiasa","sudah lupa","sudah bosan"],answer:0,explain:"慣れる = menjadi terbiasa setelah melewati masa adaptasi."}
+ ]},
+{id:"n3-vocab-kanjou",level:"N3",skill:"Kosakata",group:"Kosakata & Kanji N3",title:"Kosakata Perasaan N3",pattern:"感動・残念・驚く",minutes:8,source:SRC_N3_V,
+ introTitle:"Biar bisa cerita perasaan tanpa ‘sugoi’ terus",intro:"Kosakata perasaan bikin percakapan hidup: 感動する saat terharu menonton film, 残念 saat rencana batal, 懐かしい saat ketemu teman lama. Tiga-tiganya langganan soal N3.",
+ exampleJp:"その映画を見て、とても感動しました。",exampleId:"Menonton film itu, saya sangat terharu.",
+ cards:[{front:"感動する",reading:"かんどうする",meaning:"terharu (tersentuh secara emosional)"},{front:"残念",reading:"ざんねん",meaning:"sayang sekali / mengecewakan"},{front:"懐かしい",reading:"なつかしい",meaning:"nostalgik, bikin rindu masa lalu"}],
+ questions:[
+  {kind:"choice",prompt:"「試験に落ちて、残念です。」Perasaan yang tepat?",choices:["kecewa / sayang sekali","sangat senang","mengantuk"],answer:0,explain:"残念 (ざんねん) dipakai saat hasil tidak sesuai harapan."},
+  {kind:"choice",prompt:"Pilih kata: ‘Dengar lagu ini jadi ___ masa SMA.’",promptJp:"この歌を聞くと、高校の時が（　）。",choices:["懐かしいです","恥ずかしいです","残念です"],answer:0,explain:"懐かしい = perasaan rindu/nostalgia pada masa lalu."},
+  {kind:"choice",prompt:"「我慢する」artinya…",choices:["menahan diri / bersabar","menyerah","berteriak"],answer:0,explain:"我慢する (がまんする) = menahan / bersabar menghadapi yang tidak enak."},
+  {kind:"choice",prompt:"Cara baca 「驚く」?",choices:["おどろく","なつく","はずく"],answer:0,explain:"驚く (おどろく) = terkejut/kaget."}
+ ]},
+{id:"n3-listen-eki",level:"N3",skill:"Listening",group:"Listening & Reading",title:"Listening: Pengumuman & Jadwal",pattern:"聞き取り",minutes:10,source:SRC_L,
+ introTitle:"Dengarkan, jangan dibaca dulu",intro:"Di soal listening JLPT, transkrip tidak disediakan. Di sini sama: dengarkan audionya pakai tombol putar, jawab, baru transkrip dibuka setelah kamu menjawab. Audionya rekaman asli yang disertakan di aplikasi ini — tekan Putar dan naikkan volume.",
+ exampleJp:"電車が遅れています。",exampleId:"Keretanya terlambat. (contoh bunyi pengumuman stasiun)",
+ cards:[{front:"遅れる",reading:"おくれる",meaning:"terlambat"},{front:"変更",reading:"へんこう",meaning:"perubahan"},{front:"締め切り",reading:"しめきり",meaning:"batas waktu (deadline)"}],
+ questions:[
+  {kind:"listen",audio:"assets/audio/listen-eki-1.mp3",transcript:"電車が遅れているため、到着が10分ほど遅れます。",prompt:"Dengarkan pengumumannya. Apa isinya?",choices:["Kedatangan terlambat sekitar 10 menit karena kereta terlambat.","Kereta berangkat 10 menit lebih awal.","Kereta dibatalkan hari ini."],answer:0,explain:"〜のため = karena; 10分ほど = sekitar 10 menit; 遅れます = akan terlambat."},
+  {kind:"listen",audio:"assets/audio/listen-eki-2.mp3",transcript:"明日の会議は、3時からに変更になりました。",prompt:"Dengarkan. Rapat besok jam berapa?",choices:["Jam 3","Jam 2","Jam 4"],answer:0,explain:"変更になりました = berubah menjadi. Waktunya: 3時から."},
+  {kind:"listen",audio:"assets/audio/listen-eki-3.mp3",transcript:"レポートの締め切りは、金曜日までです。",prompt:"Dengarkan. Kapan deadline laporan?",choices:["Hari Jumat","Hari Kamis","Hari Senin"],answer:0,explain:"金曜日 = Jumat. 〜まで = sampai (batas waktu)."},
+  {kind:"listen",audio:"assets/audio/listen-eki-4.mp3",transcript:"薬は、食後に飲んでください。",prompt:"Dengarkan instruksi apoteker. Kapan obat diminum?",choices:["Setelah makan","Sebelum makan","Saat perut kosong pagi hari"],answer:0,explain:"食後 (しょくご) = setelah makan. Lawannya 食前 = sebelum makan."}
+ ]},
+{id:"n3-dialog-baito",level:"N3",skill:"Listening",group:"Listening & Reading",title:"Listening: Dialog Konbini & Baito",pattern:"店員との会話",minutes:10,source:SRC_L,
+ introTitle:"Dialog yang bakal kamu dengar beneran",intro:"Kalimat staf konbini dan pertanyaan wawancara baito (kerja paruh waktu) itu berpola tetap. Sekali hafal polanya, telinga langsung ngeh di dunia nyata. Tekan Putar, dengarkan, baru jawab.",
+ exampleJp:"いらっしゃいませ。",exampleId:"Selamat datang. (sapaan wajib staf toko)",
+ cards:[{front:"温める",reading:"あたためる",meaning:"menghangatkan (makanan)"},{front:"お持ちですか",reading:"おもちですか",meaning:"apakah Anda punya/membawa… (sopan)"},{front:"週に〜回",reading:"しゅうに〜かい",meaning:"…kali seminggu"}],
+ questions:[
+  {kind:"listen",audio:"assets/audio/listen-baito-1.mp3",transcript:"いらっしゃいませ。お弁当、温めますか。",prompt:"Dengarkan staf konbini. Dia menanyakan apa?",choices:["Apakah bento-nya mau dihangatkan","Apakah mau pakai sumpit","Apakah punya kartu poin"],answer:0,explain:"温めますか = mau dihangatkan? Pertanyaan standar untuk bento/onigiri."},
+  {kind:"listen",audio:"assets/audio/listen-baito-2.mp3",transcript:"ポイントカードはお持ちですか。",prompt:"Dengarkan. Apa yang ditanyakan?",choices:["Apakah punya kartu poin","Apakah bayar tunai","Apakah perlu kantong plastik"],answer:0,explain:"お持ちですか = apakah Anda membawa/punya. お持ち adalah bentuk sopan dari 持っている."},
+  {kind:"listen",audio:"assets/audio/listen-baito-3.mp3",transcript:"週に何回くらい入れますか。",prompt:"Di wawancara baito, pertanyaan ini menanyakan…",choices:["Seminggu bisa masuk berapa kali","Sudah pernah kerja di mana","Tinggal di mana"],answer:0,explain:"入れる di konteks shift = bisa masuk (kerja). 週に何回 = berapa kali seminggu."},
+  {kind:"listen",audio:"assets/audio/listen-baito-4.mp3",transcript:"お箸はお付けしますか。",prompt:"Dengarkan. Staf menanyakan soal apa?",choices:["Sumpit","Kantong","Struk"],answer:0,explain:"お箸 (おはし) = sumpit. お付けしますか = mau sekalian disertakan?"}
+ ]},
+{id:"n3-reading",level:"N3",skill:"Reading",group:"Listening & Reading",title:"Reading: Baca Pengumuman",pattern:"お知らせ",minutes:10,source:SRC_L,
+ introTitle:"Pengumuman perpustakaan — baca pelan-pelan",intro:"Soal reading N3 sering berupa pengumuman pendek. Strateginya: cari dulu kata kunci di pertanyaan (kapan, di mana, kenapa), baru pindai teksnya. Baca teks di bawah, lalu jawab.",
+ exampleJp:"入口の横にあります。",exampleId:"Ada di samping pintu masuk.",
+ passageJp:"図書館からのお知らせ\n来週の月曜日（15日）は、工事のため図書館は休みです。本を返したい人は、入口の横にある返却ボックスに入れてください。火曜日からは通常通り開きます。",
+ passageId:"Pengumuman dari perpustakaan: Senin depan (tanggal 15) perpustakaan tutup karena ada pekerjaan konstruksi. Yang ingin mengembalikan buku, silakan masukkan ke kotak pengembalian di samping pintu masuk. Mulai Selasa buka seperti biasa.",
+ cards:[{front:"工事",reading:"こうじ",meaning:"pekerjaan konstruksi / renovasi"},{front:"返却",reading:"へんきゃく",meaning:"pengembalian (barang pinjaman)"},{front:"通常通り",reading:"つうじょうどおり",meaning:"seperti biasa"}],
+ questions:[
+  {kind:"choice",prompt:"Kenapa perpustakaan tutup hari Senin?",choices:["Karena ada pekerjaan konstruksi","Karena hari libur nasional","Karena pindah gedung"],answer:0,explain:"Teksnya jelas: 工事のため = karena konstruksi."},
+  {kind:"choice",prompt:"Yang mau mengembalikan buku hari Senin harus bagaimana?",choices:["Memasukkannya ke kotak pengembalian di samping pintu masuk","Menunggu sampai Selasa","Mengirim lewat pos"],answer:0,explain:"返却ボックスは入口の横 — kotaknya di samping pintu masuk."},
+  {kind:"choice",prompt:"Perpustakaan buka seperti biasa lagi mulai kapan?",choices:["Hari Selasa","Hari Senin depan lagi","Tanggal 15"],answer:0,explain:"火曜日からは通常通り開きます."},
+  {kind:"choice",prompt:"Tanggal 15 jatuh pada hari apa menurut teks?",choices:["Senin","Selasa","Jumat"],answer:0,explain:"来週の月曜日（15日）— tanggal 15 adalah hari Senin."}
+ ]}
+];
+var THRESH=[0,100,250,450,700,1000,1400,1900,2500,3200];
+function levelFromXp(xp){var lv=1,i;for(i=0;i<THRESH.length;i++){if(xp>=THRESH[i])lv=i+1;}var cur=THRESH[lv-1]||0;var nxt=THRESH[lv]||cur+1000;return{level:lv,into:xp-cur,span:nxt-cur,next:nxt};}
+
+/* ===== PERSISTENT STATE (localStorage — GitHub Pages version) =====
+   Semua progres disimpan di browser pengguna di perangkat yang sama.
+   Tidak dikirim ke server / siapa pun. */
+var STORAGE_KEY="aplikasi-belajar-n3:progress:v1";
+var DEFAULT_STATE={xp:0,done:{},scores:{},review:[],badges:{},correctStreak:0};
+var DEFAULT_META={streakDays:0,lastStudyDate:null,firstOpenedAt:null,lastOpenedAt:null,totalOpens:0,savedAt:null};
+var state=JSON.parse(JSON.stringify(DEFAULT_STATE));
+var studyMeta=JSON.parse(JSON.stringify(DEFAULT_META));
+function todayStr(){var d=new Date();var m=("0"+(d.getMonth()+1)).slice(-2);var day=("0"+d.getDate()).slice(-2);return d.getFullYear()+"-"+m+"-"+day;}
+function yesterdayStr(){var d=new Date();d.setDate(d.getDate()-1);var m=("0"+(d.getMonth()+1)).slice(-2);var day=("0"+d.getDate()).slice(-2);return d.getFullYear()+"-"+m+"-"+day;}
+function markStudyToday(){var today=todayStr();if(studyMeta.lastStudyDate===today)return;if(studyMeta.lastStudyDate===yesterdayStr()){studyMeta.streakDays=(studyMeta.streakDays||0)+1;}else{studyMeta.streakDays=1;}studyMeta.lastStudyDate=today;}
+function saveProgress(){try{studyMeta.savedAt=new Date().toISOString();studyMeta.lastOpenedAt=studyMeta.savedAt;var payload={version:1,state:state,meta:studyMeta};localStorage.setItem(STORAGE_KEY,JSON.stringify(payload));var sh=document.getElementById("saveHint");if(sh){sh.textContent="Tersimpan di browser ini"+(studyMeta.streakDays?(" • Rangkaian belajar: "+studyMeta.streakDays+" hari"):"")+" • Terakhir disimpan: "+new Date().toLocaleString("id-ID");}var ss=document.getElementById("saveStatus");if(ss&&studyMeta.savedAt){/* keep base text; status shown via saveHint */}}catch(e){/* storage penuh / mode privat — aplikasi tetap jalan tanpa menyimpan */}}
+function loadProgress(){try{var raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;var data=JSON.parse(raw);if(!data||typeof data!=="object")return;if(data.state&&typeof data.state==="object"){state.xp=typeof data.state.xp==="number"?data.state.xp:0;state.done=data.state.done&&typeof data.state.done==="object"?data.state.done:{};state.scores=data.state.scores&&typeof data.state.scores==="object"?data.state.scores:{};state.review=Array.isArray(data.state.review)?data.state.review:[];state.badges=data.state.badges&&typeof data.state.badges==="object"?data.state.badges:{};state.correctStreak=typeof data.state.correctStreak==="number"?data.state.correctStreak:0;}if(data.meta&&typeof data.meta==="object"){for(var k in DEFAULT_META){if(Object.prototype.hasOwnProperty.call(data.meta,k))studyMeta[k]=data.meta[k];}}}catch(e){/* data rusak — mulai dari awal tanpa crash */}}
+loadProgress();
+(function(){var now=new Date().toISOString();if(!studyMeta.firstOpenedAt)studyMeta.firstOpenedAt=now;studyMeta.lastOpenedAt=now;studyMeta.totalOpens=(studyMeta.totalOpens||0)+1;})();
+window.addEventListener("beforeunload",function(){try{saveProgress();}catch(e){}});
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden"){try{saveProgress();}catch(e){}}});
+var current=null,step=0,fcIndex=0,fcFlipped=false,qIndex=0,qCorrect=0,arrangeBuilt=[],arrangeChecked=false,reviewMode=false,reviewCards=[],reviewIdx=0;
+
+function el(id){return document.getElementById(id);}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function shuffle(a){var b=a.slice(),i,j,t;for(i=b.length-1;i>0;i--){j=Math.floor(Math.random()*(i+1));t=b[i];b[i]=b[j];b[j]=t;}return b;}
+function lessonById(id){for(var i=0;i<LESSONS.length;i++)if(LESSONS[i].id===id)return LESSONS[i];return null;}
+function addReview(card){for(var i=0;i<state.review.length;i++)if(state.review[i].front===card.front)return;state.review.push(card);saveProgress();}
+function removeReview(front){state.review=state.review.filter(function(c){return c.front!==front;});saveProgress();}
+
+function renderHome(){
+  el("statXp").textContent=state.xp;
+  var lv=levelFromXp(state.xp);el("statLevel").textContent=lv.level;
+  el("xpBar").style.width=Math.min(100,Math.round(lv.into/lv.span*100))+"%";
+  el("xpHint").textContent=state.xp>=3200?"Level maksimal — mantap! Progresmu tersimpan di browser ini.":"Kumpulkan "+lv.next+" XP buat naik ke Level "+(lv.level+1)+". ("+state.xp+" XP sekarang)";
+  var sh0=el("saveHint");if(sh0){sh0.textContent="Progres tersimpan di browser ini"+(studyMeta.streakDays?(" • Rangkaian belajar: "+studyMeta.streakDays+" hari (terakhir: "+(studyMeta.lastStudyDate||"-")+")"):"")+(studyMeta.savedAt?(" • Terakhir disimpan: "+new Date(studyMeta.savedAt).toLocaleString("id-ID")):"");}
+  var doneCount=LESSONS.filter(function(l){return state.done[l.id];}).length;
+  el("statDone").textContent=doneCount+"/16";
+  el("statReview").textContent=state.review.length;
+  // badges
+  var badges=[];
+  if(doneCount>=1)badges.push("Langkah Pertama");
+  if(LESSONS.filter(function(l){return l.level==="N4"&&state.done[l.id];}).length>=3)badges.push("Fondasi Kuat");
+  if(state.done["n3-listen-eki"]||state.done["n3-dialog-baito"])badges.push("Telinga Jalan");
+  if(doneCount>=8)badges.push("Separuh Jalan");
+  if(doneCount>=16)badges.push("Tamat 16 Misi");
+  el("badgeRow").innerHTML=badges.length?badges.map(function(b){return '<span class="badge b-skill">'+esc(b)+'</span>';}).join(""):'<span class="hint" style="color:var(--muted);font-size:.85rem">Lencana muncul di sini setelah misi pertamamu selesai.</span>';
+  // mission: first incomplete N4 + first incomplete N3
+  var mN4=LESSONS.filter(function(l){return l.level==="N4"&&!state.done[l.id];})[0];
+  var mN3=LESSONS.filter(function(l){return l.level==="N3"&&!state.done[l.id];})[0];
+  var missions=[mN4,mN3].filter(Boolean);
+  if(!missions.length){el("missionList").innerHTML='<p style="opacity:.9">Semua misi sudah selesai. Ulang tumpukan pengulangan di bawah, atau ulangi misi favoritmu dari jalur belajar.</p>';}
+  else{el("missionList").innerHTML=missions.map(function(l){return '<div class="mission-item"><div class="mi-body"><div class="mi-title">'+esc(l.title)+'</div><div class="mi-meta">'+l.level+' • '+esc(l.skill)+' • ±'+l.minutes+' menit • <span class="jp">'+esc(l.pattern)+'</span></div></div><button class="btn btn-indigo btn-small" type="button" data-start="'+l.id+'">Mulai</button></div>';}).join("");}
+  // groups
+  var groups=["Fondasi N4","Grammar N3","Kosakata & Kanji N3","Listening & Reading"];
+  el("lessonGroups").innerHTML=groups.map(function(g){
+    var items=LESSONS.filter(function(l){return l.group===g;});
+    return '<h3 style="margin:20px 0 10px;font-size:1.02rem">'+esc(g)+'</h3><div class="lesson-grid">'+items.map(function(l){
+      var done=state.done[l.id];
+      return '<button class="lesson-card" type="button" data-start="'+l.id+'"><span class="badges"><span class="badge '+(l.level==="N4"?"b-n4":"b-n3")+'">'+l.level+'</span><span class="badge b-skill">'+esc(l.skill)+'</span>'+(done?'<span class="badge b-done">Selesai • '+state.scores[l.id]+'/4</span>':'')+'</span><h3>'+esc(l.title)+'</h3><div class="pattern jp">'+esc(l.pattern)+'</div><div class="meta">±'+l.minutes+' menit • 3 flashcard • 4 soal</div><div class="src">'+esc(l.source)+'</div></button>';
+    }).join("")+'</div>';
+  }).join("");
+  // review
+  el("reviewHeading").textContent="Tumpukan ulang: "+state.review.length+" kartu";
+  el("reviewText").textContent=state.review.length?"Kartu-kartu ini belum nempel. Tumpukan ini tersimpan, jadi boleh diulang sekarang atau nanti saat kamu buka lagi — tandai ‘Sudah hafal’ buat mengeluarkannya dari tumpukan.":"Kerjakan satu misi dulu — kartu yang belum nempel akan berkumpul di sini dan tersimpan buat diulang kapan saja.";
+  el("reviewChips").innerHTML=state.review.map(function(c){return '<span class="chip jp">'+esc(c.front)+' <small style="color:var(--muted)">'+esc(c.reading)+'</small></span>';}).join("");
+  el("btnReview").disabled=state.review.length===0;
+  var btns=document.querySelectorAll("[data-start]");
+  for(var i=0;i<btns.length;i++){btns[i].addEventListener("click",function(){startLesson(this.getAttribute("data-start"));});}
+  renderBoost();
+}
+
+function openLessonView(){el("homeView").classList.add("hidden");el("lessonView").classList.add("open");window.scrollTo(0,0);}
+function closeLessonView(){stopAudio();el("lessonView").classList.remove("open");el("homeView").classList.remove("hidden");renderHome();window.scrollTo(0,0);}
+function stopAudio(){var a=document.querySelectorAll("audio");for(var i=0;i<a.length;i++){try{a[i].pause();}catch(e){}}}
+function setProgress(){
+  if(!current)return;
+  var total=2+current.questions.length; // intro+cards counted as 2 blocks + questions + result handled separately
+  var cur=step===0?1:step===1?2:2+qIndex+1;
+  if(step===3)cur=total+1;
+  el("lvBar").style.width=Math.min(100,Math.round(cur/(total+1)*100))+"%";
+  el("lvStepText").textContent=(step===0?"Baca kilat":step===1?"Flashcard":step===2?"Soal "+(qIndex+1)+"/"+current.questions.length:"Hasil");
+  el("lvTitle").textContent=current.title;
+}
+function startLesson(id){current=lessonById(id);step=0;fcIndex=0;fcFlipped=false;qIndex=0;qCorrect=0;reviewMode=false;openLessonView();renderStep();}
+function renderStep(){setProgress();if(step===0)renderIntro();else if(step===1)renderCards();else if(step===2)renderQuestion();else renderResult();}
+
+function renderIntro(){
+  var l=current;
+  var audioHtml=l.exampleAudio?'<div class="audio-row"><p>Dengarkan contohnya (rekaman suara):</p><audio controls preload="none" src="'+l.exampleAudio+'"></audio></div>':"";
+  var passageHtml=l.passageJp?'<div class="passage"><div class="jp">'+esc(l.passageJp)+'</div><div class="id">'+esc(l.passageId)+'</div></div>':"";
+  el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">Langkah 1 • Baca kilat — 1 menit</span><h2>'+esc(l.introTitle)+'</h2><p class="lead">'+esc(l.intro)+'</p><div class="example"><div class="jp-big jp">'+esc(l.exampleJp)+'</div><div class="id">'+esc(l.exampleId)+'</div></div>'+audioHtml+passageHtml+'<p class="meta" style="color:var(--muted);font-size:.82rem;margin-top:14px">'+esc(l.source)+' • Pola: <span class="jp">'+esc(l.pattern)+'</span></p><div class="actions"><button class="btn btn-accent" id="btnToCards" type="button">Lanjut ke flashcard →</button></div></div>';
+  el("btnToCards").addEventListener("click",function(){step=1;fcIndex=0;fcFlipped=false;renderStep();});
+}
+function renderCards(){
+  var l=current,c=l.cards[fcIndex];
+  el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">Langkah 2 • Flashcard '+(fcIndex+1)+'/'+l.cards.length+'</span><h2>Balik kartunya, tebak dulu di kepala</h2><button class="flashcard" id="fcCard" type="button" aria-label="Flashcard, ketuk untuk membalik"><div class="front jp">'+esc(c.front)+'</div>'+(fcFlipped?'<div class="reading jp">'+esc(c.reading)+'</div><div class="meaning">'+esc(c.meaning)+'</div>':'<div class="tap">Ketuk kartu buat lihat cara baca &amp; artinya</div>')+'</button><div class="fc-nav"><button class="btn btn-ghost" id="btnFcNo" type="button">Belum hafal — ulang nanti</button><button class="btn btn-accent" id="btnFcYes" type="button">Sudah hafal</button></div></div>';
+  el("fcCard").addEventListener("click",function(){fcFlipped=!fcFlipped;renderCards();});
+  el("btnFcYes").addEventListener("click",function(){removeReview(c.front);nextCard();});
+  el("btnFcNo").addEventListener("click",function(){addReview(c);nextCard();});
+  function nextCard(){fcFlipped=false;if(fcIndex<l.cards.length-1){fcIndex++;renderCards();}else{step=2;qIndex=0;renderStep();}}
+}
+function renderQuestion(){
+  var l=current,q=l.questions[qIndex];
+  var head='<div class="cardbox"><span class="step-label">Langkah 3 • Soal '+(qIndex+1)+'/'+l.questions.length+' — '+(q.kind==="listen"?"Listening":q.kind==="arrange"?"Susun kalimat":"Pilihan ganda")+'</span>';
+  var passageHtml=(l.passageJp&&qIndex===0)?'<div class="passage"><div class="jp">'+esc(l.passageJp)+'</div></div>':"";
+  if(q.kind==="listen"){
+    el("lvBody").innerHTML=head+'<h2 class="q-prompt">'+esc(q.prompt)+'</h2>'+passageHtml+'<div class="audio-row"><p>Tekan Putar — dengarkan baik-baik (boleh diulang):</p><audio controls preload="metadata" src="'+q.audio+'"></audio></div><div class="choices" id="choices">'+q.choices.map(function(c,i){return '<button class="choice" type="button" data-choice="'+i+'">'+esc(c)+'</button>';}).join("")+'</div><div class="transcript" id="transcript"><div style="font-size:.8rem;font-weight:800;color:var(--muted)">TRANSKRIP (baru dibuka setelah menjawab)</div><div class="jp">'+esc(q.transcript)+'</div></div><div class="explain" id="explain"></div><div class="actions hidden" id="qActions"><button class="btn btn-accent" id="btnNextQ" type="button">'+(qIndex<l.questions.length-1?"Soal berikutnya →":"Lihat hasil →")+'</button></div></div>';
+    bindChoices(q);
+  }else if(q.kind==="arrange"){
+    arrangeBuilt=[];arrangeChecked=false;
+    var shuffled=shuffle(q.tokens.map(function(t,i){return{text:t,idx:i};}));
+    el("lvBody").innerHTML=head+'<h2 class="q-prompt">'+esc(q.prompt)+'</h2><div class="built jp" id="built"></div><div class="tokens" id="tokens">'+shuffled.map(function(t){return '<button class="token jp" type="button" data-token="'+t.idx+'">'+esc(t.text)+'</button>';}).join("")+'</div><div class="actions"><button class="btn btn-ghost" id="btnArrangeReset" type="button">Ulang susun</button><button class="btn btn-accent" id="btnArrangeCheck" type="button">Periksa</button></div><div class="explain" id="explain"></div><div class="actions hidden" id="qActions"><button class="btn btn-accent" id="btnNextQ" type="button">'+(qIndex<l.questions.length-1?"Soal berikutnya →":"Lihat hasil →")+'</button></div></div>';
+    var toks=document.querySelectorAll("[data-token]");
+    for(var i=0;i<toks.length;i++){toks[i].addEventListener("click",function(){if(arrangeChecked)return;this.classList.add("used");arrangeBuilt.push(parseInt(this.getAttribute("data-token"),10));el("built").textContent=arrangeBuilt.map(function(ix){return q.tokens[ix];}).join(" ");});}
+    el("btnArrangeReset").addEventListener("click",function(){if(!arrangeChecked)renderQuestion();});
+    el("btnArrangeCheck").addEventListener("click",function(){
+      if(arrangeChecked)return;arrangeChecked=true;
+      var ok=arrangeBuilt.length===q.tokens.length&&arrangeBuilt.every(function(v,ix){return v===ix;});
+      finishQuestion(ok,q,"Jawaban benar: "+q.answerJp+" — "+q.explain);
+    });
+    el("btnNextQ").addEventListener("click",nextQuestion);
+  }else{
+    el("lvBody").innerHTML=head+'<h2 class="q-prompt">'+esc(q.prompt)+'</h2>'+(q.promptJp?'<div class="q-prompt-jp jp">'+esc(q.promptJp)+'</div>':"")+passageHtml+'<div class="choices" id="choices">'+q.choices.map(function(c,i){return '<button class="choice jp" type="button" data-choice="'+i+'">'+esc(c)+'</button>';}).join("")+'</div><div class="explain" id="explain"></div><div class="actions hidden" id="qActions"><button class="btn btn-accent" id="btnNextQ" type="button">'+(qIndex<l.questions.length-1?"Soal berikutnya →":"Lihat hasil →")+'</button></div></div>';
+    bindChoices(q);
+  }
+  setProgress();
+}
+function bindChoices(q){
+  var btns=document.querySelectorAll("[data-choice]");
+  for(var i=0;i<btns.length;i++){btns[i].addEventListener("click",function(){
+    var picked=parseInt(this.getAttribute("data-choice"),10);
+    for(var j=0;j<btns.length;j++){btns[j].disabled=true;if(j===q.answer)btns[j].classList.add("correct");}
+    if(picked!==q.answer)this.classList.add("wrong");
+    finishQuestion(picked===q.answer,q,q.explain);
+    var tr=el("transcript");if(tr)tr.classList.add("show");
+  });}
+  el("btnNextQ").addEventListener("click",nextQuestion);
+}
+function finishQuestion(ok,q,explainText){
+  if(ok){qCorrect++;state.correctStreak++;}
+  else{state.correctStreak=0;current.cards.forEach(function(c){/* keep review light: add first card of lesson */});addReview(current.cards[qIndex%current.cards.length]);}
+  var ex=el("explain");ex.className="explain show "+(ok?"ok":"no");ex.innerHTML="<strong>"+(ok?"Betul! +10 XP":"Belum tepat.")+"</strong> "+esc(explainText);
+  if(ok){state.xp+=10;markStudyToday();}
+  saveProgress();
+  el("qActions").classList.remove("hidden");
+  var b=el("btnNextQ");if(b)b.focus();
+}
+function nextQuestion(){stopAudio();if(qIndex<current.questions.length-1){qIndex++;renderQuestion();}else{step=3;renderStep();}}
+function renderResult(){
+  var l=current,total=l.questions.length,pct=Math.round(qCorrect/total*100);
+  var firstTime=!state.done[l.id];
+  if(firstTime){state.done[l.id]=true;state.scores[l.id]=qCorrect;state.xp+=20;markStudyToday();}
+  else if(qCorrect>(state.scores[l.id]||0)){state.scores[l.id]=qCorrect;}
+  saveProgress();
+  var msg=pct===100?"Sempurna. Ini yang namanya nempel.":pct>=75?"Kuat! Tinggal poles yang satu itu.":pct>=50?"Setengah nempel — kartu yang bocor sudah masuk tumpukan ulang.":"Nggak apa-apa, ini sesi pemanasan. Ulangi misi ini sekali lagi pelan-pelan, fokus ke penjelasannya.";
+  el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">Hasil misi</span><div class="result-score">'+qCorrect+'/'+total+'</div><p class="result-sub">'+esc(msg)+'</p><p class="result-sub">+'+(qCorrect*10+(firstTime?20:0))+' XP dari misi ini • Total tersimpan: '+state.xp+' XP • Level '+levelFromXp(state.xp).level+'</p><div class="actions"><button class="btn btn-ghost" id="btnAgain" type="button">Ulangi misi ini</button><button class="btn btn-accent" id="btnHome" type="button">Kembali ke jalur</button></div>'+(state.review.length?'<p class="result-sub" style="margin-top:14px">Ada '+state.review.length+' kartu di tumpukan ulang — tersimpan dan bisa diulang dari halaman utama kapan saja.</p>':"")+'</div>';
+  setProgress();
+  el("btnAgain").addEventListener("click",function(){startLesson(l.id);});
+  el("btnHome").addEventListener("click",closeLessonView);
+}
+/* Review mode: flashcard-only loop over the session review pile */
+function startReview(){
+  if(!state.review.length)return;
+  reviewMode=true;reviewCards=state.review.slice();reviewIdx=0;
+  current={id:"review",title:"Pengulangan terjadwal (sesi ini)",questions:[]};
+  openLessonView();el("lvTitle").textContent=current.title;el("lvStepText").textContent="Ulang kartu";el("lvBar").style.width="50%";
+  renderReviewCard();
+}
+function renderReviewCard(){
+  var c=reviewCards[reviewIdx];
+  el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">Pengulangan • Kartu '+(reviewIdx+1)+'/'+reviewCards.length+'</span><h2>Tebak dulu, baru balik</h2><button class="flashcard" id="fcCard" type="button"><div class="front jp">'+esc(c.front)+'</div>'+(fcFlipped?'<div class="reading jp">'+esc(c.reading)+'</div><div class="meaning">'+esc(c.meaning)+'</div>':'<div class="tap">Ketuk kartu buat lihat cara baca &amp; artinya</div>')+'</button><div class="fc-nav"><button class="btn btn-ghost" id="btnRNo" type="button">Masih belum hafal</button><button class="btn btn-accent" id="btnRYes" type="button">Sudah hafal — keluarkan</button></div></div>';
+  el("fcCard").addEventListener("click",function(){fcFlipped=!fcFlipped;renderReviewCard();});
+  el("btnRYes").addEventListener("click",function(){removeReview(c.front);state.xp+=5;markStudyToday();saveProgress();nextReview();});
+  el("btnRNo").addEventListener("click",function(){nextReview();});
+  function nextReview(){fcFlipped=false;if(reviewIdx<reviewCards.length-1){reviewIdx++;renderReviewCard();}else{el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">Pengulangan selesai</span><div class="result-score">Beres!</div><p class="result-sub">Tumpukan sekarang: '+state.review.length+' kartu. Yang masih tersisa tersimpan dan akan tetap ada saat kamu membuka halaman ini lagi.</p><div class="actions"><button class="btn btn-accent" id="btnHome2" type="button">Kembali ke jalur</button></div></div>';el("btnHome2").addEventListener("click",closeLessonView);}}
+}
+/* ===== MODE PENGUAT — data following the book 『JLPT N3 この一冊で合格する』 (日本語の森).
+   Grammar: Bab 2 items 1–70 (themes 1–8), order & grouping follow the book's grammar index.
+   Vocabulary: opening lists of Bab 1 by the book's categories. All examples & questions are original. ===== */
+var GRAM_THEMES=[
+{name:"Tema 1 • 理由・原因 — Sebab-akibat",pages:"Bab 2, hlm. 126–129",items:[
+{p:"〜せい",m:"gara-gara… (sebab hal yang buruk)",ex:"寝不足のせいで、頭が痛い。",exId:"Gara-gara kurang tidur, kepala saya sakit."},
+{p:"〜おかげ",m:"berkat… (sebab hal yang baik)",ex:"先生のおかげで、試験に合格しました。",exId:"Berkat guru, saya lulus ujian."},
+{p:"〜もの",m:"karena memang… (alasan yang dianggap wajar)",ex:"子どもだもの、泣くのは当たり前だ。",exId:"Namanya juga anak kecil, wajar kalau menangis."},
+{p:"〜ため",m:"karena… (sebab, agak formal) / demi…",ex:"大雪のため、電車が止まりました。",exId:"Karena salju lebat, kereta berhenti."},
+{p:"〜のだから",m:"karena sudah jelas begitu, maka…",ex:"約束したのだから、行かなければならない。",exId:"Karena sudah berjanji, saya harus pergi."},
+{p:"〜をきっかけに",m:"berawal dari… / dengan … sebagai pemicu",ex:"入院をきっかけに、タバコをやめました。",exId:"Berawal dari masuk rumah sakit, saya berhenti merokok."},
+{p:"〜わけだ",m:"pantas saja… (kesimpulan yang masuk akal)",ex:"彼は日本に10年住んでいるわけだ。日本語がペラペラだ。",exId:"Pantas saja — dia sudah 10 tahun tinggal di Jepang. Bahasa Jepangnya lancar sekali."},
+{p:"〜以来",m:"sejak… (dan terus sampai sekarang)",ex:"日本に来て以来、日本語を毎日勉強しています。",exId:"Sejak datang ke Jepang, saya belajar bahasa Jepang setiap hari."},
+{p:"〜によって①",m:"karena… (penyebab, formal)",ex:"地震によって、建物が壊れました。",exId:"Karena gempa, bangunan itu rusak."}],
+arrange:[{prompt:"Susun jadi kalimat: ‘Gara-gara kurang tidur, kepala saya sakit.’",tokens:["寝不足のせいで","頭が","痛いです"],answerJp:"寝不足のせいで、頭が痛いです。",explain:"〜せい dipakai untuk sebab dengan hasil yang buruk."},{prompt:"Susun jadi kalimat: ‘Berkat guru, saya lulus ujian.’",tokens:["先生のおかげで","試験に","合格しました"],answerJp:"先生のおかげで、試験に合格しました。",explain:"〜おかげで untuk sebab dengan hasil yang baik."}]},
+{name:"Tema 2 • 状況・変化 — Keadaan & perubahan",pages:"Bab 2, hlm. 133–136",items:[
+{p:"〜まま",m:"tetap dalam keadaan… (tanpa berubah)",ex:"靴を履いたまま、部屋に入ってしまった。",exId:"Saya terlanjur masuk kamar dengan sepatu masih terpakai."},
+{p:"〜つつ",m:"sambil… (bentuk formal dari 〜ながら)",ex:"健康に気をつけつつ、仕事を続けています。",exId:"Sambil menjaga kesehatan, saya terus bekerja."},
+{p:"〜とともに",m:"bersama dengan… / seiring…",ex:"年を取るとともに、体力が落ちてきました。",exId:"Seiring bertambahnya usia, stamina saya menurun."},
+{p:"〜つつある",m:"sedang dalam proses berubah…",ex:"日本の人口は減りつつあります。",exId:"Populasi Jepang sedang terus berkurang."},
+{p:"〜ば〜ほど",m:"semakin…, semakin…",ex:"練習すればするほど、上手になります。",exId:"Semakin banyak berlatih, semakin pandai."},
+{p:"〜にしたがって",m:"seiring… / mengikuti…",ex:"試験の日が近づくにしたがって、緊張してきました。",exId:"Seiring dekatnya hari ujian, saya makin gugup."},
+{p:"〜ばかり①",m:"hanya… melulu / …saja terus",ex:"彼はゲームばかりしています。",exId:"Dia main game melulu."}],
+arrange:[{prompt:"Susun jadi kalimat: ‘Dia main game melulu.’",tokens:["彼は","ゲームばかり","しています"],answerJp:"彼はゲームばかりしています。",explain:"〜ばかり = hanya itu-itu saja, dengan nada negatif."},{prompt:"Susun jadi kalimat: ‘Seiring bertambahnya usia, stamina menurun.’",tokens:["年を取るとともに","体力が","落ちてきました"],answerJp:"年を取るとともに、体力が落ちてきました。",explain:"〜とともに menyatakan dua perubahan yang berjalan bersamaan."}]},
+{name:"Tema 3 • 立場・基準 — Sudut pandang & acuan",pages:"Bab 2, hlm. 140–143",items:[
+{p:"〜として",m:"sebagai…",ex:"彼は医者として働いています。",exId:"Dia bekerja sebagai dokter."},
+{p:"〜にとって",m:"bagi… (dari sudut pandang orang itu)",ex:"私にとって、家族が一番大切です。",exId:"Bagi saya, keluarga adalah yang paling penting."},
+{p:"〜に基づいて",m:"berdasarkan…",ex:"この映画は実話に基づいて作られました。",exId:"Film ini dibuat berdasarkan kisah nyata."},
+{p:"〜を中心に",m:"berpusat pada… / di seputar…",ex:"駅を中心に、店がたくさんあります。",exId:"Di seputar stasiun ada banyak toko."},
+{p:"〜とおり",m:"sesuai dengan… / persis seperti…",ex:"説明書のとおりに作りました。",exId:"Saya membuatnya sesuai petunjuk (buku manual)."},
+{p:"〜という",m:"yang bernama… / yang disebut…",ex:"「すし」という食べ物を食べたことがありますか。",exId:"Pernahkah kamu makan makanan yang bernama ‘sushi’?"},
+{p:"〜に対して①",m:"terhadap… / kepada…",ex:"お客様に対して、丁寧に話してください。",exId:"Berbicaralah dengan sopan kepada pelanggan."},
+{p:"〜について",m:"tentang / mengenai…",ex:"日本の文化について調べています。",exId:"Saya sedang meneliti tentang budaya Jepang."},
+{p:"〜に関して",m:"mengenai… (lebih formal daripada 〜について)",ex:"この問題に関して、意見を聞かせてください。",exId:"Mengenai masalah ini, tolong sampaikan pendapatmu."}],
+arrange:[{prompt:"Susun jadi kalimat: ‘Bagi saya, keluarga paling penting.’",tokens:["私にとって","家族が一番","大切です"],answerJp:"私にとって、家族が一番大切です。",explain:"〜にとって menilai sesuatu dari sudut pandang seseorang."},{prompt:"Susun jadi kalimat: ‘Saya sedang meneliti tentang budaya Jepang.’",tokens:["日本の文化について","調べています"],answerJp:"日本の文化について調べています。",explain:"Topik yang dibahas/diteliti ditandai 〜について."}]},
+{name:"Tema 4 • 逆接・否定 — Kontras & negasi",pages:"Bab 2, hlm. 147–150",items:[
+{p:"〜わけではない",m:"bukan berarti… / tidak selalu…",ex:"お金がないわけではありません。時間がないんです。",exId:"Bukan berarti saya tidak punya uang. Saya tidak punya waktu."},
+{p:"〜ながら（も）",m:"padahal… / walaupun… (juga berarti ‘sambil’)",ex:"知っていながら、教えてくれなかった。",exId:"Padahal dia tahu, tapi tidak mau memberi tahu."},
+{p:"〜かわりに①",m:"sebagai gantinya… / alih-alih…",ex:"今日は車のかわりに自転車で来ました。",exId:"Hari ini saya datang naik sepeda, bukan mobil (sebagai gantinya)."},
+{p:"〜反面",m:"di sisi lain… (sebaliknya)",ex:"この仕事は給料がいい反面、忙しすぎます。",exId:"Pekerjaan ini gajinya bagus, tetapi di sisi lain terlalu sibuk."},
+{p:"〜ようがない",m:"tidak ada cara untuk… / tidak bisa…",ex:"住所が分からないから、連絡のしようがありません。",exId:"Karena tidak tahu alamatnya, tidak ada cara untuk menghubunginya."},
+{p:"〜がたい",m:"sulit untuk… (formal)",ex:"彼の気持ちは理解しがたい。",exId:"Perasaannya sulit untuk dipahami."},
+{p:"〜ずに",m:"tanpa melakukan… (bentuk formal dari 〜ないで)",ex:"朝ごはんを食べずに学校へ行きました。",exId:"Saya pergi ke sekolah tanpa sarapan."},
+{p:"〜はずがない",m:"tidak mungkin…",ex:"彼が嘘をつくはずがありません。",exId:"Tidak mungkin dia berbohong."}],
+arrange:[{prompt:"Susun jadi kalimat: ‘Saya pergi ke sekolah tanpa sarapan.’",tokens:["朝ごはんを食べずに","学校へ","行きました"],answerJp:"朝ごはんを食べずに学校へ行きました。",explain:"〜ずに = 〜ないで, ‘tanpa melakukan’."},{prompt:"Susun jadi kalimat: ‘Tidak mungkin dia berbohong.’",tokens:["彼が","嘘をつく","はずがありません"],answerJp:"彼が嘘をつくはずがありません。",explain:"〜はずがない menolak kemungkinan dengan tegas."}]},
+{name:"Tema 5 • 程度・強調・比較 — Derajat, penekanan, perbandingan",pages:"Bab 2, hlm. 156–160",items:[
+{p:"〜くらい",m:"sampai pada tingkat… (derajat)",ex:"忙しくて、寝る時間もないくらいです。",exId:"Saya sibuk sampai tidak punya waktu tidur."},
+{p:"〜ほど",m:"sampai-sampai… (derajat)",ex:"立っていられないほど疲れました。",exId:"Saya lelah sampai tidak sanggup berdiri."},
+{p:"〜だらけ",m:"penuh dengan… (hal yang tidak enak)",ex:"部屋はほこりだらけでした。",exId:"Kamar itu penuh debu."},
+{p:"〜やすい",m:"mudah untuk… / gampang terjadi",ex:"このペンは書きやすいです。",exId:"Pulpen ini enak (mudah) dipakai menulis."},
+{p:"〜はず",m:"seharusnya… / pasti… (perkiraan kuat)",ex:"彼はもう着いたはずです。",exId:"Dia seharusnya sudah sampai."},
+{p:"〜ずにはいられない",m:"tidak bisa menahan diri untuk tidak…",ex:"その話を聞いて、笑わずにはいられませんでした。",exId:"Mendengar cerita itu, saya tidak bisa menahan tawa."},
+{p:"〜くらい〜はない",m:"tidak ada yang se-… (yang ini)",ex:"彼女くらい優しい人はいません。",exId:"Tidak ada orang sebaik dia."},
+{p:"〜まで",m:"bahkan sampai… (penekanan)",ex:"彼は、友達にまで嘘をついた。",exId:"Dia bahkan berbohong sampai kepada temannya sendiri."},
+{p:"〜ほど〜はない",m:"tidak ada yang lebih … daripada…",ex:"故郷の料理ほどおいしいものはありません。",exId:"Tidak ada yang lebih enak daripada masakan kampung halaman."},
+{p:"〜てしかたがない",m:"…sekali sampai tidak tertahankan",ex:"明日の旅行が楽しみでしかたがありません。",exId:"Saya senang sekali menantikan perjalanan besok, sampai tidak sabar."},
+{p:"〜に違いない",m:"pasti… (keyakinan kuat)",ex:"電気がついているから、誰かいるに違いありません。",exId:"Lampunya menyala, jadi pasti ada orang di dalam."},
+{p:"〜に対して②",m:"sedangkan… (kontras perbandingan)",ex:"兄は背が高いのに対して、弟は低いです。",exId:"Kakak tinggi, sedangkan adik pendek."},
+{p:"〜どころか",m:"jangankan… (malah sebaliknya)",ex:"謝るどころか、彼は怒り出しました。",exId:"Jangankan minta maaf, dia malah marah."},
+{p:"〜に比べて",m:"dibandingkan dengan…",ex:"今年の冬は去年に比べて暖かいです。",exId:"Musim dingin tahun ini lebih hangat dibandingkan tahun lalu."}],
+arrange:[{prompt:"Susun jadi kalimat: ‘Kamar itu penuh debu.’",tokens:["部屋は","ほこり","だらけでした"],answerJp:"部屋はほこりだらけでした。",explain:"〜だらけ = penuh dengan hal yang tidak menyenangkan."},{prompt:"Susun jadi kalimat: ‘Kakak tinggi, sedangkan adik pendek.’",tokens:["兄は背が高いのに対して","弟は","低いです"],answerJp:"兄は背が高いのに対して、弟は低いです。",explain:"〜のに対して membandingkan dua hal yang berlawanan."}]},
+{name:"Tema 6 • 想像・予想 — Dugaan & perkiraan",pages:"Bab 2, hlm. 164–166",items:[
+{p:"〜がる",m:"tampak / terlihat ingin atau merasa… (mengamati orang lain)",ex:"子どもは外で遊びたがっています。",exId:"Anak itu tampak ingin bermain di luar."},
+{p:"〜ようとする",m:"tepat akan… / berusaha untuk…",ex:"電車が出ようとしています。",exId:"Kereta itu baru saja akan berangkat."},
+{p:"〜そう①",m:"kelihatannya… (kesan dari yang terlihat)",ex:"そのケーキはおいしそうです。",exId:"Kue itu kelihatan enak."},
+{p:"〜そう②",m:"hampir saja terjadi… (sesaat lagi)",ex:"コップが落ちそうです。",exId:"Gelasnya hampir jatuh."},
+{p:"〜だろう",m:"mungkin… / barangkali…",ex:"明日は雨が降るだろう。",exId:"Besok mungkin turun hujan."},
+{p:"〜みたい",m:"seperti… / tampaknya…",ex:"彼は疲れているみたいです。",exId:"Dia tampaknya lelah."}],
+arrange:[{prompt:"Susun jadi kalimat: ‘Anak itu tampak ingin bermain di luar.’",tokens:["子どもは","外で","遊びたがっています"],answerJp:"子どもは外で遊びたがっています。",explain:"〜たがる dipakai untuk keinginan orang ketiga, dari pengamatan."},{prompt:"Susun jadi kalimat: ‘Dia tampaknya lelah.’",tokens:["彼は","疲れている","みたいです"],answerJp:"彼は疲れているみたいです。",explain:"普通形 + みたいです = tampaknya…"}]},
+{name:"Tema 7 • とき・あいだ — Waktu & selang",pages:"Bab 2, hlm. 170–174",items:[
+{p:"〜にあたって",m:"pada saat (momen penting)…",ex:"出発にあたって、荷物をもう一度確認しました。",exId:"Saat akan berangkat, saya memeriksa lagi barang bawaan."},
+{p:"〜際",m:"ketika… (formal)",ex:"お帰りの際、忘れ物にご注意ください。",exId:"Saat pulang, harap perhatikan barang bawaan Anda."},
+{p:"〜ところに",m:"tepat ketika sedang… (lalu ada kejadian menyela)",ex:"出かけようとしたところに、電話がかかってきました。",exId:"Tepat ketika hendak pergi, telepon berdering."},
+{p:"〜に先立って",m:"sebelum… (mendahului, formal)",ex:"試合に先立って、ルールの説明がありました。",exId:"Sebelum pertandingan, ada penjelasan aturan."},
+{p:"〜ばかり②",m:"baru saja… (〜たばかり)",ex:"私は日本に来たばかりです。",exId:"Saya baru saja datang ke Jepang."},
+{p:"〜たところ",m:"begitu melakukan…, ternyata…",ex:"窓を開けたところ、冷たい風が入ってきました。",exId:"Begitu saya membuka jendela, angin dingin masuk."},
+{p:"〜たびに",m:"setiap kali…",ex:"この歌を聞くたびに、故郷を思い出します。",exId:"Setiap kali mendengar lagu ini, saya teringat kampung halaman."},
+{p:"〜おきに",m:"setiap … (dengan selang waktu/jarak)",ex:"電車は10分おきに来ます。",exId:"Kereta datang setiap 10 menit."},
+{p:"〜ごとに",m:"setiap…",ex:"オリンピックは4年ごとに開かれます。",exId:"Olimpiade diadakan setiap 4 tahun."},
+{p:"〜間",m:"selama… (rentang waktu)",ex:"夏休みの間、アルバイトをしました。",exId:"Selama liburan musim panas, saya bekerja paruh waktu."},
+{p:"〜うちに",m:"selagi… (sebelum keadaan berubah)",ex:"熱いうちに食べてください。",exId:"Makanlah selagi masih panas."}],
+arrange:[{prompt:"Susun jadi kalimat: ‘Setiap kali mendengar lagu ini, saya teringat kampung halaman.’",tokens:["この歌を聞くたびに","故郷を","思い出します"],answerJp:"この歌を聞くたびに、故郷を思い出します。",explain:"〜たびに = setiap kali melakukan itu."},{prompt:"Susun jadi kalimat: ‘Kereta datang setiap 10 menit.’",tokens:["電車は","10分おきに","来ます"],answerJp:"電車は10分おきに来ます。",explain:"〜おきに menekankan selang (interval) yang teratur."}]},
+{name:"Tema 8 • 仮定・条件 — Pengandaian & syarat",pages:"Bab 2, hlm. 178–180",items:[
+{p:"たとえ〜ても",m:"walaupun… sekalipun…",ex:"たとえ雨が降っても、試合は行います。",exId:"Walaupun hujan turun, pertandingan tetap diadakan."},
+{p:"〜ことにする",m:"memutuskan untuk…",ex:"明日から毎朝走ることにしました。",exId:"Saya memutuskan untuk lari setiap pagi mulai besok."},
+{p:"〜次第",m:"segera setelah…",ex:"着き次第、電話します。",exId:"Begitu sampai, saya akan menelepon."},
+{p:"〜としたら",m:"kalau seandainya…",ex:"100万円あったとしたら、何を買いますか。",exId:"Kalau seandainya kamu punya 1 juta yen, kamu akan membeli apa?"},
+{p:"〜てからでないと",m:"kalau tidak … dulu, tidak bisa…",ex:"予約してからでないと、入れません。",exId:"Kalau tidak memesan (reservasi) dulu, tidak bisa masuk."},
+{p:"〜によって②",m:"tergantung pada… (〜によっては)",ex:"人によっては、朝ごはんを食べません。",exId:"Tergantung orangnya, ada yang tidak sarapan."}],
+arrange:[{prompt:"Susun jadi kalimat: ‘Walaupun hujan, pertandingan tetap diadakan.’",tokens:["たとえ雨が降っても","試合は","行います"],answerJp:"たとえ雨が降っても、試合は行います。",explain:"たとえ〜ても = sekalipun hal buruk itu terjadi, hasilnya tetap."},{prompt:"Susun jadi kalimat: ‘Begitu sampai, saya akan menelepon.’",tokens:["着き次第","電話","します"],answerJp:"着き次第、電話します。",explain:"Vます (buang ます) + 次第 = segera setelah…"}]}
+];
+var VOCAB_CATS=[
+{name:"名詞（1文字）— Kata benda 1 kanji",pages:"Bab 1, hlm. 10–11",words:[
+{w:"間",r:"あいだ",m:"antara / sela waktu"},{w:"音",r:"おと",m:"bunyi / suara"},{w:"味",r:"あじ",m:"rasa"},{w:"穴",r:"あな",m:"lubang"},{w:"油",r:"あぶら",m:"minyak"},{w:"案",r:"あん",m:"usulan / rencana"},{w:"胃",r:"い",m:"lambung"},{w:"息",r:"いき",m:"napas"},{w:"池",r:"いけ",m:"kolam"},{w:"糸",r:"いと",m:"benang"},{w:"歌",r:"うた",m:"lagu"},{w:"腕",r:"うで",m:"lengan"},{w:"絵",r:"え",m:"gambar / lukisan"},{w:"枝",r:"えだ",m:"ranting / dahan"},{w:"奥",r:"おく",m:"bagian dalam / ujung"},{w:"親",r:"おや",m:"orang tua"},{w:"顔",r:"かお",m:"wajah"},{w:"傘",r:"かさ",m:"payung"},{w:"数",r:"かず",m:"jumlah / bilangan"},{w:"肩",r:"かた",m:"bahu"},{w:"形",r:"かたち",m:"bentuk"},{w:"髪",r:"かみ",m:"rambut"},{w:"壁",r:"かべ",m:"dinding"},{w:"体",r:"からだ",m:"tubuh"},{w:"皮",r:"かわ",m:"kulit (benda/hewan)"},{w:"薬",r:"くすり",m:"obat"},{w:"靴",r:"くつ",m:"sepatu"},{w:"首",r:"くび",m:"leher"},{w:"雲",r:"くも",m:"awan"},{w:"煙",r:"けむり",m:"asap"},{w:"県",r:"けん",m:"prefektur"},{w:"腰",r:"こし",m:"pinggang"},{w:"粉",r:"こな",m:"tepung / bubuk"},{w:"差",r:"さ",m:"selisih / perbedaan"},{w:"坂",r:"さか",m:"tanjakan / lereng"},{w:"桜",r:"さくら",m:"bunga sakura"},{w:"皿",r:"さら",m:"piring"}]},
+{name:"名詞（その他）— Kata benda kehidupan harian",pages:"Bab 1, hlm. 28–30",words:[
+{w:"締め切り",r:"しめきり",m:"batas waktu (deadline)"},{w:"知り合い",r:"しりあい",m:"kenalan"},{w:"新入社員",r:"しんにゅうしゃいん",m:"karyawan baru"},{w:"乗り換え",r:"のりかえ",m:"pindah kendaraan / transit"},{w:"天気予報",r:"てんきよほう",m:"ramalan cuaca"},{w:"電子レンジ",r:"でんしれんじ",m:"microwave"},{w:"久しぶり",r:"ひさしぶり",m:"lama tidak bertemu"},{w:"引き出し",r:"ひきだし",m:"laci"},{w:"悩み",r:"なやみ",m:"kekhawatiran / beban pikiran"},{w:"匂い",r:"におい",m:"bau / aroma"},{w:"人間関係",r:"にんげんかんけい",m:"hubungan antarmanusia"},{w:"生年月日",r:"せいねんがっぴ",m:"tanggal lahir"},{w:"専門学校",r:"せんもんがっこう",m:"sekolah kejuruan"},{w:"生活習慣",r:"せいかつしゅうかん",m:"kebiasaan hidup"},{w:"高速道路",r:"こうそくどうろ",m:"jalan tol / bebas hambatan"},{w:"携帯電話",r:"けいたいでんわ",m:"telepon genggam (HP)"},{w:"消しゴム",r:"けしごむ",m:"penghapus"},{w:"決まり",r:"きまり",m:"aturan / ketentuan"},{w:"代わり",r:"かわり",m:"pengganti"},{w:"環境問題",r:"かんきょうもんだい",m:"masalah lingkungan"},{w:"交通事故",r:"こうつうじこ",m:"kecelakaan lalu lintas"},{w:"証明写真",r:"しょうめいしゃしん",m:"pas foto resmi"},{w:"消費期限",r:"しょうひきげん",m:"tanggal kedaluwarsa (untuk konsumsi)"},{w:"各駅停車",r:"かくえきていしゃ",m:"kereta lokal (berhenti di semua stasiun)"},{w:"家庭教師",r:"かていきょうし",m:"guru les privat"},{w:"金持ち",r:"かねもち",m:"orang kaya"},{w:"一人暮らし",r:"ひとりぐらし",m:"hidup sendiri (tinggal sendiri)"},{w:"申し込み",r:"もうしこみ",m:"pendaftaran / permohonan"},{w:"振り込み",r:"ふりこみ",m:"transfer uang (bank)"},{w:"目覚まし時計",r:"めざましどけい",m:"jam weker"},{w:"真ん中",r:"まんなか",m:"tengah-tengah"},{w:"祭り",r:"まつり",m:"festival"},{w:"向こう",r:"むこう",m:"seberang / sebelah sana"}]},
+{name:"動詞（一般）— Kata kerja umum",pages:"Bab 1, hlm. 31–32",words:[
+{w:"あきらめる",r:"あきらめる",m:"menyerah / mengurungkan"},{w:"飽きる",r:"あきる",m:"bosan / jenuh"},{w:"空ける",r:"あける",m:"mengosongkan / membuka"},{w:"預ける",r:"あずける",m:"menitipkan"},{w:"与える",r:"あたえる",m:"memberikan"},{w:"温める",r:"あたためる",m:"menghangatkan"},{w:"当たる",r:"あたる",m:"kena / tepat / terbukti benar"},{w:"扱う",r:"あつかう",m:"menangani / memperlakukan"},{w:"集まる",r:"あつまる",m:"berkumpul"},{w:"集める",r:"あつめる",m:"mengumpulkan"},{w:"余る",r:"あまる",m:"tersisa / berlebih"},{w:"謝る",r:"あやまる",m:"meminta maaf"},{w:"表す",r:"あらわす",m:"menunjukkan / mengekspresikan"},{w:"慌てる",r:"あわてる",m:"panik / tergesa-gesa"},{w:"怒る",r:"おこる",m:"marah"},{w:"急ぐ",r:"いそぐ",m:"bergegas / terburu-buru"},{w:"痛む",r:"いたむ",m:"terasa sakit / nyeri"},{w:"要る",r:"いる",m:"perlu / membutuhkan"},{w:"植える",r:"うえる",m:"menanam"},{w:"受ける",r:"うける",m:"menerima / mengikuti (ujian)"},{w:"疑う",r:"うたがう",m:"meragukan / mencurigai"},{w:"打つ",r:"うつ",m:"memukul / mengetik"},{w:"置く",r:"おく",m:"meletakkan"},{w:"送る",r:"おくる",m:"mengirim / mengantar"},{w:"遅れる",r:"おくれる",m:"terlambat"},{w:"行う",r:"おこなう",m:"melaksanakan / mengadakan"},{w:"押す",r:"おす",m:"menekan / mendorong"},{w:"落ちる",r:"おちる",m:"jatuh / gagal (ujian)"},{w:"落とす",r:"おとす",m:"menjatuhkan"},{w:"踊る",r:"おどる",m:"menari"},{w:"驚く",r:"おどろく",m:"terkejut"},{w:"覚える",r:"おぼえる",m:"mengingat / menghafal"},{w:"折る",r:"おる",m:"melipat / mematahkan"},{w:"折れる",r:"おれる",m:"patah / terlipat"},{w:"下ろす",r:"おろす",m:"menurunkan"},{w:"飼う",r:"かう",m:"memelihara (hewan)"},{w:"返す",r:"かえす",m:"mengembalikan"}]}
+];
+var VOCAB_CTX_LESSON={id:"vocab-ctx",level:"N3",skill:"Kosakata",group:"Mode Penguat",title:"Kuis Konteks Kosakata — model JLPT",pattern:"文脈規定・漢字読み",minutes:8,source:"Model soal: Bab 1 buku 日本語の森 (文脈規定・漢字読み) • Soal orisinal",
+ introTitle:"Kata yang sama, konteks yang menentukan",intro:"Soal 文脈規定 JLPT tidak menanyakan arti kata secara langsung — kamu harus memilih kata yang pas dengan konteks kalimatnya. Delapan soal ini memakai kata-kata dari bank hari 1–12. Baca seluruh kalimatnya dulu, jangan cuma lihat kata di dalam kurung.",
+ exampleJp:"レポートの締め切りは明日までです。",exampleId:"Batas waktu (deadline) laporannya sampai besok.",
+ cards:[{front:"締め切り",reading:"しめきり",meaning:"batas waktu (deadline)"},{front:"乗り換え",reading:"のりかえ",meaning:"pindah kendaraan / transit"},{front:"集める",reading:"あつめる",meaning:"mengumpulkan"}],
+ questions:[
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"レポートの（　）は明日までですから、今夜中に終わらせます。",choices:["締め切り","知り合い","匂い","引き出し"],answer:0,explain:"締め切り (しめきり) = batas waktu. Untuk laporan, pasangannya memang kata ini."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"新大阪駅で新幹線に（　）。",choices:["乗り換えます","集めます","表します","飼います"],answer:0,explain:"Pindah kendaraan di stasiun memakai 乗り換える. 集める = mengumpulkan, konteksnya tidak cocok."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"彼は古い切手を（　）のが趣味です。",choices:["集める","余る","当たる","空ける"],answer:0,explain:"趣味 mengumpulkan perangko lama → 集める (あつめる). 余る = tersisa, tidak bisa jadi hobi dalam kalimat ini."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"電車がなかなか来なくて、ホームの人たちは（　）います。",choices:["慌てて","飽きて","謝って","怒って"],answer:0,explain:"Kereta tak kunjung datang membuat orang gelisah/panik → 慌てる (あわてる) paling pas."},
+  {kind:"choice",prompt:"漢字読み — cara baca kata yang digarisbawahi.",promptJp:"最近、「悩み」が多くて眠れません。Kata 悩み dibaca…",choices:["なやみ","なさみ","のうみ","なゆみ"],answer:0,explain:"悩み = なやみ (kekhawatiran). Kata ini ada di daftar 名詞（その他） buku, hlm. 29."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"冷めたスープを、もう一度（　）。",choices:["温めます","預けます","与えます","扱います"],answer:0,explain:"Sup yang sudah dingin dihangatkan lagi → 温める (あたためる)."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"この牛乳は、（　）まで冷蔵庫に入れておけば大丈夫です。",choices:["消費期限","証明写真","生年月日","天気予報"],answer:0,explain:"Untuk makanan/minuman, tanggal batas konsumsi = 消費期限 (しょうひきげん)."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"かばんは机の上に（　）ください。",choices:["置いて","飼って","余って","当たって"],answer:0,explain:"Meletakkan tas di atas meja → 置く (おく). 飼う khusus untuk memelihara hewan."}
+ ]};
+
+/* ===== Boost engines: decks + generated quizzes ===== */
+var deckState=null;
+function gramCards(t){return t.items.map(function(it){return{front:it.p,reading:it.m,meaning:"Contoh: "+it.ex+" — "+it.exId};});}
+function vocabCards(c){return c.words.map(function(w){return{front:w.w,reading:w.r,meaning:w.m};});}
+function startDeck(title,cards,doneId){
+  deckState={title:title,cards:cards,idx:0,doneId:doneId,known:0};
+  reviewMode=false;current={id:doneId,title:title,questions:[],cards:cards};
+  fcFlipped=false;openLessonView();renderDeckCard();
+}
+function renderDeckCard(){
+  var d=deckState,c=d.cards[d.idx];
+  el("lvTitle").textContent=d.title;el("lvStepText").textContent="Kartu "+(d.idx+1)+"/"+d.cards.length;
+  el("lvBar").style.width=Math.round((d.idx)/d.cards.length*100)+"%";
+  el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">Flashcard penguat • '+(d.idx+1)+'/'+d.cards.length+'</span><h2>Tebak dulu di kepala, baru balik kartunya</h2><button class="flashcard" id="fcCard" type="button" aria-label="Flashcard, ketuk untuk membalik"><div class="front jp">'+esc(c.front)+'</div>'+(fcFlipped?'<div class="reading">'+esc(c.reading)+'</div><div class="meaning">'+esc(c.meaning)+'</div>':'<div class="tap">Ketuk kartu buat lihat arti &amp; contohnya</div>')+'</button><div class="fc-nav"><button class="btn btn-ghost" id="btnDNo" type="button">Belum hafal — masuk tumpukan ulang</button><button class="btn btn-accent" id="btnDYes" type="button">Sudah hafal</button></div></div>';
+  el("fcCard").addEventListener("click",function(){fcFlipped=!fcFlipped;renderDeckCard();});
+  el("btnDYes").addEventListener("click",function(){removeReview(c.front);d.known++;state.xp+=2;markStudyToday();saveProgress();nextDeck();});
+  el("btnDNo").addEventListener("click",function(){addReview(c);nextDeck();});
+}
+function nextDeck(){
+  var d=deckState;fcFlipped=false;
+  if(d.idx<d.cards.length-1){d.idx++;renderDeckCard();return;}
+  var firstTime=!state.done[d.doneId];
+  if(firstTime){state.done[d.doneId]=true;state.xp+=20;markStudyToday();}
+  saveProgress();
+  el("lvBar").style.width="100%";el("lvStepText").textContent="Selesai";
+  el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">Deck selesai</span><div class="result-score">'+d.known+'/'+d.cards.length+'</div><p class="result-sub">Kartu yang sudah hafal di deck ini.'+(firstTime?' +20 XP bonus menyelesaikan deck.':'')+' Yang belum hafal ('+(d.cards.length-d.known)+' kartu) sudah masuk tumpukan ulang tersimpan di halaman utama.</p><p class="result-sub">Total tersimpan: '+state.xp+' XP • Level '+levelFromXp(state.xp).level+'</p><div class="actions"><button class="btn btn-ghost" id="btnDeckAgain" type="button">Ulangi deck</button><button class="btn btn-accent" id="btnDeckHome" type="button">Kembali</button></div></div>';
+  el("btnDeckAgain").addEventListener("click",function(){startDeck(d.title,d.cards,d.doneId);});
+  el("btnDeckHome").addEventListener("click",closeLessonView);
+}
+function startQuizOnly(qs,cards,title,id){current={id:id,title:title,questions:qs,cards:cards,source:"",pattern:"",introTitle:"",intro:"",exampleJp:"",exampleId:""};step=2;qIndex=0;qCorrect=0;reviewMode=false;openLessonView();renderQuestion();}
+function pickOthers(pool,self,n,key){var others=pool.filter(function(x){return x!==self;});return shuffle(others).slice(0,n).map(function(x){return x[key];});}
+function mkChoices(correct,distractors){var all=shuffle([correct].concat(distractors));return{choices:all,answer:all.indexOf(correct)};}
+function gramQuiz(themeIdx){
+  var items,arranges,title,id,cards;
+  if(themeIdx<0){items=[];arranges=[];GRAM_THEMES.forEach(function(t){items=items.concat(t.items);arranges=arranges.concat(t.arrange);});title="Kuis Campuran Bunpō 70";id="gq-all";cards=[];GRAM_THEMES.forEach(function(t){cards=cards.concat(gramCards(t));});}
+  else{var t=GRAM_THEMES[themeIdx];items=t.items;arranges=t.arrange;title="Kuis Bunpō — "+t.name;id="gq-"+themeIdx;cards=gramCards(t);}
+  var pool=shuffle(items),qs=[],i,it,mc,type;
+  for(i=0;i<8;i++){it=pool[i%pool.length];type=i%3;
+    if(type===0){mc=mkChoices(it.m,pickOthers(items,it,3,"m"));qs.push({kind:"choice",prompt:"Apa arti pola 「"+it.p+"」?",choices:mc.choices,answer:mc.answer,explain:"「"+it.p+"」= "+it.m+". Contoh: "+it.ex+" ("+it.exId+")"});}
+    else if(type===1){mc=mkChoices(it.ex,pickOthers(items,it,3,"ex"));qs.push({kind:"choice",prompt:"Kalimat mana yang memakai pola 「"+it.p+"」("+it.m+")?",choices:mc.choices,answer:mc.answer,explain:"Kalimat itu memakai "+it.p+": "+it.exId});}
+    else{mc=mkChoices(it.p,pickOthers(items,it,3,"p"));qs.push({kind:"choice",prompt:"Pola mana yang artinya ‘"+it.m+"’?",choices:mc.choices,answer:mc.answer,explain:"Pola itu "+it.p+". Contoh: "+it.ex+" ("+it.exId+")"});}
+  }
+  shuffle(arranges).slice(0,2).forEach(function(a){qs.push({kind:"arrange",prompt:a.prompt,tokens:a.tokens,answerJp:a.answerJp,explain:a.explain});});
+  startQuizOnly(qs,cards,title,id);
+}
+function vocabQuiz(catIdx){
+  var words,title,id,cards;
+  if(catIdx<0){words=[];VOCAB_CATS.forEach(function(c){words=words.concat(c.words);});title="Kuis Kosakata Campuran — Hari 1–12";id="vq-all";cards=[];VOCAB_CATS.forEach(function(c){cards=cards.concat(vocabCards(c));});}
+  else{var c=VOCAB_CATS[catIdx];words=c.words;title="Kuis Kosakata — "+c.name;id="vq-"+catIdx;cards=vocabCards(c);}
+  var pool=shuffle(words),qs=[],i,w,mc,type;
+  for(i=0;i<8;i++){w=pool[i%pool.length];type=i%3;
+    if(type===0){mc=mkChoices(w.r,pickOthers(words,w,3,"r"));qs.push({kind:"choice",prompt:"漢字読み — cara baca 「"+w.w+"」?",choices:mc.choices,answer:mc.answer,explain:w.w+" dibaca "+w.r+" — "+w.m+"."});}
+    else if(type===1){mc=mkChoices(w.m,pickOthers(words,w,3,"m"));qs.push({kind:"choice",prompt:"Apa arti 「"+w.w+"」("+w.r+")?",choices:mc.choices,answer:mc.answer,explain:w.w+" ("+w.r+") = "+w.m+"."});}
+    else{mc=mkChoices(w.w,pickOthers(words,w,3,"w"));qs.push({kind:"choice",prompt:"Kata mana yang artinya ‘"+w.m+"’?",choices:mc.choices,answer:mc.answer,explain:"「"+w.w+"」("+w.r+") = "+w.m+"."});}
+  }
+  startQuizOnly(qs,cards,title,id);
+}
+function startCtxLesson(){current=VOCAB_CTX_LESSON;step=0;fcIndex=0;fcFlipped=false;qIndex=0;qCorrect=0;reviewMode=false;openLessonView();renderStep();}
+function renderBoost(){
+  var gEl=el("boostGrammar"),vEl=el("boostVocab");if(!gEl||!vEl)return;
+  gEl.innerHTML=GRAM_THEMES.map(function(t,i){
+    var doneD=state.done["gd-"+i],doneQ=state.done["gq-"+i];
+    return '<div class="boost-card"><span class="badges"><span class="badge b-n3">Bunpō '+(t.items.length)+' pola</span>'+(doneD?'<span class="badge b-done">Flashcard selesai</span>':'')+(doneQ?'<span class="badge b-done">Kuis selesai</span>':'')+'</span><h3>'+esc(t.name)+'</h3><div class="pattern jp">'+t.items.map(function(it){return esc(it.p);}).join(" ・ ")+'</div><div class="meta">Flashcard pola + arti + contoh, kuis pilihan, dan susun kalimat.</div><div class="src">Sumber pola &amp; urutan: 『この一冊で合格する』'+esc(t.pages)+' • Contoh &amp; soal orisinal</div><div class="boost-actions"><button class="btn btn-ghost btn-small" type="button" data-gdeck="'+i+'">Flashcard</button><button class="btn btn-accent btn-small" type="button" data-gquiz="'+i+'">Kuis tema ini</button></div></div>';
+  }).join("");
+  vEl.innerHTML=VOCAB_CATS.map(function(c,i){
+    var doneD=state.done["vd-"+i],doneQ=state.done["vq-"+i];
+    return '<div class="boost-card"><span class="badges"><span class="badge b-n3">'+c.words.length+' kata</span>'+(doneD?'<span class="badge b-done">Flashcard selesai</span>':'')+(doneQ?'<span class="badge b-done">Kuis selesai</span>':'')+'</span><h3>'+esc(c.name)+'</h3><div class="meta">Flashcard kata + cara baca + arti, plus kuis 漢字読み・arti ala soal JLPT.</div><div class="src">Daftar kata: 『この一冊で合格する』'+esc(c.pages)+' • Arti ditulis untuk aplikasi ini</div><div class="boost-actions"><button class="btn btn-ghost btn-small" type="button" data-vdeck="'+i+'">Flashcard</button><button class="btn btn-accent btn-small" type="button" data-vquiz="'+i+'">Kuis kategori ini</button></div></div>';
+  }).join("")+'<div class="boost-card"><span class="badges"><span class="badge b-skill">Campuran</span></span><h3>Semua kategori sekaligus</h3><div class="meta">Kuis acak dari seluruh bank kosakata hari 1–12.</div><div class="boost-actions"><button class="btn btn-accent btn-small" type="button" data-vquiz="-1">Kuis campuran kosakata</button></div></div>';
+  var map=[["data-gdeck",function(i){var t=GRAM_THEMES[i];startDeck("Flashcard Bunpō — "+t.name,gramCards(t),"gd-"+i);}],
+           ["data-gquiz",function(i){gramQuiz(i);}],
+           ["data-vdeck",function(i){var c=VOCAB_CATS[i];startDeck("Flashcard Kosakata — "+c.name,vocabCards(c),"vd-"+i);}],
+           ["data-vquiz",function(i){vocabQuiz(i);}]];
+  map.forEach(function(pair){var bs=document.querySelectorAll("["+pair[0]+"]");for(var j=0;j<bs.length;j++){bs[j].addEventListener("click",function(){pair[1](parseInt(this.getAttribute(pair[0]),10));});}});
+  var allBtn=el("btnGramAll");if(allBtn)allBtn.addEventListener("click",function(){gramQuiz(-1);});
+  var ctxBtn=el("btnVocabCtx");if(ctxBtn)ctxBtn.addEventListener("click",startCtxLesson);
+}
+
+el("btnBack").addEventListener("click",closeLessonView);
+el("btnReview").addEventListener("click",startReview);
+var resetBtn=el("btnResetProgress");
+if(resetBtn){resetBtn.addEventListener("click",function(){
+  if(!window.confirm("Hapus SEMUA progres tersimpan? XP, misi selesai, skor, dan tumpukan ulang akan kembali ke nol."))return;
+  if(!window.confirm("Serius? Progres yang dihapus tidak bisa dikembalikan."))return;
+  try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
+  state=JSON.parse(JSON.stringify(DEFAULT_STATE));
+  studyMeta=JSON.parse(JSON.stringify(DEFAULT_META));
+  var now=new Date().toISOString();studyMeta.firstOpenedAt=now;studyMeta.lastOpenedAt=now;studyMeta.totalOpens=1;
+  saveProgress();renderHome();window.scrollTo(0,0);
+  window.alert("Progres sudah direset. Mulai lagi dari nol — semangat!");
+});}
+saveProgress();
+renderHome();
+</script>
+</body>
+</html>
