@@ -35,7 +35,17 @@ h1,h2,h3,p{margin:0}
 button{font:inherit;cursor:pointer}
 .wrap{max-width:980px;margin:0 auto;padding:0 16px 56px}
 .hero{padding:22px 0 8px}
-.hero-img{width:100%;height:auto;border-radius:22px;display:block;box-shadow:var(--shadow)}
+.hero-banner{border-radius:22px;box-shadow:var(--shadow);padding:26px 22px 20px;color:#FFF;background:linear-gradient(135deg,#232F6B 0%,#2E3B85 55%,#C2392B 135%);text-align:center}
+.hb-kicker{font-size:.8rem;font-weight:700;letter-spacing:.35em;opacity:.85}
+.hb-title{display:flex;justify-content:center;align-items:baseline;gap:14px;margin:6px 0 18px;line-height:1}
+.hb-jlpt{font-size:2.6rem;font-weight:800;letter-spacing:.08em}
+.hb-n3{font-size:4.2rem;font-weight:900;color:#FFC34D;font-family:"Noto Sans JP","Plus Jakarta Sans",sans-serif}
+.hb-skills{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:560px;margin:0 auto}
+.hb-skill{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.hb-badge{width:40px;height:40px;border-radius:50%;background:#FFF;color:#232F6B;font-weight:900;font-size:1.25rem;display:flex;align-items:center;justify-content:center}
+.hb-name{font-weight:700;font-size:1rem}
+.hb-cap{font-size:.72rem;opacity:.85}
+@media(max-width:520px){.hb-jlpt{font-size:2rem}.hb-n3{font-size:3.2rem}.hb-skills{grid-template-columns:repeat(2,1fr)}}
 .hero-copy{padding:20px 2px 0}
 .eyebrow{display:inline-block;font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:5px 10px;border-radius:999px}
 .hero-copy h1{font-size:2rem;line-height:1.15;font-weight:800;margin:12px 0 10px}
@@ -178,7 +188,16 @@ audio{width:100%;height:44px}
   <!-- HOME -->
   <div id="homeView">
     <header class="hero">
-      <img class="hero-img" src="assets/hero.webp" alt="Ilustrasi seorang pelajar perempuan membaca buku bahasa Jepang di dekat jendela kereta, dengan konbini dan gerbang torii terlihat di luar" width="1920" height="1280">
+      <div class="hero-banner" role="img" aria-label="JLPT N3 — empat skill: 語彙 kosakata, 文法 tata bahasa, 読解 membaca, 聴解 mendengar">
+        <div class="hb-kicker jp">日本語能力試験</div>
+        <div class="hb-title"><span class="hb-jlpt">JLPT</span><span class="hb-n3">N3</span></div>
+        <div class="hb-skills">
+          <div class="hb-skill"><span class="hb-badge jp">語</span><span class="hb-name jp">語彙</span><span class="hb-cap">Kosakata</span></div>
+          <div class="hb-skill"><span class="hb-badge jp">文</span><span class="hb-name jp">文法</span><span class="hb-cap">Tata bahasa</span></div>
+          <div class="hb-skill"><span class="hb-badge jp">読</span><span class="hb-name jp">読解</span><span class="hb-cap">Membaca</span></div>
+          <div class="hb-skill"><span class="hb-badge jp">聴</span><span class="hb-name jp">聴解</span><span class="hb-cap">Mendengar</span></div>
+        </div>
+      </div>
       <div class="hero-copy">
         <span class="eyebrow">Versi GitHub Pages • Progres tersimpan di HP ini • Dari Ray, buat kamu</span>
         <h1>Belajar <span class="jp">N3</span> pelan-pelan,<br>tapi nempel beneran.</h1>
