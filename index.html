@@ -114,11 +114,25 @@ section{margin-top:30px}
 .cardbox h2{font-size:1.35rem;line-height:1.3;margin:6px 0 10px}
 .cardbox .lead{color:var(--muted)}
 .example{margin-top:16px;background:var(--surface3);border-radius:14px;padding:14px}
-.example .jp-big{font-size:1.25rem;font-weight:700;line-height:1.5}
+.example .jp-big{font-size:1.25rem;font-weight:700;line-height:1.9}
 .example .id{color:var(--muted);margin-top:4px}
 .passage{background:var(--surface2);border-radius:14px;padding:16px;margin-top:14px;white-space:pre-line}
-.passage .jp{font-size:1.08rem;line-height:1.9}
+.passage .jp{font-size:1.08rem;line-height:2.3}
+ruby{ruby-position:over}
+.jp rt{font-size:.5em;color:var(--muted);font-weight:400;letter-spacing:.02em}
+body.furi-off rt{display:none}
+.q-prompt-jp{line-height:2.2}
+.choices .choice{line-height:2.1}
 .passage .id{color:var(--muted);margin-top:10px;font-size:.93rem}
+.dokkai-banner{margin-top:14px;border:1.5px solid var(--indigo);background:var(--indigo-soft);border-radius:14px;padding:12px 14px;font-size:.94rem;line-height:1.55}
+.dokkai-locked{margin-top:12px;border:1.5px dashed var(--gold);background:var(--gold-soft);border-radius:14px;padding:12px 14px;font-size:.93rem}
+.dokkai-unlocked{margin-top:16px;border:2px solid var(--good);background:var(--good-bg);border-radius:14px;padding:14px}
+.dokkai-unlocked .du-badge{display:inline-block;font-size:.78rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;background:var(--good);color:#fff;border-radius:999px;padding:5px 10px;margin-bottom:10px}
+@media (prefers-color-scheme: dark){.dokkai-unlocked .du-badge{color:#10240f}}
+.dokkai-unlocked h3{font-size:1rem;margin:10px 0 6px}
+.dokkai-unlocked .du-trans{font-size:.95rem}
+.dokkai-unlocked ol{margin:6px 0 0;padding-left:20px}
+.dokkai-unlocked li{font-size:.93rem;margin-top:8px}
 .flashcard{margin-top:8px;border:2px dashed var(--line);border-radius:18px;padding:28px 16px;text-align:center;cursor:pointer;background:var(--surface);width:100%}
 .flashcard .front{font-size:2rem;font-weight:900;line-height:1.3}
 .flashcard .reading{font-size:1.05rem;color:var(--accent);font-weight:700;margin-top:6px}
@@ -175,12 +189,13 @@ audio{width:100%;height:44px}
         <div class="stats" aria-label="Statistik progres tersimpan">
           <div class="stat"><b id="statXp">0</b><span>XP tersimpan</span></div>
           <div class="stat"><b id="statLevel">1</b><span>Level</span></div>
-          <div class="stat"><b id="statDone">0/16</b><span>Misi selesai</span></div>
+          <div class="stat"><b id="statDone">0/20</b><span>Misi selesai</span></div>
           <div class="stat"><b id="statReview">0</b><span>Kartu perlu diulang</span></div>
         </div>
         <div class="progressbar" aria-hidden="true"><i id="xpBar"></i></div>
         <p class="sec-head" style="margin-top:8px"><span class="hint" id="xpHint">Kumpulkan 100 XP buat naik ke Level 2.</span></p>
         <p class="sec-head" style="margin-top:4px"><span class="hint" id="saveHint">Progres tersimpan di browser ini.</span></p>
+        <div class="actions" style="margin-top:10px"><button class="btn btn-ghost btnFuri" type="button">Furigana: tampil</button><span class="hint" style="align-self:center">Furigana = bacaan kecil di ATAS kanji. Matikan kalau mau menantang diri membaca kanji sendiri.</span></div>
         <div class="earned" id="badgeRow" aria-label="Lencana"></div>
       </div>
     </header>
@@ -207,7 +222,7 @@ audio{width:100%;height:44px}
     </section>
 
     <section aria-labelledby="pathTitle">
-      <div class="sec-head"><h2 id="pathTitle">Jalur belajar</h2><span class="hint">16 misi • urut dari atas</span></div>
+      <div class="sec-head"><h2 id="pathTitle">Jalur belajar</h2><span class="hint">20 misi • urut dari atas</span></div>
       <p class="sec-desc">Ikuti urutannya: N4 dulu biar fondasinya kokoh, baru grammar N3, kosakata &amp; kanji, terakhir listening dan reading ala soal beneran.</p>
       <div id="lessonGroups"></div>
     </section>
@@ -240,6 +255,7 @@ audio{width:100%;height:44px}
           <li><strong>Tips:</strong> selalu buka dari browser yang sama (jangan berganti-ganti), dan jangan hapus data situs ini kalau progresmu mau tetap ada.</li>
         </ul>
         <div class="actions">
+          <button class="btn btn-ghost btnFuri" type="button">Furigana: tampil</button>
           <button class="btn btn-ghost" id="btnResetProgress" type="button">Reset progres — hapus semua simpanan</button>
         </div>
         <p style="margin-top:10px;font-size:.86rem">Tombol reset akan meminta konfirmasi dua kali. Setelah direset, XP, tanda selesai, skor, dan tumpukan ulang kembali ke nol dan tidak bisa dikembalikan.</p>
@@ -289,6 +305,7 @@ var SRC_N3_G="Cakupan: Sou Matome N3 Grammar • Shin Kanzen Master N3";
 var SRC_N3_V="Cakupan: Sou Matome N3 Vocabulary • TRY! N3";
 var SRC_N3_K="Cakupan: Sou Matome N3 Kanji • Shin Kanzen Master N3";
 var SRC_L="Format soal: contoh resmi JLPT (jlpt.jp)";
+var SRC_D="Latihan original bergaya JLPT N3 • acuan level & jenis soal: Bab 読解『JLPT N3 この一冊で合格する』(日本語の森)";
 
 var LESSONS=[
 {id:"n4-tekara",level:"N4",skill:"Grammar",group:"Fondasi N4",title:"Urutan Kejadian: 〜てから",pattern:"V-て + から",minutes:8,source:SRC_N4,
@@ -452,6 +469,54 @@ var LESSONS=[
   {kind:"choice",prompt:"Yang mau mengembalikan buku hari Senin harus bagaimana?",choices:["Memasukkannya ke kotak pengembalian di samping pintu masuk","Menunggu sampai Selasa","Mengirim lewat pos"],answer:0,explain:"返却ボックスは入口の横 — kotaknya di samping pintu masuk."},
   {kind:"choice",prompt:"Perpustakaan buka seperti biasa lagi mulai kapan?",choices:["Hari Selasa","Hari Senin depan lagi","Tanggal 15"],answer:0,explain:"火曜日からは通常通り開きます."},
   {kind:"choice",prompt:"Tanggal 15 jatuh pada hari apa menurut teks?",choices:["Senin","Selasa","Jumat"],answer:0,explain:"来週の月曜日（15日）— tanggal 15 adalah hari Senin."}
+ ]},
+{id:"n3-dokkai-1",level:"N3",skill:"Dokkai",group:"Dokkai • 読解",title:"Dokkai 1: Pengumuman Penghuni Apartemen",pattern:"内容理解（短文）• お知らせ",minutes:9,source:SRC_D,
+ introTitle:"Baca pengumuman itu kayak penghuni beneran",intro:"Strategi Dokkai: baca pertanyaannya sepintas dulu, baru baca teksnya sambil mencari kata kunci (hari, jam, tempat). Teks pertama ini pendek — pengumuman yang biasa ditempel di papan apartemen.",
+ exampleJp:"今週《こんしゅう》の土曜日《どようび》は、エレベーターが使《つか》えません。",exampleId:"Hari Sabtu minggu ini, lift tidak bisa dipakai.",
+ passageJp:"マンションの皆《みな》さんへ。\n今週《こんしゅう》の土曜日《どようび》の午前《ごぜん》9時《じ》から午後《ごご》1時《じ》まで、エレベーターの点検《てんけん》を行《おこな》います。その間《あいだ》、エレベーターは使《つか》えません。重《おも》い荷物《にもつ》がある方《かた》は、金曜日《きんようび》までに1階《かい》の受付《うけつけ》にご相談《そうだん》ください。ご協力《きょうりょく》をお願《ねが》いします。",
+ passageId:"Untuk para penghuni apartemen. Hari Sabtu minggu ini, pukul 09.00–13.00, akan ada pemeriksaan lift. Selama itu, lift tidak bisa dipakai. Penghuni yang punya barang berat, silakan berkonsultasi ke resepsionis lantai 1 paling lambat hari Jumat. Terima kasih atas kerja samanya.",
+ cards:[{front:"点検",reading:"てんけん",meaning:"pemeriksaan / inspeksi (mesin, fasilitas)"},{front:"受付",reading:"うけつけ",meaning:"resepsionis / meja penerimaan"},{front:"協力をお願いします",reading:"きょうりょくをおねがいします",meaning:"mohon kerja samanya (frasa tetap pengumuman)"}],
+ questions:[
+  {kind:"choice",prompt:"Apa isi pokok pengumuman ini?",choices:["土曜日《どようび》はエレベーターが使《つか》えないこと","点検《てんけん》は金曜日《きんようび》に行《おこな》うこと","受付《うけつけ》は1階《かい》にあること"],answer:0,explain:"Pokoknya ada di dua kalimat pertama: Sabtu ada 点検《てんけん》 dan selama itu lift tidak bisa dipakai. Soal 受付《うけつけ》 cuma detail tambahan."},
+  {kind:"choice",prompt:"Pemeriksaan lift dilakukan kapan?",choices:["土曜日《どようび》の午前《ごぜん》9時《じ》から午後《ごご》1時《じ》まで","金曜日《きんようび》の午前《ごぜん》9時《じ》から午後《ごご》1時《じ》まで","土曜日《どようび》の午後《ごご》1時《じ》から5時《じ》まで"],answer:0,explain:"Teks menulis 午前《ごぜん》9時《じ》から午後《ごご》1時《じ》まで. Hati-hati: 金曜日《きんようび》 adalah batas konsultasi, bukan hari pemeriksaan."},
+  {kind:"choice",prompt:"Penghuni yang punya barang berat harus bagaimana?",choices:["金曜日《きんようび》までに受付《うけつけ》に相談《そうだん》する","土曜日《どようび》に荷物《にもつ》を持《も》って出《で》かける","点検《てんけん》の間《あいだ》エレベーターを使《つか》う"],answer:0,explain:"Kalimatnya jelas: 重《おも》い荷物《にもつ》がある方《かた》は金曜日《きんようび》までに受付《うけつけ》へ相談《そうだん》."},
+  {kind:"choice",prompt:"Mana yang TIDAK benar menurut teks?",choices:["点検《てんけん》の間《あいだ》もエレベーターは使《つか》える","点検《てんけん》は土曜日《どようび》にある","相談《そうだん》は1階《かい》の受付《うけつけ》でできる"],answer:0,explain:"Teks bilang その間《あいだ》エレベーターは使《つか》えません — jadi pilihan pertama bertentangan dengan teks."}
+ ]},
+{id:"n3-dokkai-2",level:"N3",skill:"Dokkai",group:"Dokkai • 読解",title:"Dokkai 2: Email Minta Tukar Shift",pattern:"内容理解（短文）• メール",minutes:9,source:SRC_D,
+ introTitle:"Email pendek, maksudnya satu",intro:"Strategi Dokkai: di email permintaan, cari kalimat yang berisi alasan dan kalimat yang berisi permintaannya. Dua itu biasanya jadi soal isi pokok dan soal maksud penulis.",
+ exampleJp:"試験《しけん》があるので、バイトに入《はい》れません。",exampleId:"Karena ada ujian, saya tidak bisa masuk kerja paruh waktu.",
+ passageJp:"来週《らいしゅう》の水曜日《すいようび》、私《わたし》は大学《だいがく》の試験《しけん》があるので、バイトに入《はい》れません。代《か》わりに金曜日《きんようび》の夜《よる》に入《はい》ってもいいです。水曜日《すいようび》のシフトは17時《じ》から21時《じ》までです。もし代《か》わってもらえたら、とても助《たす》かります。都合《つごう》が悪《わる》ければ、無理《むり》に返事《へんじ》をしなくても大丈夫《だいじょうぶ》です。よろしくお願《ねが》いします。",
+ passageId:"Rabu minggu depan, saya tidak bisa masuk baito karena ada ujian di kampus. Sebagai gantinya, saya bisa masuk Jumat malam. Shift hari Rabu itu pukul 17.00–21.00. Kalau kamu bisa menggantikan, saya akan sangat terbantu. Kalau tidak bisa, tidak perlu memaksakan diri untuk membalas. Terima kasih banyak.",
+ cards:[{front:"代わりに",reading:"かわりに",meaning:"sebagai gantinya / menggantikan"},{front:"都合が悪い",reading:"つごうがわるい",meaning:"tidak bisa / waktunya tidak cocok"},{front:"助かります",reading:"たすかります",meaning:"sangat terbantu (ungkapan terima kasih sopan)"}],
+ questions:[
+  {kind:"choice",prompt:"Apa maksud utama penulis email ini?",choices:["シフトを代《か》わってほしいと頼《たの》んでいる","試験《しけん》の日《ひ》を教《おし》えている","バイトを辞《や》めると伝《つた》えている"],answer:0,explain:"Kalimat 代《か》わってもらえたら助《たす》かります adalah inti permintaannya: minta ditukar/digantikan shift-nya."},
+  {kind:"choice",prompt:"Kenapa penulis tidak bisa masuk hari Rabu?",choices:["大学《だいがく》の試験《しけん》があるから","金曜日《きんようび》に旅行《りょこう》するから","体調《たいちょう》が悪《わる》いから"],answer:0,explain:"Alasannya tertulis langsung: 試験《しけん》があるので."},
+  {kind:"choice",prompt:"Shift hari Rabu itu jam berapa?",choices:["17時《じ》から21時《じ》まで","9時《じ》から13時《じ》まで","17時《じ》から23時《じ》まで"],answer:0,explain:"Teks menulis 17時《じ》から21時《じ》まで. Angka jam adalah detail yang sering jadi jebakan — cocokkan persis."},
+  {kind:"choice",prompt:"Kalau penerima email tidak bisa menggantikan, penulis bilang apa?",choices:["無理《むり》に返事《へんじ》をしなくても大丈夫《だいじょうぶ》だ","必《かなら》ず店長《てんちょう》に言《い》ってほしい","金曜日《きんようび》も入《はい》れない"],answer:0,explain:"Penulis menutup dengan pengertian: 都合《つごう》が悪《わる》ければ無理《むり》しなくて大丈夫《だいじょうぶ》."}
+ ]},
+{id:"n3-dokkai-3",level:"N3",skill:"Dokkai",group:"Dokkai • 読解",title:"Dokkai 3: Mulai Hidup Sendiri",pattern:"内容理解（中文）• 体験談",minutes:11,source:SRC_D,
+ introTitle:"Teks pengalaman: ikuti perubahan perasaan penulis",intro:"Strategi Dokkai: untuk teks pengalaman, tandai urutan waktunya (awalnya…, lalu…, sekarang…). Soal maksud penulis hampir selalu dijawab dari kalimat terakhir.",
+ exampleJp:"先月《せんげつ》から一人暮《ひとりぐ》らしを始《はじ》めました。",exampleId:"Sejak bulan lalu saya mulai hidup sendiri.",
+ passageJp:"先月《せんげつ》から一人暮《ひとりぐ》らしを始《はじ》めました。最初《さいしょ》は料理《りょうり》が心配《しんぱい》でしたが、週末《しゅうまつ》にまとめて作《つく》るようにしたら、平日《へいじつ》が楽《らく》になりました。掃除《そうじ》は大変《たいへん》ですが、部屋《へや》がきれいだと気持《きも》ちがいいです。家族《かぞく》と離《はな》れて寂《さび》しい時《とき》もありますが、自分《じぶん》で生活《せいかつ》する力《ちから》は少《すこ》しずつ付《つ》いてきたと思《おも》います。",
+ passageId:"Sejak bulan lalu saya mulai hidup sendiri. Awalnya saya khawatir soal masak, tetapi setelah membiasakan memasak sekaligus di akhir pekan, hari-hari kerja jadi lebih ringan. Membersihkan rumah memang berat, tetapi ruangan yang bersih membuat perasaan enak. Kadang saya kesepian jauh dari keluarga, tetapi saya merasa kemampuan mengurus hidup sendiri sedikit demi sedikit mulai tumbuh.",
+ cards:[{front:"一人暮らし",reading:"ひとりぐらし",meaning:"hidup sendiri (tinggal sendiri)"},{front:"まとめて",reading:"まとめて",meaning:"sekaligus / digabung jadi satu waktu"},{front:"少しずつ",reading:"すこしずつ",meaning:"sedikit demi sedikit"}],
+ questions:[
+  {kind:"choice",prompt:"Apa yang dilakukan penulis supaya hari kerjanya lebih ringan?",choices:["週末《しゅうまつ》に料理《りょうり》をまとめて作《つく》る","毎日《まいにち》外食《がいしょく》する","家族《かぞく》に料理《りょうり》を送《おく》ってもらう"],answer:0,explain:"Kuncinya di kalimat kedua: 週末《しゅうまつ》にまとめて作《つく》るようにしたら平日《へいじつ》が楽《らく》になった."},
+  {kind:"choice",prompt:"Menurut penulis, apa baiknya membersihkan rumah?",choices:["部屋《へや》がきれいだと気持《きも》ちがいい","時間《じかん》が短《みじか》くなる","家族《かぞく》と話《はな》せる"],answer:0,explain:"Teks bilang 掃除《そうじ》は大変《たいへん》だが気持《きも》ちがいい — berat, tapi ada sisi baiknya."},
+  {kind:"choice",prompt:"Mana yang benar menurut teks?",choices:["最初《さいしょ》は料理《りょうり》が心配《しんぱい》だった","掃除《そうじ》は全然《ぜんぜん》大変《たいへん》ではない","家族《かぞく》と一緒《いっしょ》に住《す》んでいる"],answer:0,explain:"Dua pilihan lain bertentangan dengan teks: 掃除《そうじ》は大変《たいへん》だし、住《す》んでいるのは一人《ひとり》."},
+  {kind:"choice",prompt:"Bagaimana perasaan penulis di akhir teks?",choices:["自分《じぶん》で生活《せいかつ》する力《ちから》が付《つ》いてきたと感《かん》じている","一人暮《ひとりぐ》らしをやめたくなっている","家族《かぞく》のそばに戻《もど》る決心《けっしん》をした"],answer:0,explain:"Kalimat terakhir adalah simpulannya: 力《ちから》は少《すこ》しずつ付《つ》いてきた — sedihnya ada, tapi ia merasa bertumbuh."}
+ ]},
+{id:"n3-dokkai-4",level:"N3",skill:"Dokkai",group:"Dokkai • 読解",title:"Dokkai 4: Rekrutmen Relawan Perpustakaan",pattern:"内容理解（中文）• 募集",minutes:11,source:SRC_D,
+ introTitle:"Teks rekrutmen: syarat dan cara daftar adalah kuncinya",intro:"Strategi Dokkai: di teks募集 (rekrutmen), lingkari tiga hal — siapa yang dicari, syaratnya, dan cara + batas pendaftaran. Hampir semua soal detail mengambil dari tiga hal itu.",
+ exampleJp:"経験《けいけん》は必要《ひつよう》ありません。",exampleId:"Pengalaman tidak diperlukan.",
+ passageJp:"市《し》の図書館《としょかん》では、土曜日《どようび》の午前中《ごぜんちゅう》に子《こ》どもたちに本《ほん》を読《よ》んで聞《き》かせるボランティアを募集《ぼしゅう》しています。経験《けいけん》は必要《ひつよう》ありませんが、日本語《にほんご》で絵本《えほん》が読《よ》めることが条件《じょうけん》です。興味《きょうみ》のある方《かた》は、今月末《こんげつまつ》までに図書館《としょかん》のカウンターで申《もう》し込《こ》むか、ホームページから申《もう》し込《こ》んでください。活動《かつどう》の前《まえ》に、一度《いちど》だけ説明会《せつめいかい》があります。",
+ passageId:"Perpustakaan kota sedang merekrut relawan untuk membacakan buku kepada anak-anak pada Sabtu pagi. Pengalaman tidak diperlukan, tetapi syaratnya adalah bisa membaca buku bergambar dalam bahasa Jepang. Yang berminat silakan mendaftar di meja layanan perpustakaan paling lambat akhir bulan ini, atau lewat situs webnya. Sebelum kegiatan dimulai, akan ada satu kali pertemuan penjelasan.",
+ cards:[{front:"募集する",reading:"ぼしゅうする",meaning:"merekrut / membuka lowongan (relawan, peserta)"},{front:"条件",reading:"じょうけん",meaning:"syarat"},{front:"申し込む",reading:"もうしこむ",meaning:"mendaftar / mengajukan"}],
+ questions:[
+  {kind:"choice",prompt:"Relawan ini akan melakukan apa?",choices:["子《こ》どもたちに本《ほん》を読《よ》んで聞《き》かせる","図書館《としょかん》の本《ほん》を修理《しゅうり》する","絵本《えほん》を新《あたら》しく作《つく》る"],answer:0,explain:"Kegiatan intinya tertulis di kalimat pertama: membacakan buku untuk anak-anak."},
+  {kind:"choice",prompt:"Apa syarat untuk jadi relawan ini?",choices:["日本語《にほんご》で絵本《えほん》が読《よ》めること","ボランティアの経験《けいけん》があること","土曜日《どようび》の午後《ごご》に来《こ》られること"],answer:0,explain:"条件《じょうけん》 tertulis eksplisit: 日本語《にほんご》で絵本《えほん》が読《よ》めること. 経験《けいけん》 justru tidak diperlukan."},
+  {kind:"choice",prompt:"Bagaimana cara mendaftarnya?",choices:["今月末《こんげつまつ》までにカウンターかホームページで申《もう》し込《こ》む","説明会《せつめいかい》の後《あと》に電話《でんわ》する","図書館《としょかん》に手紙《てがみ》を送《おく》る"],answer:0,explain:"Dua jalurnya: カウンターで申《もう》し込《こ》む atau ホームページから, batasnya 今月末《こんげつまつ》まで."},
+  {kind:"choice",prompt:"Mana yang TIDAK benar menurut teks?",choices:["経験《けいけん》がなければ申《もう》し込《こ》めない","活動《かつどう》は土曜日《どようび》の午前中《ごぜんちゅう》だ","説明会《せつめいかい》は一度《いちど》だけある"],answer:0,explain:"Teks bilang 経験《けいけん》は必要《ひつよう》ありません — jadi pernyataan pertama salah menurut teks."}
  ]}
 ];
 var THRESH=[0,100,250,450,700,1000,1400,1900,2500,3200];
@@ -462,7 +527,7 @@ function levelFromXp(xp){var lv=1,i;for(i=0;i<THRESH.length;i++){if(xp>=THRESH[i
    Tidak dikirim ke server / siapa pun. */
 var STORAGE_KEY="aplikasi-belajar-n3:progress:v1";
 var DEFAULT_STATE={xp:0,done:{},scores:{},review:[],badges:{},correctStreak:0};
-var DEFAULT_META={streakDays:0,lastStudyDate:null,firstOpenedAt:null,lastOpenedAt:null,totalOpens:0,savedAt:null};
+var DEFAULT_META={streakDays:0,lastStudyDate:null,firstOpenedAt:null,lastOpenedAt:null,totalOpens:0,savedAt:null,furiOn:true};
 var state=JSON.parse(JSON.stringify(DEFAULT_STATE));
 var studyMeta=JSON.parse(JSON.stringify(DEFAULT_META));
 function todayStr(){var d=new Date();var m=("0"+(d.getMonth()+1)).slice(-2);var day=("0"+d.getDate()).slice(-2);return d.getFullYear()+"-"+m+"-"+day;}
@@ -474,10 +539,17 @@ loadProgress();
 (function(){var now=new Date().toISOString();if(!studyMeta.firstOpenedAt)studyMeta.firstOpenedAt=now;studyMeta.lastOpenedAt=now;studyMeta.totalOpens=(studyMeta.totalOpens||0)+1;})();
 window.addEventListener("beforeunload",function(){try{saveProgress();}catch(e){}});
 document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden"){try{saveProgress();}catch(e){}}});
-var current=null,step=0,fcIndex=0,fcFlipped=false,qIndex=0,qCorrect=0,arrangeBuilt=[],arrangeChecked=false,reviewMode=false,reviewCards=[],reviewIdx=0;
+var current=null,step=0,fcIndex=0,fcFlipped=false,qIndex=0,qCorrect=0,qAnswered=0,arrangeBuilt=[],arrangeChecked=false,reviewMode=false,reviewCards=[],reviewIdx=0;
 
 function el(id){return document.getElementById(id);}
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function fjp(s){return esc(s).replace(/([一-龯々〆ヶ]+)《([ぁ-んァ-ヶー・]+)》/g,"<ruby>$1<rt>$2</rt></ruby>");}
+function isDokkaiLesson(l){return !!(l&&l.skill==="Dokkai");}
+function dokkaiAllAnswered(){return !!(current&&isDokkaiLesson(current)&&current.questions&&qAnswered>=current.questions.length&&current.questions.length>0);}
+function dokkaiBannerHtml(){return '<div class="dokkai-banner" role="note">📖 <strong>Mode Dokkai — seperti ujian beneran:</strong> Baca dulu teks Jepangnya dan jawab semua soalnya. Terjemahan &amp; pembahasan Bahasa Indonesia baru terbuka setelah kamu selesai menjawab — seperti ujian beneran, tidak ada terjemahan.</div>';}
+function dokkaiLockedHtml(){return '<div class="dokkai-locked" id="dokkaiLocked">🔒 <strong>Terjemahan &amp; pembahasan terkunci.</strong> Selesaikan semua soal dalam pelajaran ini dulu — terjemahan isi teks akan terbuka otomatis setelah soal terakhir dijawab. Tidak ada tombol pintas untuk membukanya lebih awal.</div>';}
+function dokkaiUnlockedHtml(){var l=current;if(!l)return "";var h='<div class="dokkai-unlocked" id="dokkaiUnlocked"><span class="du-badge">✓ Terjemahan &amp; pembahasan sudah terbuka</span><p style="font-size:.9rem">Kamu sudah menjawab semua soal di pelajaran ini, jadi bantuan Bahasa Indonesianya sekarang boleh dibaca.</p>';if(l.passageId){h+='<h3>Terjemahan teks</h3><p class="du-trans">'+esc(l.passageId)+'</p>';}if(l.exampleId){h+='<h3>Arti contoh kalimat</h3><p class="du-trans">'+esc(l.exampleId)+'</p>';}if(l.questions&&l.questions.length){h+='<h3>Pembahasan semua soal</h3><ol>'+l.questions.map(function(q,i){return '<li><strong>Soal '+(i+1)+'.</strong> '+fjp(q.explain||"")+'</li>';}).join("")+'</ol>';}return h+'</div>';}
+function applyFuri(){var off=studyMeta.furiOn===false;document.body.classList.toggle("furi-off",off);var bs=document.querySelectorAll(".btnFuri");for(var i=0;i<bs.length;i++){bs[i].textContent="Furigana: "+(off?"sembunyi":"tampil");}}
 function shuffle(a){var b=a.slice(),i,j,t;for(i=b.length-1;i>0;i--){j=Math.floor(Math.random()*(i+1));t=b[i];b[i]=b[j];b[j]=t;}return b;}
 function lessonById(id){for(var i=0;i<LESSONS.length;i++)if(LESSONS[i].id===id)return LESSONS[i];return null;}
 function addReview(card){for(var i=0;i<state.review.length;i++)if(state.review[i].front===card.front)return;state.review.push(card);saveProgress();}
@@ -490,7 +562,7 @@ function renderHome(){
   el("xpHint").textContent=state.xp>=3200?"Level maksimal — mantap! Progresmu tersimpan di browser ini.":"Kumpulkan "+lv.next+" XP buat naik ke Level "+(lv.level+1)+". ("+state.xp+" XP sekarang)";
   var sh0=el("saveHint");if(sh0){sh0.textContent="Progres tersimpan di browser ini"+(studyMeta.streakDays?(" • Rangkaian belajar: "+studyMeta.streakDays+" hari (terakhir: "+(studyMeta.lastStudyDate||"-")+")"):"")+(studyMeta.savedAt?(" • Terakhir disimpan: "+new Date(studyMeta.savedAt).toLocaleString("id-ID")):"");}
   var doneCount=LESSONS.filter(function(l){return state.done[l.id];}).length;
-  el("statDone").textContent=doneCount+"/16";
+  el("statDone").textContent=doneCount+"/"+LESSONS.length;
   el("statReview").textContent=state.review.length;
   // badges
   var badges=[];
@@ -498,7 +570,7 @@ function renderHome(){
   if(LESSONS.filter(function(l){return l.level==="N4"&&state.done[l.id];}).length>=3)badges.push("Fondasi Kuat");
   if(state.done["n3-listen-eki"]||state.done["n3-dialog-baito"])badges.push("Telinga Jalan");
   if(doneCount>=8)badges.push("Separuh Jalan");
-  if(doneCount>=16)badges.push("Tamat 16 Misi");
+  if(doneCount>=LESSONS.length)badges.push("Semua Misi Tamat");
   el("badgeRow").innerHTML=badges.length?badges.map(function(b){return '<span class="badge b-skill">'+esc(b)+'</span>';}).join(""):'<span class="hint" style="color:var(--muted);font-size:.85rem">Lencana muncul di sini setelah misi pertamamu selesai.</span>';
   // mission: first incomplete N4 + first incomplete N3
   var mN4=LESSONS.filter(function(l){return l.level==="N4"&&!state.done[l.id];})[0];
@@ -507,7 +579,7 @@ function renderHome(){
   if(!missions.length){el("missionList").innerHTML='<p style="opacity:.9">Semua misi sudah selesai. Ulang tumpukan pengulangan di bawah, atau ulangi misi favoritmu dari jalur belajar.</p>';}
   else{el("missionList").innerHTML=missions.map(function(l){return '<div class="mission-item"><div class="mi-body"><div class="mi-title">'+esc(l.title)+'</div><div class="mi-meta">'+l.level+' • '+esc(l.skill)+' • ±'+l.minutes+' menit • <span class="jp">'+esc(l.pattern)+'</span></div></div><button class="btn btn-indigo btn-small" type="button" data-start="'+l.id+'">Mulai</button></div>';}).join("");}
   // groups
-  var groups=["Fondasi N4","Grammar N3","Kosakata & Kanji N3","Listening & Reading"];
+  var groups=["Fondasi N4","Grammar N3","Kosakata & Kanji N3","Listening & Reading","Dokkai • 読解"];
   el("lessonGroups").innerHTML=groups.map(function(g){
     var items=LESSONS.filter(function(l){return l.group===g;});
     return '<h3 style="margin:20px 0 10px;font-size:1.02rem">'+esc(g)+'</h3><div class="lesson-grid">'+items.map(function(l){
@@ -537,14 +609,26 @@ function setProgress(){
   el("lvStepText").textContent=(step===0?"Baca kilat":step===1?"Flashcard":step===2?"Soal "+(qIndex+1)+"/"+current.questions.length:"Hasil");
   el("lvTitle").textContent=current.title;
 }
-function startLesson(id){current=lessonById(id);step=0;fcIndex=0;fcFlipped=false;qIndex=0;qCorrect=0;reviewMode=false;openLessonView();renderStep();}
+function startLesson(id){current=lessonById(id);step=0;fcIndex=0;fcFlipped=false;qIndex=0;qCorrect=0;qAnswered=0;reviewMode=false;openLessonView();renderStep();}
 function renderStep(){setProgress();if(step===0)renderIntro();else if(step===1)renderCards();else if(step===2)renderQuestion();else renderResult();}
 
 function renderIntro(){
   var l=current;
+  var isDok=isDokkaiLesson(l);
   var audioHtml=l.exampleAudio?'<div class="audio-row"><p>Dengarkan contohnya (rekaman suara):</p><audio controls preload="none" src="'+l.exampleAudio+'"></audio></div>':"";
-  var passageHtml=l.passageJp?'<div class="passage"><div class="jp">'+esc(l.passageJp)+'</div><div class="id">'+esc(l.passageId)+'</div></div>':"";
-  el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">Langkah 1 • Baca kilat — 1 menit</span><h2>'+esc(l.introTitle)+'</h2><p class="lead">'+esc(l.intro)+'</p><div class="example"><div class="jp-big jp">'+esc(l.exampleJp)+'</div><div class="id">'+esc(l.exampleId)+'</div></div>'+audioHtml+passageHtml+'<p class="meta" style="color:var(--muted);font-size:.82rem;margin-top:14px">'+esc(l.source)+' • Pola: <span class="jp">'+esc(l.pattern)+'</span></p><div class="actions"><button class="btn btn-accent" id="btnToCards" type="button">Lanjut ke flashcard →</button></div></div>';
+  var bannerHtml=isDok?dokkaiBannerHtml():"";
+  var exampleHtml=isDok?'<div class="example"><div class="jp-big jp">'+fjp(l.exampleJp)+'</div></div>':'<div class="example"><div class="jp-big jp">'+fjp(l.exampleJp)+'</div><div class="id">'+esc(l.exampleId)+'</div></div>';
+  var passageHtml="";
+  if(l.passageJp){
+    if(isDok){
+      passageHtml=bannerHtml+'<div class="passage"><div class="jp">'+fjp(l.passageJp)+'</div></div>'+dokkaiLockedHtml();
+    }else{
+      passageHtml='<div class="passage"><div class="jp">'+fjp(l.passageJp)+'</div><div class="id">'+esc(l.passageId)+'</div></div>';
+    }
+  }else if(isDok){
+    passageHtml=bannerHtml;
+  }
+  el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">Langkah 1 • Baca kilat — 1 menit</span><h2>'+esc(l.introTitle)+'</h2><p class="lead">'+esc(l.intro)+'</p>'+exampleHtml+audioHtml+passageHtml+'<p class="meta" style="color:var(--muted);font-size:.82rem;margin-top:14px">'+esc(l.source)+' • Pola: <span class="jp">'+esc(l.pattern)+'</span></p><div class="actions"><button class="btn btn-accent" id="btnToCards" type="button">Lanjut ke flashcard →</button></div></div>';
   el("btnToCards").addEventListener("click",function(){step=1;fcIndex=0;fcFlipped=false;renderStep();});
 }
 function renderCards(){
@@ -558,9 +642,16 @@ function renderCards(){
 function renderQuestion(){
   var l=current,q=l.questions[qIndex];
   var head='<div class="cardbox"><span class="step-label">Langkah 3 • Soal '+(qIndex+1)+'/'+l.questions.length+' — '+(q.kind==="listen"?"Listening":q.kind==="arrange"?"Susun kalimat":"Pilihan ganda")+'</span>';
-  var passageHtml=(l.passageJp&&qIndex===0)?'<div class="passage"><div class="jp">'+esc(l.passageJp)+'</div></div>':"";
+  var passageHtml="";
+  if(l.passageJp&&(qIndex===0||l.skill==="Dokkai")){
+    if(isDokkaiLesson(l)){
+      passageHtml=dokkaiBannerHtml()+'<div class="passage"><div class="jp">'+fjp(l.passageJp)+'</div></div><div id="dokkaiSlot">'+(dokkaiAllAnswered()?dokkaiUnlockedHtml():dokkaiLockedHtml())+'</div>';
+    }else{
+      passageHtml='<div class="passage"><div class="jp">'+fjp(l.passageJp)+'</div></div>';
+    }
+  }
   if(q.kind==="listen"){
-    el("lvBody").innerHTML=head+'<h2 class="q-prompt">'+esc(q.prompt)+'</h2>'+passageHtml+'<div class="audio-row"><p>Tekan Putar — dengarkan baik-baik (boleh diulang):</p><audio controls preload="metadata" src="'+q.audio+'"></audio></div><div class="choices" id="choices">'+q.choices.map(function(c,i){return '<button class="choice" type="button" data-choice="'+i+'">'+esc(c)+'</button>';}).join("")+'</div><div class="transcript" id="transcript"><div style="font-size:.8rem;font-weight:800;color:var(--muted)">TRANSKRIP (baru dibuka setelah menjawab)</div><div class="jp">'+esc(q.transcript)+'</div></div><div class="explain" id="explain"></div><div class="actions hidden" id="qActions"><button class="btn btn-accent" id="btnNextQ" type="button">'+(qIndex<l.questions.length-1?"Soal berikutnya →":"Lihat hasil →")+'</button></div></div>';
+    el("lvBody").innerHTML=head+'<h2 class="q-prompt">'+esc(q.prompt)+'</h2>'+passageHtml+'<div class="audio-row"><p>Tekan Putar — dengarkan baik-baik (boleh diulang):</p><audio controls preload="metadata" src="'+q.audio+'"></audio></div><div class="choices" id="choices">'+q.choices.map(function(c,i){return '<button class="choice" type="button" data-choice="'+i+'">'+esc(c)+'</button>';}).join("")+'</div><div class="transcript" id="transcript"><div style="font-size:.8rem;font-weight:800;color:var(--muted)">TRANSKRIP (baru dibuka setelah menjawab)</div><div class="jp">'+fjp(q.transcript)+'</div></div><div class="explain" id="explain"></div><div class="actions hidden" id="qActions"><button class="btn btn-accent" id="btnNextQ" type="button">'+(qIndex<l.questions.length-1?"Soal berikutnya →":"Lihat hasil →")+'</button></div></div>';
     bindChoices(q);
   }else if(q.kind==="arrange"){
     arrangeBuilt=[];arrangeChecked=false;
@@ -576,7 +667,7 @@ function renderQuestion(){
     });
     el("btnNextQ").addEventListener("click",nextQuestion);
   }else{
-    el("lvBody").innerHTML=head+'<h2 class="q-prompt">'+esc(q.prompt)+'</h2>'+(q.promptJp?'<div class="q-prompt-jp jp">'+esc(q.promptJp)+'</div>':"")+passageHtml+'<div class="choices" id="choices">'+q.choices.map(function(c,i){return '<button class="choice jp" type="button" data-choice="'+i+'">'+esc(c)+'</button>';}).join("")+'</div><div class="explain" id="explain"></div><div class="actions hidden" id="qActions"><button class="btn btn-accent" id="btnNextQ" type="button">'+(qIndex<l.questions.length-1?"Soal berikutnya →":"Lihat hasil →")+'</button></div></div>';
+    el("lvBody").innerHTML=head+'<h2 class="q-prompt">'+esc(q.prompt)+'</h2>'+(q.promptJp?'<div class="q-prompt-jp jp">'+fjp(q.promptJp)+'</div>':"")+passageHtml+'<div class="choices" id="choices">'+q.choices.map(function(c,i){return '<button class="choice jp" type="button" data-choice="'+i+'">'+fjp(c)+'</button>';}).join("")+'</div><div class="explain" id="explain"></div><div class="actions hidden" id="qActions"><button class="btn btn-accent" id="btnNextQ" type="button">'+(qIndex<l.questions.length-1?"Soal berikutnya →":"Lihat hasil →")+'</button></div></div>';
     bindChoices(q);
   }
   setProgress();
@@ -593,11 +684,13 @@ function bindChoices(q){
   el("btnNextQ").addEventListener("click",nextQuestion);
 }
 function finishQuestion(ok,q,explainText){
+  qAnswered++;
   if(ok){qCorrect++;state.correctStreak++;}
-  else{state.correctStreak=0;current.cards.forEach(function(c){/* keep review light: add first card of lesson */});addReview(current.cards[qIndex%current.cards.length]);}
-  var ex=el("explain");ex.className="explain show "+(ok?"ok":"no");ex.innerHTML="<strong>"+(ok?"Betul! +10 XP":"Belum tepat.")+"</strong> "+esc(explainText);
+  else{state.correctStreak=0;if(current.cards&&current.cards.length){addReview(current.cards[qIndex%current.cards.length]);}}
+  var ex=el("explain");ex.className="explain show "+(ok?"ok":"no");ex.innerHTML="<strong>"+(ok?"Betul! +10 XP":"Belum tepat.")+"</strong> "+fjp(explainText);
   if(ok){state.xp+=10;markStudyToday();}
   saveProgress();
+  if(isDokkaiLesson(current)&&dokkaiAllAnswered()){var slot=el("dokkaiSlot");if(slot){slot.innerHTML=dokkaiUnlockedHtml();}var lk=el("dokkaiLocked");if(lk){lk.style.display="none";}}
   el("qActions").classList.remove("hidden");
   var b=el("btnNextQ");if(b)b.focus();
 }
@@ -609,7 +702,8 @@ function renderResult(){
   else if(qCorrect>(state.scores[l.id]||0)){state.scores[l.id]=qCorrect;}
   saveProgress();
   var msg=pct===100?"Sempurna. Ini yang namanya nempel.":pct>=75?"Kuat! Tinggal poles yang satu itu.":pct>=50?"Setengah nempel — kartu yang bocor sudah masuk tumpukan ulang.":"Nggak apa-apa, ini sesi pemanasan. Ulangi misi ini sekali lagi pelan-pelan, fokus ke penjelasannya.";
-  el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">Hasil misi</span><div class="result-score">'+qCorrect+'/'+total+'</div><p class="result-sub">'+esc(msg)+'</p><p class="result-sub">+'+(qCorrect*10+(firstTime?20:0))+' XP dari misi ini • Total tersimpan: '+state.xp+' XP • Level '+levelFromXp(state.xp).level+'</p><div class="actions"><button class="btn btn-ghost" id="btnAgain" type="button">Ulangi misi ini</button><button class="btn btn-accent" id="btnHome" type="button">Kembali ke jalur</button></div>'+(state.review.length?'<p class="result-sub" style="margin-top:14px">Ada '+state.review.length+' kartu di tumpukan ulang — tersimpan dan bisa diulang dari halaman utama kapan saja.</p>':"")+'</div>';
+  var dokkaiResultHtml=(isDokkaiLesson(l)&&dokkaiAllAnswered())?dokkaiUnlockedHtml():"";
+  el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">Hasil misi</span><div class="result-score">'+qCorrect+'/'+total+'</div><p class="result-sub">'+esc(msg)+'</p><p class="result-sub">+'+(qCorrect*10+(firstTime?20:0))+' XP dari misi ini • Total tersimpan: '+state.xp+' XP • Level '+levelFromXp(state.xp).level+'</p>'+dokkaiResultHtml+'<div class="actions"><button class="btn btn-ghost" id="btnAgain" type="button">Ulangi misi ini</button><button class="btn btn-accent" id="btnHome" type="button">Kembali ke jalur</button></div>'+(state.review.length?'<p class="result-sub" style="margin-top:14px">Ada '+state.review.length+' kartu di tumpukan ulang — tersimpan dan bisa diulang dari halaman utama kapan saja.</p>':"")+'</div>';
   setProgress();
   el("btnAgain").addEventListener("click",function(){startLesson(l.id);});
   el("btnHome").addEventListener("click",closeLessonView);
@@ -773,7 +867,7 @@ function nextDeck(){
   el("btnDeckAgain").addEventListener("click",function(){startDeck(d.title,d.cards,d.doneId);});
   el("btnDeckHome").addEventListener("click",closeLessonView);
 }
-function startQuizOnly(qs,cards,title,id){current={id:id,title:title,questions:qs,cards:cards,source:"",pattern:"",introTitle:"",intro:"",exampleJp:"",exampleId:""};step=2;qIndex=0;qCorrect=0;reviewMode=false;openLessonView();renderQuestion();}
+function startQuizOnly(qs,cards,title,id){current={id:id,title:title,questions:qs,cards:cards,source:"",pattern:"",introTitle:"",intro:"",exampleJp:"",exampleId:""};step=2;qIndex=0;qCorrect=0;qAnswered=0;reviewMode=false;openLessonView();renderQuestion();}
 function pickOthers(pool,self,n,key){var others=pool.filter(function(x){return x!==self;});return shuffle(others).slice(0,n).map(function(x){return x[key];});}
 function mkChoices(correct,distractors){var all=shuffle([correct].concat(distractors));return{choices:all,answer:all.indexOf(correct)};}
 function gramQuiz(themeIdx){
@@ -801,7 +895,7 @@ function vocabQuiz(catIdx){
   }
   startQuizOnly(qs,cards,title,id);
 }
-function startCtxLesson(){current=VOCAB_CTX_LESSON;step=0;fcIndex=0;fcFlipped=false;qIndex=0;qCorrect=0;reviewMode=false;openLessonView();renderStep();}
+function startCtxLesson(){current=VOCAB_CTX_LESSON;step=0;fcIndex=0;fcFlipped=false;qIndex=0;qCorrect=0;qAnswered=0;reviewMode=false;openLessonView();renderStep();}
 function renderBoost(){
   var gEl=el("boostGrammar"),vEl=el("boostVocab");if(!gEl||!vEl)return;
   gEl.innerHTML=GRAM_THEMES.map(function(t,i){
@@ -821,6 +915,9 @@ function renderBoost(){
   var ctxBtn=el("btnVocabCtx");if(ctxBtn)ctxBtn.addEventListener("click",startCtxLesson);
 }
 
+var furiBtns=document.querySelectorAll(".btnFuri");
+for(var fi=0;fi<furiBtns.length;fi++){furiBtns[fi].addEventListener("click",function(){studyMeta.furiOn=studyMeta.furiOn===false?true:false;saveProgress();applyFuri();});}
+applyFuri();
 el("btnBack").addEventListener("click",closeLessonView);
 el("btnReview").addEventListener("click",startReview);
 var resetBtn=el("btnResetProgress");
