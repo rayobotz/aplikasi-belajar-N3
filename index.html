@@ -288,6 +288,19 @@ body{background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linea
 .prod-ta{width:100%;border:1.5px solid #E3D9C6;border-radius:12px;padding:10px 12px;font-size:1rem;background:#FFFDF6;color:var(--ink);font-family:inherit;resize:vertical;margin-top:8px}
 .prod-model{background:var(--note);border-radius:12px;padding:12px 14px;margin-top:10px}
 .prod-state{font-weight:700;margin-top:8px;min-height:1.2em}
+.cek-box{margin-top:10px;border:1.5px solid #E3D9C6;border-radius:12px;padding:12px 14px;background:#FFFDF6;text-align:left}
+.cek-cols{display:grid;gap:10px;margin-top:8px}
+@media(min-width:560px){.cek-cols{grid-template-columns:1fr 1fr}}
+.cek-cell{background:var(--note);border-radius:10px;padding:10px 12px}
+.cek-jp{font-size:1.08rem;line-height:2.3;word-break:break-all}
+.cek-jp mark{background:#FFE9A8;border-radius:4px;padding:0 2px;color:inherit}
+.cek-jp mark.bad{background:#F6CFC9}
+.cek-list{margin:10px 0 0;padding-left:18px;line-height:1.65;font-size:.95rem}
+.cek-rule{margin-top:10px}
+.cek-note{margin-top:8px;font-size:.85rem;color:var(--muted);line-height:1.55}
+.cek-head{font-weight:800;font-size:1.02rem}
+.cek-head.ok{color:#5B7A3A}
+.cek-head.ng{color:var(--shu)}
 
 /* ===== Mode Sprint (patch-sprint) ===== */
 .sprint-card h3{margin-bottom:6px}
@@ -468,7 +481,7 @@ body{background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linea
     <section aria-labelledby="dataTitle">
       <div class="sources tape tape-matcha">
         <h3 id="dataTitle">Data tersimpan &amp; pengaturan</h3>
-        <p id="saveStatus">Progresmu (XP, level, misi/deck/kuis yang selesai, skor terakhir, kartu di tumpukan ulang, dan rentetan jawaban benar) tersimpan otomatis di penyimpanan lokal browser ini setiap kali ada perubahan. Tidak ada akun, tidak ada server, dan progresmu tidak dikirim ke siapa pun.</p>
+        <p id="saveStatus">Progresmu (XP, level, misi/deck/kuis yang selesai, skor terakhir, kartu di tumpukan ulang, dan rentetan jawaban benar) tersimpan otomatis di penyimpanan lokal browser ini setiap kali ada perubahan. Tidak perlu akun; ringkasan progres ini juga terkirim otomatis ke Ray (pembuat aplikasi ini) supaya dia bisa memantau dan membantumu.</p>
         <ul>
           <li><strong>Tersimpan kalau:</strong> kamu membuka halaman ini lagi di HP yang sama dan browser yang sama.</li>
           <li><strong>Bisa hilang kalau:</strong> ganti HP/browser, hapus data/riwayat browser, atau membuka lewat mode privat/incognito.</li>
@@ -598,7 +611,23 @@ var studyMeta=JSON.parse(JSON.stringify(DEFAULT_META));
 function todayStr(){var d=new Date();var m=("0"+(d.getMonth()+1)).slice(-2);var day=("0"+d.getDate()).slice(-2);return d.getFullYear()+"-"+m+"-"+day;}
 function yesterdayStr(){var d=new Date();d.setDate(d.getDate()-1);var m=("0"+(d.getMonth()+1)).slice(-2);var day=("0"+d.getDate()).slice(-2);return d.getFullYear()+"-"+m+"-"+day;}
 function markStudyToday(){var today=todayStr();if(studyMeta.lastStudyDate===today)return;if(studyMeta.lastStudyDate===yesterdayStr()){studyMeta.streakDays=(studyMeta.streakDays||0)+1;}else{studyMeta.streakDays=1;}studyMeta.lastStudyDate=today;}
-function saveProgress(){try{studyMeta.savedAt=new Date().toISOString();studyMeta.lastOpenedAt=studyMeta.savedAt;var payload={version:1,state:state,meta:studyMeta};localStorage.setItem(STORAGE_KEY,JSON.stringify(payload));var sh=document.getElementById("saveHint");if(sh){sh.textContent="Tersimpan di browser ini"+(studyMeta.streakDays?(" • Rangkaian belajar: "+studyMeta.streakDays+" hari"):"")+" • Terakhir disimpan: "+new Date().toLocaleString("id-ID");}var ss=document.getElementById("saveStatus");if(ss&&studyMeta.savedAt){/* keep base text; status shown via saveHint */}}catch(e){/* storage penuh / mode privat — aplikasi tetap jalan tanpa menyimpan */}}
+/* Laporan otomatis ke Ray: ringkasan progres terkirim ke Google Sheet Ray lewat Apps Script (pengganti salin-kirim manual). */
+var N3_TRACK_URL="https://script.google.com/macros/s/AKfycbxeBMuiBz8Mvxny1B5XudqFvD42OH2r4P3sxPyq3AAgfrE4QtzNTuQ3AcO4txqCeCgM/exec";
+var laporTimer=null;
+function jadwalLaporN3(){if(laporTimer)clearTimeout(laporTimer);laporTimer=setTimeout(kirimLaporanN3,6000);}
+function kirimLaporanN3(){
+if(!N3_TRACK_URL)return;
+try{
+var idKey="aplikasi-belajar-n3:deviceid";var did=null;try{did=localStorage.getItem(idKey);}catch(e){}
+if(!did){did="d"+Date.now().toString(36)+Math.floor(Math.random()*99999).toString(36);try{localStorage.setItem(idKey,did);}catch(e){}}
+var det=[];var totDone=0;
+catUnits().forEach(function(c){var s=catStat(c);det.push(c.label+" "+s.done+"/"+s.total);totDone+=s.done;});
+var muatan={id:did,nama:"Dhera",xp:state.xp,unit:totDone,detail:det.join(" \u2022 "),acara:"snapshot",ringkasan:summaryText()};
+fetch(N3_TRACK_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(muatan)});
+}catch(e){}
+}
+window.addEventListener("load",function(){setTimeout(kirimLaporanN3,3000);});
+function saveProgress(){try{studyMeta.savedAt=new Date().toISOString();studyMeta.lastOpenedAt=studyMeta.savedAt;var payload={version:1,state:state,meta:studyMeta};localStorage.setItem(STORAGE_KEY,JSON.stringify(payload));jadwalLaporN3();var sh=document.getElementById("saveHint");if(sh){sh.textContent="Tersimpan di browser ini"+(studyMeta.streakDays?(" • Rangkaian belajar: "+studyMeta.streakDays+" hari"):"")+" • Terakhir disimpan: "+new Date().toLocaleString("id-ID");}var ss=document.getElementById("saveStatus");if(ss&&studyMeta.savedAt){/* keep base text; status shown via saveHint */}}catch(e){/* storage penuh / mode privat — aplikasi tetap jalan tanpa menyimpan */}}
 function loadProgress(){try{var raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;var data=JSON.parse(raw);if(!data||typeof data!=="object")return;if(data.state&&typeof data.state==="object"){state.xp=typeof data.state.xp==="number"?data.state.xp:0;state.done=data.state.done&&typeof data.state.done==="object"?data.state.done:{};state.scores=data.state.scores&&typeof data.state.scores==="object"?data.state.scores:{};state.review=Array.isArray(data.state.review)?data.state.review:[];state.badges=data.state.badges&&typeof data.state.badges==="object"?data.state.badges:{};state.correctStreak=typeof data.state.correctStreak==="number"?data.state.correctStreak:0;state.attempts=data.state.attempts&&typeof data.state.attempts==="object"?data.state.attempts:{};state.lastTryout=data.state.lastTryout&&typeof data.state.lastTryout==="object"?data.state.lastTryout:null;state.tryoutWrong=Array.isArray(data.state.tryoutWrong)?data.state.tryoutWrong:[];state.tryoutCount=typeof data.state.tryoutCount==="number"?data.state.tryoutCount:0;}if(data.meta&&typeof data.meta==="object"){for(var k in DEFAULT_META){if(Object.prototype.hasOwnProperty.call(data.meta,k))studyMeta[k]=data.meta[k];}}}catch(e){/* data rusak — mulai dari awal tanpa crash */}}
 loadProgress();
 (function(){var now=new Date().toISOString();if(!studyMeta.firstOpenedAt)studyMeta.firstOpenedAt=now;studyMeta.lastOpenedAt=now;studyMeta.totalOpens=(studyMeta.totalOpens||0)+1;})();
@@ -1150,11 +1179,12 @@ function openProduction(i){
   el("lvBar").style.width="0%";el("lvStepText").textContent="Bikin kalimat";
   var cards=prod.map(function(pr,k){
     var gi=gramItemOf(i,pr.p);
-    return '<div class="cardbox" id="prodCard'+k+'" style="margin-top:12px"><span class="step-label">Tantangan '+(k+1)+' dari '+prod.length+' \u2022 Pola <span class="jp">'+esc(pr.p)+'</span></span><h3 class="jp" style="margin:6px 0 2px">'+esc(pr.p)+'</h3><p style="margin:0 0 8px">'+(gi?esc(gi.m):'')+'</p><p>'+esc(pr.tugas)+'</p><div class="chips">'+pr.kunci.map(function(w){return '<span class="chip jp">'+esc(w)+'</span>';}).join("")+'</div><textarea class="prod-ta" id="prodTa'+k+'" rows="2" placeholder="Tulis kalimatmu di sini\u2026 (atau tulis di buku catatanmu)"></textarea><div class="actions"><button class="btn btn-accent btn-small" type="button" id="prodReveal'+k+'">Lihat contoh jawaban</button></div><div id="prodModel'+k+'" hidden><div class="prod-model"><div class="step-label">Contoh jawaban</div><p class="jp" style="font-size:1.12rem;margin:4px 0">'+esc(pr.model)+'</p><p style="margin:0 0 6px">'+esc(pr.modelId)+'</p><div class="note-box">\u{1F4A1} Cek kalimatmu: '+esc(pr.cek)+'</div></div><p style="margin:10px 0 6px">Mirip contohnya dan polanya sudah benar? Nilai jujur ya:</p><div class="actions"><button class="btn btn-indigo btn-small" type="button" id="prodOk'+k+'">Sudah bisa \u2713</button><button class="btn btn-ghost btn-small" type="button" id="prodRagu'+k+'">Masih ragu \u2014 masukkan ke tumpukan ulang</button></div></div><p class="prod-state" id="prodState'+k+'"></p></div>';
+    return '<div class="cardbox" id="prodCard'+k+'" style="margin-top:12px"><span class="step-label">Tantangan '+(k+1)+' dari '+prod.length+' \u2022 Pola <span class="jp">'+esc(pr.p)+'</span></span><h3 class="jp" style="margin:6px 0 2px">'+esc(pr.p)+'</h3><p style="margin:0 0 8px">'+(gi?esc(gi.m):'')+'</p><p>'+esc(pr.tugas)+'</p><div class="chips">'+pr.kunci.map(function(w){return '<span class="chip jp">'+esc(w)+'</span>';}).join("")+'</div><textarea class="prod-ta" id="prodTa'+k+'" rows="2" placeholder="Tulis kalimatmu di sini\u2026 (atau tulis di buku catatanmu)"></textarea><div class="actions"><button class="btn btn-accent btn-small" type="button" id="prodReveal'+k+'">Lihat contoh jawaban</button><button class="btn btn-indigo btn-small" type="button" id="prodCheckBtn'+k+'">🔍 Cek kalimatku</button></div><div id="prodCheck'+k+'" hidden></div><div id="prodModel'+k+'" hidden><div class="prod-model"><div class="step-label">Contoh jawaban</div><p class="jp" style="font-size:1.12rem;margin:4px 0">'+esc(pr.model)+'</p><p style="margin:0 0 6px">'+esc(pr.modelId)+'</p><div class="note-box">\u{1F4A1} Cek kalimatmu: '+esc(pr.cek)+'</div></div><p style="margin:10px 0 6px">Mirip contohnya dan polanya sudah benar? Nilai jujur ya:</p><div class="actions"><button class="btn btn-indigo btn-small" type="button" id="prodOk'+k+'">Sudah bisa \u2713</button><button class="btn btn-ghost btn-small" type="button" id="prodRagu'+k+'">Masih ragu \u2014 masukkan ke tumpukan ulang</button></div></div><p class="prod-state" id="prodState'+k+'"></p></div>';
   }).join("");
   el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">Latihan bikin kalimat \u2022 '+esc(t.name)+'</span><h2>Penjelasan saja nggak cukup \u2014 ayo bikin kalimatmu sendiri</h2><p class="lead">Pola nempel kalau dipakai. Ada '+prod.length+' tantangan: baca tugasnya, pakai kata kuncinya, tulis kalimatmu, lalu bandingkan dengan contoh jawaban. Kalau masih ragu, tandai saja \u2014 polanya masuk tumpukan ulangmu buat dilatih lagi. Nggak ada nilai di sini, yang penting jujur sama diri sendiri.</p></div>'+cards+'<div id="prodFinish"></div>';
   prod.forEach(function(pr,k){
     el("prodReveal"+k).addEventListener("click",function(){el("prodModel"+k).hidden=false;this.disabled=true;});
+    el("prodCheckBtn"+k).addEventListener("click",function(){runProdCheck(k,pr,"gram");});
     el("prodOk"+k).addEventListener("click",function(){prodMark(k,true,pr);});
     el("prodRagu"+k).addEventListener("click",function(){prodMark(k,false,pr);});
   });
@@ -1192,11 +1222,12 @@ function openVocabProd(ci){
   el("lvBar").style.width="0%";el("lvStepText").textContent="Bikin kalimat";
   var cards=prod.map(function(pr,k){
     var wo=vocabWordOf(ci,pr.w);
-    return '<div class="cardbox" id="prodCard'+k+'" style="margin-top:12px"><span class="step-label">Tantangan '+(k+1)+' dari '+prod.length+' \u2022 Kata target</span><h3 class="jp" style="margin:6px 0 2px">'+esc(pr.w)+' <span style="font-size:.85rem;color:var(--muted)">'+esc(pr.r)+'</span></h3><p style="margin:0 0 8px">'+(wo?esc(wo.m):'')+'</p><p>'+esc(pr.tugas)+'</p><div class="chips">'+pr.kunci.map(function(w){return '<span class="chip jp">'+esc(w)+'</span>';}).join("")+'</div><textarea class="prod-ta" id="prodTa'+k+'" rows="2" placeholder="Tulis kalimatmu di sini\u2026 (atau tulis di buku catatanmu)"></textarea><div class="actions"><button class="btn btn-accent btn-small" type="button" id="prodReveal'+k+'">Lihat contoh jawaban</button></div><div id="prodModel'+k+'" hidden><div class="prod-model"><div class="step-label">Contoh jawaban</div><p class="jp" style="font-size:1.12rem;margin:4px 0">'+esc(pr.model)+'</p><p style="margin:0 0 6px">'+esc(pr.modelId)+'</p><div class="note-box">\u{1F4A1} Cek kalimatmu: '+esc(pr.cek)+'</div></div><p style="margin:10px 0 6px">Kata targetnya sudah kepakai dengan benar? Nilai jujur ya:</p><div class="actions"><button class="btn btn-indigo btn-small" type="button" id="prodOk'+k+'">Sudah bisa \u2713</button><button class="btn btn-ghost btn-small" type="button" id="prodRagu'+k+'">Masih ragu \u2014 masukkan ke tumpukan ulang</button></div></div><p class="prod-state" id="prodState'+k+'"></p></div>';
+    return '<div class="cardbox" id="prodCard'+k+'" style="margin-top:12px"><span class="step-label">Tantangan '+(k+1)+' dari '+prod.length+' \u2022 Kata target</span><h3 class="jp" style="margin:6px 0 2px">'+esc(pr.w)+' <span style="font-size:.85rem;color:var(--muted)">'+esc(pr.r)+'</span></h3><p style="margin:0 0 8px">'+(wo?esc(wo.m):'')+'</p><p>'+esc(pr.tugas)+'</p><div class="chips">'+pr.kunci.map(function(w){return '<span class="chip jp">'+esc(w)+'</span>';}).join("")+'</div><textarea class="prod-ta" id="prodTa'+k+'" rows="2" placeholder="Tulis kalimatmu di sini\u2026 (atau tulis di buku catatanmu)"></textarea><div class="actions"><button class="btn btn-accent btn-small" type="button" id="prodReveal'+k+'">Lihat contoh jawaban</button><button class="btn btn-indigo btn-small" type="button" id="prodCheckBtn'+k+'">🔍 Cek kalimatku</button></div><div id="prodCheck'+k+'" hidden></div><div id="prodModel'+k+'" hidden><div class="prod-model"><div class="step-label">Contoh jawaban</div><p class="jp" style="font-size:1.12rem;margin:4px 0">'+esc(pr.model)+'</p><p style="margin:0 0 6px">'+esc(pr.modelId)+'</p><div class="note-box">\u{1F4A1} Cek kalimatmu: '+esc(pr.cek)+'</div></div><p style="margin:10px 0 6px">Kata targetnya sudah kepakai dengan benar? Nilai jujur ya:</p><div class="actions"><button class="btn btn-indigo btn-small" type="button" id="prodOk'+k+'">Sudah bisa \u2713</button><button class="btn btn-ghost btn-small" type="button" id="prodRagu'+k+'">Masih ragu \u2014 masukkan ke tumpukan ulang</button></div></div><p class="prod-state" id="prodState'+k+'"></p></div>';
   }).join("");
   el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">Latihan bikin kalimat kosakata \u2022 '+esc(c.name)+'</span><h2>Kenal kata saja nggak cukup \u2014 ayo pakai katanya</h2><p class="lead">Ada '+prod.length+' tantangan dari deck ini: baca tugasnya, pakai kata target + kata kuncinya, tulis kalimatmu, lalu bandingkan dengan contoh jawaban. Kalau masih ragu, tandai saja \u2014 katanya masuk tumpukan ulangmu. Nggak ada nilai di sini, yang penting jujur sama diri sendiri.</p></div>'+cards+'<div id="prodFinish"></div>';
   prod.forEach(function(pr,k){
     el("prodReveal"+k).addEventListener("click",function(){el("prodModel"+k).hidden=false;this.disabled=true;});
+    el("prodCheckBtn"+k).addEventListener("click",function(){runProdCheck(k,pr,"vocab");});
     el("prodOk"+k).addEventListener("click",function(){vprodMark(k,true,pr);});
     el("prodRagu"+k).addEventListener("click",function(){vprodMark(k,false,pr);});
   });
@@ -1221,6 +1252,204 @@ function vprodMark(k,ok,pr){
     el("prodHome").addEventListener("click",function(){closeLessonView();});
   }
 }
+/* ===== Cek Kalimat (patch-cek-kalimat) ===== */
+function cekStripAnot(s){return String(s||"").replace(/《[^》]*》/g,"").replace(/（[^）]*）/g,"");}
+function cekNorm(s){return cekStripAnot(s).replace(/[\s　。、・「」『』！？!?,，.．]/g,"");}
+function cekAnotOf(s){var m=String(s||"").match(/《([^》]*)》/)||String(s||"").match(/（([^）]*)）/);return m?m[1]:"";}
+var CEK_RULES={
+"〜せい":{core:["せい"]},
+"〜おかげ":{core:["おかげ"]},
+"〜わけだ":{core:["わけだ","訳だ"]},
+"〜まま":{core:["まま"],pre:/(た|だ)まま/,preMsg:"Sebelum まま harus kata kerja bentuk た (mis. つけたまま), bukan bentuk kamus."},
+"〜ば〜ほど":{pair:["ば","ほど"],pairMsg:"Pola ini selalu sepasang: perlu 〜ば DAN 〜ほど dalam satu kalimat."},
+"〜ばかり①":{core:["ばかり"]},
+"〜として":{core:["として"]},
+"〜にとって":{core:["にとって"]},
+"〜について":{core:["について"]},
+"〜ずに":{core:["ずに"],bad:"しずに",badMsg:"Hati-hati: する berubah jadi せずに, bukan しずに."},
+"〜わけではない":{core:["わけではない","訳ではない"]},
+"〜かわりに①":{core:["かわりに"]},
+"〜かわりに②":{core:["かわりに"]},
+"〜やすい":{core:["やすい"]},
+"〜に比べて":{core:["に比べて","にくらべて"]},
+"〜に違いない":{core:["に違いない","にちがいない"]},
+"〜そう①":{core:["そう"],bad:"しいそう",badMsg:"Untuk kata sifat-i, buang い terakhir sebelum そう: おいしい → おいしそう, bukan おいしいそう."},
+"〜みたい":{core:["みたい"]},
+"〜だろう":{core:["だろう","でしょう"]},
+"〜たびに":{core:["たびに"]},
+"〜ばかり②":{core:["ばかり"],pre:/(た|だ)ばかり/,preMsg:"Untuk arti \u2018baru saja\u2019, sebelum ばかり harus kata kerja bentuk た (mis. 来たばかり)."},
+"〜うちに":{core:["うちに"]},
+"〜ことにする":{core:["ことにする","ことにした","ことにします"],re:/ことに(する|した|します|して|しよう)/},
+"〜次第":{core:["次第","しだい"]},
+"たとえ〜ても":{pairRe:[/たとえ|例え/,/ても|でも/],pairMsg:"たとえ harus berpasangan dengan 〜ても/〜でも di kalimat yang sama."},
+"〜ように①":{core:["ように"]},
+"〜しかない":{core:["しかない"],re:/しか(ない|ありません)/},
+"〜始める":{core:["始める","始めた","始めます"],re:/(始|はじ)め(る|た|ます|て)/},
+"〜ことになっている":{core:["ことになっている"],re:/ことに(なっている|なっています|なった)/},
+"〜なくちゃ":{core:["なくちゃ"]},
+"〜べき":{core:["べき"]},
+"〜だけでなく":{core:["だけでなく"],afterMo:true},
+"〜とか〜とか":{countWord:"とか",minCount:2}
+};
+function cekCoreOf(p){var r=CEK_RULES[p];if(r&&r.core&&r.core.length)return r.core;var c=String(p||"").replace(/〜/g,"").replace(/[①②]/g,"");return c?[c]:[];}
+function cekKunci(text,kunci){
+  var norm=cekNorm(text),used=0,missing=[];
+  (kunci||[]).forEach(function(kw){
+    var surf=cekNorm(kw),read=cekAnotOf(kw);
+    if((surf&&norm.indexOf(surf)>=0)||(read&&norm.indexOf(read)>=0))used++;
+    else missing.push(kw);
+  });
+  return {used:used,total:(kunci||[]).length,missing:missing};
+}
+function cekEscRe(s){return String(s).replace(/[.*+?^${}()|[\]\\]/g,"\\$&");}
+function cekHlUser(text,needles,badSrc){
+  var s=cekStripAnot(text);
+  var alts=[];
+  if(badSrc)alts.push(cekEscRe(badSrc));
+  (needles||[]).filter(Boolean).forEach(function(n){alts.push(cekEscRe(n));});
+  if(!alts.length)return esc(s);
+  var re=new RegExp("("+alts.join("|")+")","g");
+  var out="",last=0,m;
+  while((m=re.exec(s))!==null){
+    if(m.index>last)out+=esc(s.slice(last,m.index));
+    var isBad=badSrc&&m[0]===badSrc;
+    out+="<mark"+(isBad?" class=\"bad\"":"")+">"+esc(m[0])+"</mark>";
+    last=m.index+m[0].length;
+    if(m[0].length===0)re.lastIndex++;
+  }
+  out+=esc(s.slice(last));
+  return out;
+}
+function cekHlModel(model,needles){
+  var raw=String(model||"");
+  var list=(needles||[]).filter(Boolean);
+  for(var i=0;i<list.length;i++){
+    var idx=raw.indexOf(list[i]);
+    if(idx>=0)return fjp(raw.slice(0,idx))+"<mark>"+fjp(list[i])+"</mark>"+fjp(raw.slice(idx+list[i].length));
+  }
+  return fjp(raw);
+}
+function cekRender(pr,k,text,findings,pas,userNeedles,badSrc,modelNeedles,empty){
+  if(empty){
+    return '<div class="cek-box"><span class="step-label">Hasil cek kalimat</span><p style="margin:6px 0 0">Tulis dulu kalimatmu di kotak di atas, baru tekan tombol ceknya ya. ✍️</p></div>';
+  }
+  var head=pas?'<div class="cek-head ok">✓ Pola utamanya pas!</div>':'<div class="cek-head ng">Belum pas — lihat bagian yang ditandai ya</div>';
+  var items=findings.map(function(f){
+    var ico=f.kind==="err"?"⚠️":(f.kind==="info"?"ℹ️":"✓");
+    return "<li>"+ico+" "+esc(f.msg)+"</li>";
+  }).join("");
+  var queue=(!pas&&!(prodState&&prodState.marked[k]))?'<div class="actions" style="margin-top:10px"><button class="btn btn-ghost btn-small" type="button" id="prodCheckQueue'+k+'">Masukkan ke tumpukan ulang</button></div>':"";
+  return '<div class="cek-box"><span class="step-label">Hasil cek kalimat</span>'+head+
+    '<div class="cek-cols"><div class="cek-cell"><div class="step-label">Kalimatmu</div><p class="jp cek-jp" style="margin:4px 0 0">'+cekHlUser(text,userNeedles,badSrc)+'</p></div>'+
+    '<div class="cek-cell"><div class="step-label">Contoh model</div><p class="jp cek-jp" style="margin:4px 0 0">'+cekHlModel(pr.model,modelNeedles)+'</p><p style="margin:6px 0 0">'+esc(pr.modelId)+'</p></div></div>'+
+    '<ul class="cek-list">'+items+'</ul>'+
+    '<div class="note-box cek-rule">💡 Aturannya: '+esc(pr.cek)+'</div>'+
+    '<p class="cek-note">Cek otomatis ini hanya memeriksa pola/kata target dan bentuk sambungannya. Kosakata bebas dan susunan kalimat di luar itu tidak bisa dipastikan benar atau salahnya oleh aplikasi — bandingkan dengan contoh modelnya, dan kalau masih ragu, tanyakan ke sensei/gurumu ya.</p>'+
+    queue+'</div>';
+}
+function cekKalimatGram(pr,gi,text,k){
+  var findings=[],errs=0,norm=cekNorm(text),rule=CEK_RULES[pr.p]||{},cores=cekCoreOf(pr.p);
+  var found=null,i;
+  for(i=0;i<cores.length;i++){if(norm.indexOf(cores[i])>=0){found=cores[i];break;}}
+  var reHit=null;
+  if(!found&&rule.re){var mm=norm.match(rule.re);if(mm)reHit=mm[0];}
+  var pairMiss=null,pairFound=[];
+  if(rule.pair){
+    pairMiss=rule.pair.filter(function(x){return norm.indexOf(x)<0;});
+    pairFound=rule.pair.filter(function(x){return norm.indexOf(x)>=0;});
+  }else if(rule.pairRe){
+    pairMiss=rule.pairRe.filter(function(rx){return !rx.test(norm);});
+    pairFound=rule.pairRe.filter(function(rx){return rx.test(norm);}).map(function(rx){var m2=norm.match(rx);return m2?m2[0]:"";}).filter(Boolean);
+  }
+  var pairOk=pairMiss!==null?pairMiss.length===0:null;
+  var countN=rule.countWord?(norm.split(rule.countWord).length-1):null;
+  if(found||reHit||pairOk===true||(countN!==null&&countN>=1)){
+    findings.push({kind:"ok",msg:"Pola 「"+pr.p+"」ketemu di kalimatmu."});
+    if(rule.pre){
+      if(rule.pre.test(norm))findings.push({kind:"ok",msg:"Bentuk sambungan sebelum polanya sudah pas."});
+      else{errs++;findings.push({kind:"err",msg:rule.preMsg});}
+    }
+  }else if(pairOk===false){
+    if(!pairFound.length){errs++;findings.push({kind:"err",msg:"Pola 「"+pr.p+"」belum kelihatan di kalimatmu. Coba bandingkan dengan contoh modelnya."});}
+  }else{
+    errs++;
+    findings.push({kind:"err",msg:"Pola 「"+pr.p+"」belum kelihatan di kalimatmu. Bentuk yang dicari: "+cores.join(" / ")+". Coba bandingkan dengan contoh modelnya."});
+  }
+  if(pairMiss!==null){
+    if(pairMiss.length){
+      errs++;
+      findings.push({kind:"err",msg:rule.pairMsg+(rule.pair?(" Yang belum ada: "+pairMiss.join(" dan ")+"."):"")});
+    }else findings.push({kind:"ok",msg:"Pasangan polanya lengkap."});
+  }
+  if(rule.afterMo&&found){
+    var idx=norm.indexOf("だけでなく");
+    if(idx>=0){
+      if(norm.indexOf("も",idx+5)>=0)findings.push({kind:"ok",msg:"Pasangan も di bagian kedua ada."});
+      else{errs++;findings.push({kind:"err",msg:"Setelah だけでなく, bagian keduanya perlu も — kalimat yang berhenti di だけでなく saja terasa menggantung."});}
+    }
+  }
+  if(rule.countWord){
+    if(countN>=rule.minCount)findings.push({kind:"ok",msg:"とか-nya sudah berpasangan."});
+    else if(countN===1){errs++;findings.push({kind:"err",msg:"とか untuk memberi contoh perlu diulang: Aとか、Bとか."});}
+  }
+  if(rule.bad&&norm.indexOf(rule.bad)>=0){
+    errs++;findings.push({kind:"err",msg:rule.badMsg});
+  }
+  var ku=cekKunci(text,pr.kunci);
+  if(ku.total){
+    if(ku.used===ku.total)findings.push({kind:"ok",msg:"Semua kata kunci kepakai ("+ku.used+"/"+ku.total+")."});
+    else findings.push({kind:"info",msg:"Kata kunci kepakai "+ku.used+" dari "+ku.total+". Yang belum: "+ku.missing.join("、")+" — tidak wajib semua, tapi tugasnya menyarankan kata-kata itu."});
+  }
+  var needles=found?[found]:(reHit?[reHit]:(pairFound.length?pairFound:((countN!==null&&countN>=1)?[rule.countWord]:[])));
+  return {pas:errs===0,html:cekRender(pr,k,text,findings,errs===0,needles,rule.bad||null,needles,false)};
+}
+function cekKalimatVocab(pr,text,k){
+  var findings=[],errs=0,norm=cekNorm(text);
+  var hit=null,hitKind="";
+  if(norm.indexOf(cekNorm(pr.w))>=0){hit=pr.w;hitKind="kanji";}
+  else if(pr.r&&norm.indexOf(pr.r)>=0){hit=pr.r;hitKind="kana";}
+  if(!hit){
+    var stems=[],last=pr.r?pr.r.slice(-1):"";
+    if(pr.w.length>=2&&/[るうくぐすつぬぶむ]/.test(last)){stems=[pr.w.slice(0,-1),pr.r.slice(0,-1)];}
+    for(var i=0;i<stems.length;i++){if(stems[i]&&norm.indexOf(stems[i])>=0){hit=stems[i];hitKind="stem";break;}}
+  }
+  if(hit){
+    if(hitKind==="stem")findings.push({kind:"ok",msg:"Kata target 「"+pr.w+"」kepakai dalam bentuk lain ("+hit+"…) — bagus, itu konjugasinya."});
+    else if(hitKind==="kana")findings.push({kind:"ok",msg:"Kata target 「"+pr.w+"」kepakai, ditulis kana ("+pr.r+") — boleh, walau bentuk kanjinya "+pr.w+"."});
+    else findings.push({kind:"ok",msg:"Kata target 「"+pr.w+"」kepakai di kalimatmu."});
+  }else{
+    errs++;
+    findings.push({kind:"err",msg:"Kata target 「"+pr.w+"」("+pr.r+") belum kelihatan di kalimatmu. Tugasnya memakai kata itu — coba selipkan, lalu bandingkan dengan contoh modelnya."});
+  }
+  var ku=cekKunci(text,pr.kunci);
+  if(ku.total){
+    if(ku.used===ku.total)findings.push({kind:"ok",msg:"Semua kata kunci kepakai ("+ku.used+"/"+ku.total+")."});
+    else findings.push({kind:"info",msg:"Kata kunci kepakai "+ku.used+" dari "+ku.total+". Yang belum: "+ku.missing.join("、")+" — tidak wajib semua, tapi tugasnya menyarankan kata-kata itu."});
+  }
+  var modelNeedles=[pr.w+"《"+pr.r+"》",pr.w,pr.r];
+  return {pas:errs===0,html:cekRender(pr,k,text,findings,errs===0,hit?[hit]:[],null,modelNeedles,false)};
+}
+function runProdCheck(k,pr,kind){
+  var ta=el("prodTa"+k),box=el("prodCheck"+k);
+  if(!ta||!box)return;
+  var text=ta.value||"";
+  if(!text.replace(/\s/g,"")){
+    box.innerHTML=cekRender(pr,k,text,[],false,[],null,[],true);
+    box.hidden=false;
+    return;
+  }
+  var gi=null;
+  if(kind==="gram"&&prodState&&typeof prodState.theme==="number")gi=gramItemOf(prodState.theme,pr.p);
+  var res=(kind==="gram")?cekKalimatGram(pr,gi,text,k):cekKalimatVocab(pr,text,k);
+  box.innerHTML=res.html;
+  box.hidden=false;
+  var q=el("prodCheckQueue"+k);
+  if(q)q.addEventListener("click",function(){
+    if(kind==="gram")prodMark(k,false,pr);else vprodMark(k,false,pr);
+    box.hidden=true;
+  });
+}
+
 function gramQuiz(themeIdx){
   if(themeIdx>=CORE_GRAM&&!expOpen())return;
   var items,arranges,title,id,cards;
