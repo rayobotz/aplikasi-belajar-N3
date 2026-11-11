@@ -1801,7 +1801,7 @@ function renderSprint(){
   if(lt&&ltx){var parts=[];for(var k in lt.perSkill){parts.push(k+" "+lt.perSkill[k].c+"/"+lt.perSkill[k].t);}ltx.innerHTML="Tryout terakhir: <strong>"+lt.correct+"/"+lt.total+" benar ("+Math.round(lt.correct/lt.total*100)+"%)</strong> • "+parts.join(" • ")+"<br>"+new Date(lt.date).toLocaleDateString("id-ID")+" • total sudah "+(state.tryoutCount||0)+"× tryout"+((state.tryoutWrong&&state.tryoutWrong.length)?(" • "+state.tryoutWrong.length+" soal tryout masih perlu diulang (lihat Antrean di Progresku)"):"");}
   else if(ltx){ltx.textContent="Belum pernah tryout — coba sekali buat tahu rasanya sebelum hari H.";}
   var b1=el("btnTryoutStart");if(b1&&!b1.__sprintBound){b1.__sprintBound=true;b1.addEventListener("click",startTryoutMini);}
-  var b2=el("btnSprintQueue");if(b2&&!b2.__sprintBound){b2.__sprintBound=true;b2.addEventListener("click",function(){var t=el("progresTitle");if(t)t.scrollIntoView({behavior:"smooth"});});}
+  var b2=el("btnSprintQueue");if(b2&&!b2.__sprintBound){b2.__sprintBound=true;b2.addEventListener("click",function(){if(window.pindahTabN3)window.pindahTabN3("progres");var t=el("progresTitle");if(t)setTimeout(function(){t.scrollIntoView({behavior:"smooth"});},80);});}
 }
 
 document.querySelectorAll(".hb-skill").forEach(function(b){b.addEventListener("click",function(){openCatView(b.getAttribute("data-go"));});});
