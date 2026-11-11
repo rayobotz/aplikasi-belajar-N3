@@ -501,7 +501,7 @@ body{padding-bottom:74px}
 
     <section aria-labelledby="tadokuTitle">
       <div class="sources tape tape-matcha">
-        <h3 id="tadokuTitle">\u{1F4D6} Pojok Tadoku — Baca Santai</h3>
+        <h3 id="tadokuTitle">📖 Pojok Tadoku — Baca Santai</h3>
         <p style="margin:0 0 6px">Baca cerita pendek <strong>tanpa kamus dan tanpa soal</strong>. Ada kata yang belum tahu? Lewati saja — yang penting jalan terus dan menikmati ceritanya. Pilih grade sesukamu, dari dasar sampai mahir; tidak ada yang dikunci.</p>
         <p class="result-sub" id="tadokuInfo" style="margin:0 0 4px"></p>
         <div id="tadokuList"></div>
@@ -2013,11 +2013,11 @@ var bl=document.getElementById("btnLanjut");if(bl)bl.addEventListener("click",fu
 (function(){
   var hv=document.getElementById("homeView");if(!hv)return;
   function S(l){return document.querySelector('section[aria-labelledby="'+l+'"]');}
-  var panes={"examTitle":"beranda","missionTitle":"beranda","noteTitle":"beranda","faktaTitle":"beranda","gameTitle":"beranda","tadokuTitle":"materi","sprintTitle":"materi","boostTitle":"materi","reviewTitle":"ulang","progresTitle":"progres","methodTitle":"progres","dataTitle":"progres","srcTitle":"progres"};
+  var panes={"examTitle":"beranda","missionTitle":"beranda","noteTitle":"beranda","faktaTitle":"beranda","gameTitle":"beranda","tadokuTitle":"baca","sprintTitle":"materi","boostTitle":"materi","reviewTitle":"ulang","progresTitle":"progres","methodTitle":"progres","dataTitle":"progres","srcTitle":"progres"};
   Object.keys(panes).forEach(function(k){var sec=S(k);if(sec)sec.setAttribute("data-pane",panes[k]);});
   var jump=document.querySelector('section[aria-label="Jalan pintas materi dari bukumu"]');if(jump)jump.setAttribute("data-pane","materi");
   var nav=document.createElement("nav");nav.className="tabbar";nav.setAttribute("aria-label","Menu utama");
-  var daftar=[["beranda","\u{1F3E0}","Beranda"],["materi","\u{1F4DA}","Materi"],["ulang","\u{1F501}","Ulang"],["progres","\u{1F4CA}","Progres"]];
+  var daftar=[["beranda","\u{1F3E0}","Beranda"],["materi","\u{1F4DA}","Materi"],["baca","\u{1F4D6}","Baca"],["ulang","\u{1F501}","Ulang"],["progres","\u{1F4CA}","Progres"]];
   var btns={};
   daftar.forEach(function(t){
     var b=document.createElement("button");b.type="button";
