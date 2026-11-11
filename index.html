@@ -352,6 +352,7 @@ body{padding-bottom:74px}
 .fakta-visual svg{display:block;width:100%;height:auto}
 .fakta-baris{display:flex;gap:10px;align-items:flex-start}
 #faktaEmoji{font-size:2.1rem;line-height:1.15}
+.btn-done{background:#E7F2DA;border:2px solid #5B7A3A;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -498,6 +499,15 @@ body{padding-bottom:74px}
     </section>
 
 
+    <section aria-labelledby="tadokuTitle">
+      <div class="sources tape tape-matcha">
+        <h3 id="tadokuTitle">\u{1F4D6} Pojok Tadoku — Baca Santai</h3>
+        <p style="margin:0 0 6px">Baca cerita pendek <strong>tanpa kamus dan tanpa soal</strong>. Ada kata yang belum tahu? Lewati saja — yang penting jalan terus dan menikmati ceritanya. Pilih grade sesukamu, dari dasar sampai mahir; tidak ada yang dikunci.</p>
+        <p class="result-sub" id="tadokuInfo" style="margin:0 0 4px"></p>
+        <div id="tadokuList"></div>
+      </div>
+    </section>
+
     <section aria-labelledby="boostTitle">
       <div class="sec-head"><h2 id="boostTitle">Materi dari bukumu</h2><span class="hint">日本語の森『JLPT N3 この一冊で合格する』</span></div>
       <p class="sec-desc">Materi intimu: <strong>70 pola bunpō</strong> &amp; <strong>kosakata hari 1–12</strong> dari bukumu, diuji lagi pelan-pelan sampai nempel. Salah itu wajar — yang salah masuk tumpukan ulang, bukan tanda gagal. <strong>Ekspansi 1</strong> kebuka otomatis setelah materi inti selesai.</p>
@@ -642,7 +652,7 @@ function levelFromXp(xp){var lv=1,i;for(i=0;i<THRESH.length;i++){if(xp>=THRESH[i
    Semua progres disimpan di browser pengguna di perangkat yang sama.
    Tidak dikirim ke server / siapa pun. */
 var STORAGE_KEY="aplikasi-belajar-n3:progress:v1";
-var DEFAULT_STATE={xp:0,done:{},scores:{},review:[],badges:{},correctStreak:0,attempts:{},lastTryout:null,tryoutWrong:[],tryoutCount:0,quizWrong:{},gameBest:{}};
+var DEFAULT_STATE={xp:0,done:{},scores:{},review:[],badges:{},correctStreak:0,attempts:{},lastTryout:null,tryoutWrong:[],tryoutCount:0,quizWrong:{},gameBest:{},tadokuRead:{}};
 var DEFAULT_META={streakDays:0,lastStudyDate:null,firstOpenedAt:null,lastOpenedAt:null,totalOpens:0,savedAt:null,furiOn:true,guideSeen:false,introSeen:false};
 var state=JSON.parse(JSON.stringify(DEFAULT_STATE));
 var studyMeta=JSON.parse(JSON.stringify(DEFAULT_META));
@@ -666,7 +676,7 @@ fetch(N3_TRACK_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/p
 }
 window.addEventListener("load",function(){setTimeout(kirimLaporanN3,3000);});
 function saveProgress(){try{studyMeta.savedAt=new Date().toISOString();studyMeta.lastOpenedAt=studyMeta.savedAt;var payload={version:1,state:state,meta:studyMeta};localStorage.setItem(STORAGE_KEY,JSON.stringify(payload));jadwalLaporN3();var sh=document.getElementById("saveHint");if(sh){sh.textContent="Tersimpan di browser ini"+(studyMeta.streakDays?(" • Rangkaian belajar: "+studyMeta.streakDays+" hari"):"")+" • Terakhir disimpan: "+new Date().toLocaleString("id-ID");}var ss=document.getElementById("saveStatus");if(ss&&studyMeta.savedAt){/* keep base text; status shown via saveHint */}}catch(e){/* storage penuh / mode privat — aplikasi tetap jalan tanpa menyimpan */}}
-function loadProgress(){try{var raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;var data=JSON.parse(raw);if(!data||typeof data!=="object")return;if(data.state&&typeof data.state==="object"){state.xp=typeof data.state.xp==="number"?data.state.xp:0;state.done=data.state.done&&typeof data.state.done==="object"?data.state.done:{};state.scores=data.state.scores&&typeof data.state.scores==="object"?data.state.scores:{};state.review=(Array.isArray(data.state.review)?data.state.review:[]).filter(function(c){return !c.front||String(c.front).indexOf("〜")<0;});state.badges=data.state.badges&&typeof data.state.badges==="object"?data.state.badges:{};state.correctStreak=typeof data.state.correctStreak==="number"?data.state.correctStreak:0;state.attempts=data.state.attempts&&typeof data.state.attempts==="object"?data.state.attempts:{};state.lastTryout=data.state.lastTryout&&typeof data.state.lastTryout==="object"?data.state.lastTryout:null;state.tryoutWrong=Array.isArray(data.state.tryoutWrong)?data.state.tryoutWrong:[];state.tryoutCount=typeof data.state.tryoutCount==="number"?data.state.tryoutCount:0;state.quizWrong=data.state.quizWrong&&typeof data.state.quizWrong==="object"?data.state.quizWrong:{};state.gameBest=data.state.gameBest&&typeof data.state.gameBest==="object"?data.state.gameBest:{};}if(data.meta&&typeof data.meta==="object"){for(var k in DEFAULT_META){if(Object.prototype.hasOwnProperty.call(data.meta,k))studyMeta[k]=data.meta[k];}}}catch(e){/* data rusak — mulai dari awal tanpa crash */}}
+function loadProgress(){try{var raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;var data=JSON.parse(raw);if(!data||typeof data!=="object")return;if(data.state&&typeof data.state==="object"){state.xp=typeof data.state.xp==="number"?data.state.xp:0;state.done=data.state.done&&typeof data.state.done==="object"?data.state.done:{};state.scores=data.state.scores&&typeof data.state.scores==="object"?data.state.scores:{};state.review=(Array.isArray(data.state.review)?data.state.review:[]).filter(function(c){return !c.front||String(c.front).indexOf("〜")<0;});state.badges=data.state.badges&&typeof data.state.badges==="object"?data.state.badges:{};state.correctStreak=typeof data.state.correctStreak==="number"?data.state.correctStreak:0;state.attempts=data.state.attempts&&typeof data.state.attempts==="object"?data.state.attempts:{};state.lastTryout=data.state.lastTryout&&typeof data.state.lastTryout==="object"?data.state.lastTryout:null;state.tryoutWrong=Array.isArray(data.state.tryoutWrong)?data.state.tryoutWrong:[];state.tryoutCount=typeof data.state.tryoutCount==="number"?data.state.tryoutCount:0;state.quizWrong=data.state.quizWrong&&typeof data.state.quizWrong==="object"?data.state.quizWrong:{};state.gameBest=data.state.gameBest&&typeof data.state.gameBest==="object"?data.state.gameBest:{};state.tadokuRead=data.state.tadokuRead&&typeof data.state.tadokuRead==="object"?data.state.tadokuRead:{};}if(data.meta&&typeof data.meta==="object"){for(var k in DEFAULT_META){if(Object.prototype.hasOwnProperty.call(data.meta,k))studyMeta[k]=data.meta[k];}}}catch(e){/* data rusak — mulai dari awal tanpa crash */}}
 loadProgress();
 (function(){var now=new Date().toISOString();if(!studyMeta.firstOpenedAt)studyMeta.firstOpenedAt=now;studyMeta.lastOpenedAt=now;studyMeta.totalOpens=(studyMeta.totalOpens||0)+1;})();
 window.addEventListener("beforeunload",function(){try{saveProgress();}catch(e){}});
@@ -933,8 +943,90 @@ var FAKTA_SERU=[
 "Wabi-sabi adalah cara pandang khas Jepang: keindahan justru ada pada hal yang tidak sempurna dan tidak abadi \u2014 seperti retakan kecil pada cangkir kesayangan.",
 "Kawasan metropolitan Tokyo adalah yang terpadat di dunia, dihuni sekitar 37 juta orang \u2014 hampir sepersepuluh penduduk Jepang tinggal di satu kawasan ini."
 ];
+
+var TADOKU=[
+{id:"t-asasanpo",grade:0,title:"朝《あさ》の さんぽ",sub:"Jalan pagi di taman",paras:[
+"わたしは まいあさ 六時《ろくじ》に おきます。かおを あらって、水《みず》を のみます。それから、こうえんへ さんぽに 行《い》きます。",
+"こうえんには 木《き》が たくさん あります。鳥《とり》の こえが きこえます。空《そら》は 青《あお》くて、気持《きも》ちが いいです。",
+"きのう、こうえんで 小《ちい》さい 犬《いぬ》を 見《み》ました。犬《いぬ》は 白《しろ》くて、とても かわいかったです。わたしは すこし 犬《いぬ》と あそびました。",
+"さんぽの あと、うちへ かえります。あさごはんを 食《た》べます。きょうも いい 一日《いちにち》に なりますように。"]},
+{id:"t-neko",grade:0,title:"わたしの ねこ",sub:"Kucingku, Mimi",paras:[
+"わたしの うちには ねこが います。名前《なまえ》は ミミです。ミミは 三《さん》さいで、目《め》が 大《おお》きいです。",
+"ミミは さかなが 大好《だいす》きです。でも、にんじんは きらいです。わたしが 「ミミ、ごはんよ」と 言《い》うと、ミミは すぐ 来《き》ます。",
+"よる、ミミは わたしの ベッドで ねます。ミミの 体《からだ》は あたたかくて、わたしは すぐ ねむくなります。",
+"ミミは ただの ねこでは ありません。わたしの 大切《たいせつ》な かぞくです。"]},
+{id:"t-amenohi",grade:0,title:"雨《あめ》の 日《ひ》",sub:"Hari hujan dan pelangi",paras:[
+"きょうは 朝《あさ》から 雨《あめ》です。わたしは かさを もって、駅《えき》へ 行《い》きました。道《みち》は ぬれていて、少《すこ》し さむかったです。",
+"電車《でんしゃ》の 中《なか》は あたたかかったです。まどの 外《そと》を 見《み》ると、水玉《みずたま》が きらきら 光《ひか》っていました。",
+"夕方《ゆうがた》、雨《あめ》が やみました。空《そら》に 大《おお》きな 虹《にじ》が 出《で》ました。わたしは しばらく 虹《にじ》を 見《み》ていました。雨《あめ》の 日《ひ》も、悪《わる》くないですね。"]},
+{id:"t-densha",grade:1,title:"初《はじ》めての 電車《でんしゃ》",sub:"Pertama kali naik kereta sendirian",paras:[
+"中学生《ちゅうがくせい》の とき、わたしは 初《はじ》めて 一人《ひとり》で 電車《でんしゃ》に 乗《の》りました。行《い》き先《さき》は、となりの 町《まち》に ある おばあちゃんの 家《いえ》でした。",
+"駅《えき》で 切符《きっぷ》を 買《か》う とき、心臓《しんぞう》が ドキドキ しました。電車《でんしゃ》が 来《き》たとたん、ホームに いた 人《ひと》たちが 一斉《いっせい》に 立《た》ち上《あ》がりました。",
+"車内《しゃない》では、窓《まど》の 外《そと》の 景色《けしき》が どんどん 変《か》わって いきました。田《た》んぼや 川《かわ》や 小《ちい》さな 山《やま》が、まるで 映画《えいが》の ようでした。",
+"おばあちゃんの 駅《えき》に 着《つ》いた とき、わたしは 少《すこ》しだけ 大人《おとな》に なった 気《き》が しました。帰《かえ》りの 電車《でんしゃ》では、もう ドキドキ しませんでした。"]},
+{id:"t-bachan",grade:1,title:"おばあちゃんの 店《みせ》",sub:"Toko permen nenek yang berusia 60 tahun",paras:[
+"わたしの おばあちゃんは、小《ちい》さな 駄菓子屋《だがしや》を して います。店《みせ》は 駅前《えきまえ》の 通《とお》りに あって、六十年《ろくじゅうねん》も 続《つづ》いて います。",
+"子《こ》どもの ころ、わたしは よく 店番《みせばん》を 手伝《てつだ》いました。十円《じゅうえん》の あめを 買《か》いに 来《く》る 子《こ》どもたちの 顔《かお》を、今《いま》でも よく 覚《おぼ》えて います。",
+"おばあちゃんは 言《い》います。「店《みせ》は 物《もの》を 売《う》る 場所《ばしょ》じゃない。人《ひと》と 人《ひと》が 会《あ》う 場所《ばしょ》なんだよ。」",
+"先月《せんげつ》、店《みせ》の 前《まえ》に 新《あたら》しい コンビニが できました。でも、おばあちゃんの 店《みせ》には、今日《きょう》も 誰《だれ》かが 笑顔《えがお》で 入《はい》って きます。"]},
+{id:"t-tegami",grade:1,title:"雪《ゆき》の 日《ひ》の 手紙《てがみ》",sub:"Surat dari teman lama di hari bersalju",paras:[
+"その 日《ひ》、朝《あさ》から 雪《ゆき》が 降《ふ》って いました。わたしが ポストを 開《あ》けると、中《なか》に 一通《いっつう》の 手紙《てがみ》が 入《はい》って いました。",
+"差出人《さしだしにん》は、十年《じゅうねん》も 会《あ》って いない 小学校《しょうがっこう》の 友達《ともだち》でした。手紙《てがみ》には、ただ 一言《ひとこと》だけ 書《か》いて ありました。「あの 日《ひ》の ありがとうを、まだ 言《い》って なかった。」",
+"わたしは 窓《まど》の そばに 座《すわ》って、何度《なんど》も その 手紙《てがみ》を 読《よ》み返《かえ》しました。雪《ゆき》は 静《しず》かに 降《ふ》り続《つづ》けて いました。",
+"返事《へんじ》には、何《なに》を 書《か》けば いいのでしょう。考《かんが》えて いる うちに、雪《ゆき》が やんで、空《そら》が 明《あか》るく なって きました。まず こう 書《か》く ことに しました。「手紙《てがみ》、ありがとう。わたしも 会《あ》いたい。」"]},
+{id:"t-sakura",grade:2,title:"桜《さくら》の 下《した》で",sub:"Janji di bawah pohon sakura",paras:[
+"四月《しがつ》の 初《はじ》め、会社《かいしゃ》の 近《ちか》くの 公園《こうえん》では 桜《さくら》が 満開《まんかい》だった。昼休《ひるやす》みに ベンチに 座《すわ》って おにぎりを 食《た》べていると、隣《となり》に 年配《ねんぱい》の 女性《じょせい》が 腰《こし》を 下《お》ろした。",
+"「きれいねえ。でも、桜《さくら》は あっという間《ま》に 散《ち》って しまうから、余計《よけい》に きれいに 見《み》えるのかもしれないね。」女性《じょせい》は、そう 言《い》って 笑《わら》った。",
+"それから 毎日《まいにち》、わたしたちは 同《おな》じ ベンチで 昼《ひる》ごはんを 食《た》べた。女性《じょせい》の 名前《なまえ》は 田中《たなか》さん。近《ちか》くの 病院《びょういん》で 長年《ながねん》、看護師《かんごし》を して いた そうだ。",
+"桜《さくら》が 散《ち》り終《お》わった ある 日《ひ》、田中《たなか》さんは 言《い》った。「来年《らいねん》も、ここで 会《あ》いましょう。約束《やくそく》よ。」わたしは うなずいた。季節《きせつ》が 巡《めぐ》る たびに 思《おも》い出《だ》す 場所《ばしょ》が、一《ひと》つ 増《ふ》えた。"]},
+{id:"t-ria",grade:2,title:"日本《にほん》での 初《はじ》めての 仕事《しごと》",sub:"Ria dari Indonesia dan pekerjaan pertamanya",paras:[
+"インドネシアから 来《き》た リアが、日本《にほん》の 介護施設《かいごしせつ》で 働《はたら》き始《はじ》めて、三《さん》か月《げつ》が たった。言葉《ことば》も 仕事《しごと》も、まだ 毎日《まいにち》が 勉強《べんきょう》だった。",
+"ある 朝《あさ》、入居者《にゅうきょしゃ》の ハルさんが、リアの 手《て》を そっと 握《にぎ》って 言《い》った。「あんたの 笑顔《えがお》を 見《み》ると、元気《げんき》が 出《で》るわ。」発音《はつおん》は ゆっくりだったが、その 言葉《ことば》は リアの 胸《むね》に まっすぐ 届《とど》いた。",
+"夜勤《やきん》の 休憩中《きゅうけいちゅう》、リアは 故郷《こきょう》の 母《はは》に 電話《でんわ》を かけた。「大丈夫《だいじょうぶ》。ここにも、わたしの 帰《かえ》りを 待《ま》って くれる 人《ひと》が いるみたい。」電話《でんわ》の 向《む》こうで、母《はは》が 笑《わら》う 声《こえ》が 聞《き》こえた。",
+"帰《かえ》り道《みち》、リアは 空《そら》を 見上《みあ》げた。故郷《こきょう》と 同《おな》じ 月《つき》が、ここでも 光《ひか》って いた。遠《とお》く 離《はな》れて いても、心《こころ》は つながって いる。そう 思《おも》うと、明日《あした》の 仕事《しごと》も 頑張《がんば》れる 気《き》が した。"]},
+{id:"t-toshokan",grade:2,title:"夜《よる》の 図書館《としょかん》",sub:"Perpustakaan yang hanya buka malam hari",paras:[
+"海辺《うみべ》の 小《ちい》さな 町《まち》に、夜《よる》だけ 開《ひら》く 図書館《としょかん》が ある。開館《かいかん》は 午後《ごご》七時《しちじ》から 深夜《しんや》零時《れいじ》まで。看板《かんばん》には「眠《ねむ》れない 人《ひと》の ための 図書館《としょかん》」と 書《か》かれて いる。",
+"館長《かんちょう》の 老人《ろうじん》は、本《ほん》を 借《か》りに 来《き》た 人《ひと》に、決《き》まって こう 聞《き》く。「今夜《こんや》は、どんな 気分《きぶん》ですか。」そして、その 気分《きぶん》に 合《あ》った 一冊《いっさつ》を、棚《たな》の 奥《おく》から 取《と》って くる。",
+"ある 晩《ばん》、若《わか》い 漁師《りょうし》が やって 来《き》て 言《い》った。「明日《あした》、初《はじ》めて 一人《ひとり》で 沖《おき》に 出《で》ます。不安《ふあん》で、眠《ねむ》れなくて。」館長《かんちょう》は 古《ふる》い 航海《こうかい》の 物語《ものがたり》を 渡《わた》した。",
+"翌朝《よくあさ》、漁師《りょうし》の 船《ふね》は 静《しず》かな 海《うみ》へ 出《で》て いった。図書館《としょかん》の 窓《まど》から、それを 見送《みおく》った 館長《かんちょう》は 小《ちい》さく つぶやいた。「本《ほん》は、港《みなと》みたいな ものだ。出《で》て 行《い》く 人《ひと》を、静《しず》かに 見送《みおく》る。」"]}
+];
+function renderTadokuShelf(){
+  var box=el("tadokuList");if(!box)return;
+  var done=0;TADOKU.forEach(function(t){if(state.tadokuRead&&state.tadokuRead[t.id])done++;});
+  var info=el("tadokuInfo");if(info)info.textContent="Sudah dibaca: "+done+" dari "+TADOKU.length+" cerita • +10 XP untuk setiap cerita yang selesai dibaca pertama kali.";
+  var labels=["🌱 Dasar","🌿 Menengah","🌳 Mahir"];
+  var html="";
+  [0,1,2].forEach(function(g){
+    html+='<p style="margin:12px 0 6px"><strong>'+labels[g]+'</strong></p>';
+    TADOKU.filter(function(t){return t.grade===g;}).forEach(function(t){
+      var read=state.tadokuRead&&state.tadokuRead[t.id];
+      html+='<button class="btn '+(read?"btn-done":"btn-ghost")+'" type="button" data-tadoku="'+t.id+'" style="width:100%;margin-bottom:8px;text-align:left">'+(read?"✓ ":"")+'<span class="jp">'+fjp(t.title)+'</span> <span style="font-weight:400;font-size:.85em">— '+esc(t.sub)+'</span></button>';
+    });
+  });
+  box.innerHTML=html;
+  box.querySelectorAll("[data-tadoku]").forEach(function(b){b.addEventListener("click",function(){bukaTadoku(b.getAttribute("data-tadoku"));});});
+}
+function bukaTadoku(id){
+  var t=null;TADOKU.forEach(function(x){if(x.id===id)t=x;});if(!t)return;
+  reviewMode=false;stopGameTimer();
+  openLessonView();
+  el("lvTitle").textContent="📖 Tadoku";
+  el("lvStepText").textContent=["🌱 Dasar","🌿 Menengah","🌳 Mahir"][t.grade]+" • baca santai, tanpa soal";
+  el("lvBar").style.width="100%";
+  var read=state.tadokuRead&&state.tadokuRead[t.id];
+  var paras=t.paras.map(function(pr){return '<p class="jp" style="font-size:1.1rem;line-height:2.1;margin:0 0 14px">'+fjp(pr)+'</p>';}).join("");
+  el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">Pojok Tadoku</span><h2 class="jp" style="margin:6px 0 4px">'+fjp(t.title)+'</h2><p class="result-sub" style="margin-bottom:14px">'+esc(t.sub)+' • Baca pelan-pelan saja. Furigana bisa dinyalakan atau dimatikan dengan tombol di atas.</p>'+paras+'<div class="explain" style="margin-bottom:12px">🌸 Cerita selesai. '+(read?"Kamu sudah pernah membaca cerita ini — membaca lagi juga bagus; tadoku memang soal mengulang bacaan yang ringan.":"Tekan tombol di bawah untuk menandainya selesai.")+'</div><div class="actions"><button class="btn btn-ghost" id="btnTadokuRak" type="button">Kembali ke rak</button>'+(read?"":'<button class="btn btn-accent" id="btnTadokuBeres" type="button">✓ Selesai baca</button>')+'</div></div>';
+  el("btnTadokuRak").addEventListener("click",closeLessonView);
+  var bb=el("btnTadokuBeres");
+  if(bb)bb.addEventListener("click",function(){
+    if(!state.tadokuRead)state.tadokuRead={};
+    state.tadokuRead[t.id]=true;state.xp+=10;markStudyToday();saveProgress();renderTadokuShelf();bukaTadoku(id);
+  });
+}
+
 var FAKTA_EMOJI=["🍫","🏝️","🎤","💮","🍜","4️⃣","😴","💼","🚉","🍗","🗻","♻️","🅰️","🌸","🏪","♨️","🗾","🧑‍🏫","📮","🥤","🌊","🪙","🙇","🍉","🔥","🔤","📚","🎂","🍵","🗼"];
 function renderHome(){
+  renderTadokuShelf();
   var fi=el("faktaIsi");if(fi){var nowF=new Date();var awalF=new Date(nowF.getFullYear(),0,0);var poeF=Math.floor((nowF-awalF)/86400000);var idxF=poeF%FAKTA_SERU.length;fi.textContent=FAKTA_SERU[idxF];var fe=el("faktaEmoji");if(fe)fe.textContent=FAKTA_EMOJI[idxF];}
   el("statXp").textContent=state.xp;
   var lv=levelFromXp(state.xp);el("statLevel").textContent=lv.level;
@@ -1921,7 +2013,7 @@ var bl=document.getElementById("btnLanjut");if(bl)bl.addEventListener("click",fu
 (function(){
   var hv=document.getElementById("homeView");if(!hv)return;
   function S(l){return document.querySelector('section[aria-labelledby="'+l+'"]');}
-  var panes={"examTitle":"beranda","missionTitle":"beranda","noteTitle":"beranda","faktaTitle":"beranda","gameTitle":"beranda","sprintTitle":"materi","boostTitle":"materi","reviewTitle":"ulang","progresTitle":"progres","methodTitle":"progres","dataTitle":"progres","srcTitle":"progres"};
+  var panes={"examTitle":"beranda","missionTitle":"beranda","noteTitle":"beranda","faktaTitle":"beranda","gameTitle":"beranda","tadokuTitle":"materi","sprintTitle":"materi","boostTitle":"materi","reviewTitle":"ulang","progresTitle":"progres","methodTitle":"progres","dataTitle":"progres","srcTitle":"progres"};
   Object.keys(panes).forEach(function(k){var sec=S(k);if(sec)sec.setAttribute("data-pane",panes[k]);});
   var jump=document.querySelector('section[aria-label="Jalan pintas materi dari bukumu"]');if(jump)jump.setAttribute("data-pane","materi");
   var nav=document.createElement("nav");nav.className="tabbar";nav.setAttribute("aria-label","Menu utama");
