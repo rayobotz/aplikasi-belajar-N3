@@ -349,9 +349,9 @@ body{background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linea
         <span class="eyebrow">Versi GitHub Pages • Progres tersimpan di HP ini • Dari Ray, buat kamu</span>
         <h1>Belajar <span class="jp">N3</span> pelan-pelan,<br>tapi nempel beneran.</h1>
         <p class="sub">Materi dari bukumu — bunpō & kosakata dalam sesi pendek 8–10 menit, pelan-pelan sampai nempel beneran.</p>
-        <div style="margin:14px 0 4px"><button class="btn btn-indigo" type="button" id="btnGuide">📖 Cara Main &amp; Urutan Belajar</button></div>
+        <div style="margin:14px 0 4px;display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn btn-accent" type="button" id="btnLanjut">▶ Lanjut belajar</button><button class="btn btn-ghost" type="button" id="btnGuide">📖 Cara Main</button></div>
         <div class="notice" role="note">
-          💾 <strong>Progresmu tersimpan otomatis di HP ini.</strong> Selalu buka aplikasi ini dari browser yang sama, ya. <a href="#dataTitle">Kok bisa hilang? Baca di sini</a>
+          💾 <strong>Progres tersimpan otomatis di HP ini.</strong> <a href="#dataTitle">Kok bisa hilang?</a>
         </div>
         <div class="stats" aria-label="Statistik progres tersimpan">
           <div class="stat"><b id="statXp">0</b><span>XP tersimpan</span></div>
@@ -362,7 +362,7 @@ body{background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linea
         <div class="progressbar" aria-hidden="true"><i id="xpBar"></i></div>
         <p class="sec-head" style="margin-top:8px"><span class="hint" id="xpHint">Kumpulkan 100 XP buat naik ke Level 2.</span></p>
         <p class="sec-head" style="margin-top:4px"><span class="hint" id="saveHint">Progres tersimpan di browser ini.</span></p>
-        <div class="actions" style="margin-top:10px"><button class="btn btn-ghost btnFuri" type="button">Furigana: tampil</button><span class="hint" style="align-self:center">Furigana = bacaan kecil di ATAS kanji. Matikan kalau mau menantang diri membaca kanji sendiri.</span></div>
+        <div class="actions" style="margin-top:10px"><button class="btn btn-ghost btnFuri" type="button">Furigana: tampil</button><span class="hint" style="align-self:center">Furigana = bacaan kecil di atas kanji.</span></div>
         <div class="earned" id="badgeRow" aria-label="Lencana"></div>
       </div>
     </header>
@@ -377,14 +377,7 @@ body{background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linea
     <section aria-labelledby="methodTitle">
       <div class="sources tape tape-kinako">
         <h3 id="methodTitle">Cara belajar di sini (gampang kok)</h3>
-        <p>Kamu nggak perlu membaca lama-lama. Metodenya cuma berputar di 4 langkah ini:</p>
-        <ol>
-          <li><strong>Baca kilat</strong> — materinya pendek, langsung ke intinya.</li>
-          <li><strong>Langsung jawab</strong> — kamu menebak dan menjawab dulu, baru lihat benar atau salahnya. Di situlah materinya nempel.</li>
-          <li><strong>Yang salah diulang</strong> — jawaban yang salah otomatis masuk tumpukan <strong>Ulang</strong> dan muncul lagi nanti, sampai kamu bisa.</li>
-          <li><strong>Cek progres</strong> — di tab Progres kelihatan bagian mana yang sudah nempel dan mana yang perlu diulang.</li>
-        </ol>
-        <p>Satu misi cuma 8–10 menit. Lebih baik sedikit tapi rutin, daripada banyak dalam sekali duduk. Kalau bingung mulai dari mana, ikuti saja <strong>Misi Hari Ini — 3 Langkah</strong> di bawah, atau langsung ke bagian <strong>Materi dari bukumu</strong> — di sana materi bukumu dimatengin pelan-pelan sampai nempel.</p>
+        <p>Baca kilat → langsung jawab → yang salah diulang otomatis. Satu misi 8–10 menit. Bingung mulai dari mana? Ikuti <strong>Misi Hari Ini</strong> di bawah.</p>
       </div>
     </section>
 
@@ -412,7 +405,7 @@ body{background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linea
     <section aria-labelledby="missionTitle">
       <div class="mission tape tape-sky">
         <h3 id="missionTitle">Misi Hari Ini — 3 Langkah</h3>
-        <p>Ikuti urutannya dari atas: ulang yang menunggu, perbaiki yang pernah keliru, baru lanjut materi. Selesai tiga-tiganya, hari ini sudah menang. Sisanya bonus.</p>
+        <p>Ulang → perbaiki → lanjut. Selesai tiga-tiganya, hari ini sudah menang.</p>
         <div id="step1box"></div>
         <div id="step2box"></div>
         <div class="mission-list" id="missionList"></div>
@@ -423,7 +416,7 @@ body{background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linea
       <div class="boost-jump tape tape-kinako">
         <div>
           <h3>🎯 Materi dari bukumu — matengin yang sudah kamu pelajari</h3>
-          <p>89 pola &amp; kosakata dari bukumu — 70 pola intinya dari pelajaranmu selama ini, sisanya Ekspansi 1 yang kebuka belakangan. Di sinilah mereka nempel beneran.</p>
+          <p>89 pola &amp; kosakata dari bukumu. Di sinilah mereka nempel beneran.</p>
         </div>
         <button class="btn btn-accent" type="button" id="btnBoostJump">Ke materinya ↓</button>
       </div>
@@ -431,7 +424,7 @@ body{background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linea
 
     <section aria-labelledby="reviewTitle">
       <div class="sec-head"><h2 id="reviewTitle">Pengulangan terjadwal</h2><span class="hint">Sistem Leitner • tersimpan di browser ini</span></div>
-      <p class="sec-desc">Kartu yang kamu tandai “belum hafal” atau soal yang kamu jawab salah masuk ke tumpukan ini. Tumpukan ini <strong>tersimpan di browser ini</strong>, jadi kalau kamu tutup halamannya, kartu-kartu ini akan tetap ada saat kamu buka lagi di HP &amp; browser yang sama — bisa diulang kapan saja, tidak harus habis hari ini.</p>
+      <p class="sec-desc">Kartu yang belum nempel berkumpul di sini buat diulang — tersimpan di browser ini, bisa dikerjakan kapan saja.</p>
       <div class="review-box tape tape-matcha">
         <h3 id="reviewHeading">Tumpukan ulang: 0 kartu</h3>
         <p id="reviewText">Kerjakan satu misi dulu — kartu yang belum nempel akan berkumpul di sini buat diulang di sesi yang sama.</p>
@@ -445,7 +438,7 @@ body{background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linea
 
     <section aria-labelledby="progresTitle">
       <div class="sec-head"><h2 id="progresTitle">Progresku — tunjukkan ke Ray</h2><span class="hint">Ringkasan per bagian — progresmu terkirim otomatis ke Ray, jadi pas ketemu tinggal dibahas bareng</span></div>
-      <p class="sec-desc">Bagian mana yang sudah kamu pahami, mana yang masih perlu diulang — semuanya terangkum di sini dari progres yang tersimpan di HP ini. Semua persen dihitung dari materi bukumu: kuis bunpō, flashcard kosakata, dan kuis konteks.</p>
+      <p class="sec-desc">Bagian yang sudah nempel dan yang perlu diulang, dari materi bukumu. Progresmu terkirim otomatis ke Ray.</p>
       <div class="daruma-row">
         <svg width="64" height="72" viewBox="0 0 64 72" role="img" aria-label="Daruma tujuan: lulus JLPT N3 Desember 2026" style="flex-shrink:0">
           <ellipse cx="32" cy="40" rx="29" ry="30" fill="#C73E2E"/>
@@ -457,7 +450,7 @@ body{background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linea
           <circle id="darumaEye2" cx="39" cy="32" r="2.8" fill="#2E2A25" style="display:none"/>
           <path d="M24 42 q8 5 16 0" stroke="#2E2A25" stroke-width="1.8" fill="none" stroke-linecap="round"/>
         </svg>
-        <p><strong>Daruma untuk Desember 2026.</strong> <span id="darumaCaption">Mata pertama terisi saat misi inti pertamamu selesai; mata kedua terisi saat semua misi inti tuntas — seperti daruma sungguhan: satu mata saat memasang tekad, satu mata saat tekadnya tercapai.</span></p>
+        <p><strong>Daruma untuk Desember 2026.</strong> <span id="darumaCaption">Mata pertama terisi saat misi inti pertamamu selesai; mata kedua saat semua misi inti tuntas.</span></p>
       </div>
       <div id="progresBody"></div>
       
@@ -466,7 +459,7 @@ body{background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linea
 
     <section aria-labelledby="boostTitle">
       <div class="sec-head"><h2 id="boostTitle">Materi dari bukumu</h2><span class="hint">日本語の森『JLPT N3 この一冊で合格する』</span></div>
-      <p class="sec-desc">Ini <strong>materi intimu</strong> di aplikasi ini: <strong>70 pola bunpō</strong> &amp; <strong>kosakata hari 1–12</strong> dari bukumu, yang sudah kamu pelajari selama ini bersama senseimu — di sini mereka <em>dimatengin</em>: diuji lagi pelan-pelan sampai nempel beneran. Jadi kalau di sini masih banyak yang salah, itu <strong>wajar — memang itu gunanya</strong>. Yang salah masuk tumpukan ulang buat diulang, bukan buat bikin kamu merasa gagal. Anggap ini sesi latihan, bukan ujian. Di bawah materi inti ada <strong>Ekspansi 1</strong> (bunpō tema 9–11 + kosakata lanjutan) — terkunci dulu, kebuka otomatis setelah semua materi inti selesai.</p>
+      <p class="sec-desc">Materi intimu: <strong>70 pola bunpō</strong> &amp; <strong>kosakata hari 1–12</strong> dari bukumu, diuji lagi pelan-pelan sampai nempel. Salah itu wajar — yang salah masuk tumpukan ulang, bukan tanda gagal. <strong>Ekspansi 1</strong> kebuka otomatis setelah materi inti selesai.</p>
       <h3 id="bunpoHead" style="margin:16px 0 10px;font-size:1.02rem">Bunpō — 89 pola (Bab 2, tema 1–11; tema 9–11 = Ekspansi 1)</h3>
       <div class="lesson-grid" id="boostGrammar"></div>
       <div class="actions" style="margin-top:12px;position:relative">
@@ -553,21 +546,21 @@ body{background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linea
         <h2 id="guideTitle">Selamat datang! 👋</h2>
         <p class="g-sub">Kenalan dulu sama aplikasi belajarmu, ya.</p>
         <ul class="guide-intro">
-          <li><span class="g-ico">📚</span><p>Aplikasi ini dibuat khusus buat menemanimu lulus <strong>JLPT N3</strong>, mengikuti buku yang sedang kamu pelajari: 『JLPT N3 この一冊で合格する』（日本語の森）.</p></li>
-          <li><span class="g-ico">⏱️</span><p>Isinya <strong>sesi pendek 8–10 menit</strong>: Bunpō （文法） dan Kotoba （語彙） dari bukumu. Sedikit-sedikit, yang penting rutin.</p></li>
-          <li><span class="g-ico">💪</span><p>Materinya <strong>dari bukumu langsung</strong>: 70 pola bunpō dan kosakata hari 1–12 yang sudah kamu pelajari bersama senseimu, dimatengin di sini sampai nempel beneran. Ada juga Ekspansi 1 (tema 9–11 + kosakata lanjutan) yang kebuka setelah materi inti tuntas.</p></li>
-          <li><span class="g-ico">💾</span><p>Progresmu <strong>tersimpan otomatis di HP ini</strong> — tutup lalu buka lagi, lanjut dari tempat terakhir. (Catatan kecil: harus di HP dan browser yang sama, ya.)</p></li>
+          <li><span class="g-ico">📚</span><p>Aplikasi ini menemanimu lulus <strong>JLPT N3</strong>, mengikuti bukumu: 『JLPT N3 この一冊で合格する』（日本語の森）.</p></li>
+          <li><span class="g-ico">⏱️</span><p><strong>Sesi pendek 8–10 menit</strong>: bunpō dan kosakata dari bukumu. Sedikit-sedikit, yang penting rutin.</p></li>
+          <li><span class="g-ico">💪</span><p><strong>Materinya dari bukumu langsung</strong>: 70 pola bunpō + kosakata hari 1–12, dimatengin sampai nempel. Ekspansi 1 kebuka setelah materi inti tuntas.</p></li>
+          <li><span class="g-ico">💾</span><p>Progres <strong>tersimpan otomatis di HP ini</strong> — lanjut dari tempat terakhir. Pakai HP dan browser yang sama, ya.</p></li>
         </ul>
-        <p class="guide-note"><img class="maker-seal" src="data:image/webp;base64,UklGRuQGAABXRUJQVlA4INgGAADQHwCdASpgAGAAPmEmkEWkIiGU7Ra0QAYEsYBp5hrV3eLCxdlc6zbieY3znvQnvL3oS9LLXhX2nw58PPpSTicP/JPup+I4ZeAF6r31cAfzVeG5qld+uiL/ZeJZQA/PXoT/9P+N9Af0x7Bn649bT9wPZJSs96cO4QG8h/fKF6OR0fmCWl9OwWrlDCw5UWKhO2iPPXezl8N2HCdzHkiOp1NEMC+SiSu0Dn/F2LzXD10QYNvER5B60jZFW/vqaYxDkXxdmV89X6dq4Icge0qwhWxoH337olUuCNv/N6cj4skcHlWSFnT8mId3CZmZka2OK5x2VAGLrUjTlmKIPuMj0F3QilghIUyGAAD+/WASYZ85No0lj2NdFtIC0A8rWUHHboa/ZZi44H6Lj+7H/7XejEYaUYyu6S11XLv6Mf1++yej9i2ysFPO+r58L4k/hoLLv0xRxslq4fVylGHZtZIF+gfF/BDQ1iFuFInsBjMDJRm+uimU60tNN5OpxdsQUDMEILfwGaf2G1YwjBrP+W1/4G083LGh6+zJnCE75DJfoloZzxxjHB4OjHp20uXh9btiA+FzuCoWmUhXvP20+tPMeHcWaHtIfZGV2dEOsjfkopTRNheZlpIMil9pImcF3MMeY8Rs/vKAHCn1xqVz0qW5TQ3AXDqfH6W92y8rGjbdf5O1D2MwCaxIEKDYbPvhh+qYYjAPcbsXhi3SgQYR09ZINpJiZA4DQOO5wzOMxB3aPr2TRanuZFJNGtekRUR0dg2d3HzRd5l8kg2ZOIIdY+gpJeipZEzxH7Z56Fr7JDK9D+7Q/3+lo4wLCL9qfFgMdm050awRIam83HiF5gvpNcn8tn0f/R9C4sH0+xepkErlf5b8arvFtpmOnbUBKmQep/QSEKTsHw3HgOfnR6i/iUf/DK54j3eOPjD8wU8g1sbzF3QKwqRlosfXTFHe5Ea8DEM+aG2J4djhehgzNGJTxh0LMN571Ya9pZx9uk/DlLPPCnAOX2bgygyGlwk/gxKkCxkX5L8EuqnYPWpWYKi5yWwHmjUbjYQ1zO3eKFp5DOLA2ABus+Hv+gHP3lC0d0wmJ4Aei/e4qIo24V29lVSEJWIUwS1lXn6Bj5gnzqpBpVM/6r7uJm5wChnjlafqbnT4mlWEwLTrApMqoayi5JlEU3403fkR6pw2OL8UNRSH1KgJO94hXUPxw0qpt2f06RLVIUSFR8fG3Jj/VLK7iwPLlfNbn03zEyLTkMehL7uceBVhO7os8jn+oM/h4/qDNP6a+xkSmlQgm5bPva2BKX5jI1WcLFkw3wCqBbDP08tPHfiPNeW/rgE2G/56V9OQ0RsdPlM1RUvweczMT/lk5U2W4ZYU5cuyuBwH70zsFYrhZ2387NrB/vEK7wSpAuVOnt1h4lNAecJVluOF3UP3/ZfYhHOTvdZ/rf8kEv2Txy7MUdgYB+ieEuo+ktbtkQ/UlrmzhbbziQET1w5enPHWpO1z9gOhsvRX1QQU/WU6mNbBMWgO1cq5UW2tdXOb+BOmHRIabL3EqCDFZGKI9qdvN9ajrAVTx4Z3lleT0Vxkb7T4IDYf/OTJMeEGx281xhm2mLyWnGwEoArbP9pTa/WSbHoD9vYlb+fPPHampRKZ7jG/GRzFjDtb4gyjL1twxcCHQptt+EHB/KU+lEJKqPLsEh/gOsQNn+JlxhehlpOHeb5iJX7FbvpjX/LIzTGld5taPksUcUUe5xgvnlDGiWZa5WBCC8OnUvJn2QsF53wu5rUXwxyGAMCz4hfevQAKKt90sBWXwFnP+isfz8byTabuvo7KXP0nI8VXt89JsNTyiMI7ulqyKM0qbrBTZ/0nQ+ZVex2mReQYL+UTlD6+dV7ZsYIRANw+CHGbO0lJ9jx+h9KtfpywDArhpbLvNI6ulUgteNLfghnW3VPYyWFdc2qn7IKczyHrqbBvZQccOEUc76Q9XYtmdIyQ2X2LOpT+msCYu/FEQG0sjV6kOg/Bl/qnUhewWm2M+d5+aLaOsHx2LiDKBFs5/XRs/TS0h2vXtK5x2CkIdIrG9HHUNGHE99ApKhZPpF2oFP09d4GkFefNcYZMahQR/G41o+O9DhQhW55/RGPBDpffyhM79n0yefwq1VpUDbe50CRhpLSi3bYSfXGsRqbieD2RWjrW/KPF4UfEOO+/dsLxNZHnK9rW0JMyoCuzlT6sUS8bMUqQi822QbIj3LWLuyx6KNps+K6jpEKmSKWbnxEcpnrncaVsEQ0+Os95FnGU9Ir2OqkW1XRl2Tj8YrIPo+OWcLPkQ0wCHmED6MKP78a7nuWQuhl+rYj0QrvoRmNwRDaS4gjtdccAAAA=" alt="Ray Obotz — pembuat aplikasi ini">Aplikasi ini dibuat oleh Ray buat menemani belajarmu. Semangat — kamu nggak jalan sendiri. 💛</p>
+        <p class="guide-note"><img class="maker-seal" src="data:image/webp;base64,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" alt="Ray Obotz — pembuat aplikasi ini">Dibuat oleh Ray buat menemani belajarmu. Kamu nggak jalan sendiri. 💛</p>
       </div>
       <div class="guide-step" id="guideStep2" hidden>
         <h2>Cara pakainya gampang</h2>
         <p class="g-sub">Nggak perlu bingung mulai dari mana — ikuti saja urutan ini:</p>
         <ol class="guide-steps">
-          <li><span class="g-num">1</span><p><strong>Ikuti “Misi Hari Ini — 3 Langkah” di beranda.</strong> Urutannya selalu sama: <strong>1</strong> ulang kartu yang menunggu di tumpukan, <strong>2</strong> perbaiki kuis yang skornya belum sempurna, <strong>3</strong> lanjut materi dari bukumu yang berikutnya. Di atasnya ada hitung mundur ke ujian 6 Desember 2026 plus ritme harianmu — jadi kamu selalu tahu hari ini cukup ngapain. Nggak perlu milih-milih dulu.</p></li>
-          <li><span class="g-num">2</span><p><strong>Di dalam materi:</strong> baca penjelasannya, lalu jawab kuis / flashcard-nya sampai selesai. Tebak dulu, baru lihat benar-salahnya — di situlah materinya nempel. Skor dan XP tersimpan otomatis di HP ini.</p></li>
-          <li><span class="g-num">3</span><p><strong>Furigana</strong> (bacaan kecil di atas kanji) bisa dinyalakan atau dimatikan pakai sakelar di dalam misi. Nyalakan saja kalau kanjinya belum lancar.</p></li>
-                    <li><span class="g-num">4</span><p><strong>Jawaban yang salah masuk tumpukan “Ulang”</strong> — sesekali kerjakan di sana biar yang lemah jadi nempel. Di tab <strong>Progres</strong> kamu bisa lihat bagian mana yang sudah nempel dan mana yang perlu diulang, dan progresmu terkirim otomatis ke Ray buat dibahas bareng pas ketemu.</p></li>
+          <li><span class="g-num">1</span><p><strong>Ikuti “Misi Hari Ini — 3 Langkah” di beranda.</strong> Ulang yang menunggu → perbaiki yang belum sempurna → lanjut materi berikutnya. Ada hitung mundur ke ujian 6 Desember 2026 di atasnya. Nggak perlu milih-milih.</p></li>
+          <li><span class="g-num">2</span><p><strong>Di dalam materi:</strong> baca kilat, lalu jawab kuisnya. Tebak dulu, baru lihat benar-salahnya — di situlah nempelnya.</p></li>
+          <li><span class="g-num">3</span><p><strong>Furigana</strong> bisa dinyalakan/dimatikan pakai sakelar di dalam misi.</p></li>
+                    <li><span class="g-num">4</span><p><strong>Jawaban salah masuk tumpukan “Ulang”</strong> buat diulang lagi nanti. Progresmu terkirim otomatis ke Ray buat dibahas bareng.</p></li>
         </ol>
         <p class="guide-note">Pengenalan ini muncul sekali di awal. Nanti bisa dibuka lagi kapan pun lewat tombol “Cara Main &amp; Urutan Belajar” di beranda.</p>
       </div>
@@ -1613,7 +1606,7 @@ function renderProgres(){
   var e1=document.getElementById("darumaEye1"),e2=document.getElementById("darumaEye2"),cap=document.getElementById("darumaCaption");
   if(e1)e1.style.display=dDone>0?"":"none";
   if(e2)e2.style.display=(dTotal>0&&dDone>=dTotal)?"":"none";
-  if(cap)cap.textContent=(dTotal>0&&dDone>=dTotal)?"Kedua mata sudah terisi — semua misi inti tuntas. Tinggal jaga yang sudah nempel sampai hari ujian.":dDone>0?("Sudah "+dDone+" dari "+dTotal+" misi inti selesai — mata pertama terisi. Mata kedua menunggu misi inti terakhir."):"Mata pertama terisi saat misi inti pertamamu selesai; mata kedua terisi saat semua misi inti tuntas — seperti daruma sungguhan: satu mata saat memasang tekad, satu mata saat tekadnya tercapai.";
+  if(cap)cap.textContent=(dTotal>0&&dDone>=dTotal)?"Kedua mata sudah terisi — semua misi inti tuntas. Tinggal jaga yang sudah nempel sampai hari ujian.":dDone>0?("Sudah "+dDone+" dari "+dTotal+" misi inti selesai — mata pertama terisi. Mata kedua menunggu misi inti terakhir."):"Mata pertama terisi saat misi inti pertamamu selesai; mata kedua saat semua misi inti tuntas.";
 }
 var RAY_NOTES=["Satu misi aja hari ini cukup. Pelan nggak apa-apa, yang penting nggak berhenti.","Kalau lagi capek, buka yang paling gampang dulu. Mulai aja, sisanya ngikut.","Yang kemarin salah itu bukan gagal — itu bahan ulang. Memang begitu cara nempelnya.","Delapan menit sekarang lebih berharga daripada dua jam yang cuma direncanain.","Kamu sudah sampai sejauh ini di bukumu. Buktiin ke diri sendiri, bukan ke siapa-siapa.","Hari ini nggak harus sempurna. Sedikit lebih bisa dari kemarin juga kemajuan.","Kalau ada materi yang terasa salah atau membingungkan, catat nomor misinya — nanti kubenerin.","Istirahat juga bagian dari belajar. Tapi sebelum istirahat, satu misi dulu ya.","Ingat kenapa mulai: Desember nanti, kamu duduk di ruang ujian itu dengan tenang.","Aku nggak bisa nemenin di ruang ujian — aplikasi ini yang nemenin dari sekarang."];
 (function(){var t=document.getElementById("rayNoteText");if(t){var d=Math.floor(Date.now()/86400000);t.textContent=RAY_NOTES[d%RAY_NOTES.length];}})();
@@ -1643,6 +1636,7 @@ function showGuideStep(n){
 function openGuide(){var g=document.getElementById("guideOverlay");if(g){showGuideStep(1);g.hidden=false;document.body.style.overflow="hidden";}}
 function closeGuide(){var g=document.getElementById("guideOverlay");if(g){g.hidden=true;document.body.style.overflow="";}if(!studyMeta.introSeen||!studyMeta.guideSeen){studyMeta.introSeen=true;studyMeta.guideSeen=true;saveProgress();}}
 var bg=document.getElementById("btnGuide");if(bg)bg.addEventListener("click",openGuide);
+var bl=document.getElementById("btnLanjut");if(bl)bl.addEventListener("click",function(){var m=document.getElementById("missionTitle");if(m)m.scrollIntoView({behavior:"smooth",block:"start"});});
 var bn=document.getElementById("btnIntroNext");if(bn)bn.addEventListener("click",function(){showGuideStep(2);});
 var bk=document.getElementById("btnGuideBack");if(bk)bk.addEventListener("click",function(){showGuideStep(1);});
 var bsk=document.getElementById("btnIntroSkip");if(bsk)bsk.addEventListener("click",closeGuide);
