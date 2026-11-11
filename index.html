@@ -327,6 +327,22 @@ body{background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linea
 .try-wrong{margin:6px 0 6px 18px}
 .try-wrong li{margin-bottom:8px}
 .tq-badge{display:inline-block;font-size:.68rem;font-weight:800;background:var(--gold-soft);color:var(--gold);border-radius:6px;padding:1px 6px;margin-right:6px;vertical-align:1px}
+
+/* === TAB BERANDA (hiji layar) === */
+#homeView[data-tab]:not([data-tab="beranda"]) .hero{display:none}
+#homeView section[data-pane]{display:none}
+#homeView[data-tab="beranda"] section[data-pane="beranda"],
+#homeView[data-tab="materi"] section[data-pane="materi"],
+#homeView[data-tab="ulang"] section[data-pane="ulang"],
+#homeView[data-tab="progres"] section[data-pane="progres"]{display:block}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;background:#FFFDF7;border-top:2px solid #E7DFC9;box-shadow:0 -4px 18px rgba(90,70,20,.14);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+.tabbar button{flex:1;background:none;border:none;font:inherit;font-size:.78rem;font-weight:700;color:#8A8272;padding:7px 2px;border-radius:10px;cursor:pointer}
+.tabbar button .ti{display:block;font-size:1.25rem;line-height:1.2}
+.tabbar button.aktif{background:#FDECEA;color:#C73E2E}
+body{padding-bottom:74px}
+.hero .eyebrow{display:none}
+.hero .sub{display:none}
+.hero p.sec-head:has(#saveHint){display:none}
 </style>
 </head>
 <body>
@@ -1517,7 +1533,7 @@ for(var fi=0;fi<furiBtns.length;fi++){furiBtns[fi].addEventListener("click",func
 applyFuri();
 el("btnBack").addEventListener("click",closeLessonView);
 el("btnCatBack").addEventListener("click",closeCatView);
-var bj=el("btnBoostJump");if(bj)bj.addEventListener("click",function(){var t=el("boostTitle");if(t)t.scrollIntoView();});
+var bj=el("btnBoostJump");if(bj)bj.addEventListener("click",function(){if(window.pindahTabN3)window.pindahTabN3("materi");var t=el("boostTitle");if(t)setTimeout(function(){t.scrollIntoView();},80);});
 
 /* ===== Progresku: ringkasan per bagian + salin ringkasan ===== */
 function catUnits(){
@@ -1637,6 +1653,33 @@ function openGuide(){var g=document.getElementById("guideOverlay");if(g){showGui
 function closeGuide(){var g=document.getElementById("guideOverlay");if(g){g.hidden=true;document.body.style.overflow="";}if(!studyMeta.introSeen||!studyMeta.guideSeen){studyMeta.introSeen=true;studyMeta.guideSeen=true;saveProgress();}}
 var bg=document.getElementById("btnGuide");if(bg)bg.addEventListener("click",openGuide);
 var bl=document.getElementById("btnLanjut");if(bl)bl.addEventListener("click",function(){var m=document.getElementById("missionTitle");if(m)m.scrollIntoView({behavior:"smooth",block:"start"});});
+(function(){
+  var hv=document.getElementById("homeView");if(!hv)return;
+  function S(l){return document.querySelector('section[aria-labelledby="'+l+'"]');}
+  var panes={"examTitle":"beranda","missionTitle":"beranda","noteTitle":"beranda","sprintTitle":"materi","boostTitle":"materi","reviewTitle":"ulang","progresTitle":"progres","methodTitle":"progres","dataTitle":"progres","srcTitle":"progres"};
+  Object.keys(panes).forEach(function(k){var sec=S(k);if(sec)sec.setAttribute("data-pane",panes[k]);});
+  var jump=document.querySelector('section[aria-label="Jalan pintas materi dari bukumu"]');if(jump)jump.setAttribute("data-pane","materi");
+  var nav=document.createElement("nav");nav.className="tabbar";nav.setAttribute("aria-label","Menu utama");
+  var daftar=[["beranda","\u{1F3E0}","Beranda"],["materi","\u{1F4DA}","Materi"],["ulang","\u{1F501}","Ulang"],["progres","\u{1F4CA}","Progres"]];
+  var btns={};
+  daftar.forEach(function(t){
+    var b=document.createElement("button");b.type="button";
+    var sp=document.createElement("span");sp.className="ti";sp.textContent=t[1];
+    b.appendChild(sp);b.appendChild(document.createTextNode(t[2]));
+    b.addEventListener("click",function(){pindahTab(t[0]);});
+    nav.appendChild(b);btns[t[0]]=b;
+  });
+  hv.appendChild(nav);
+  function pindahTab(n){
+    hv.setAttribute("data-tab",n);
+    Object.keys(btns).forEach(function(k){btns[k].classList.toggle("aktif",k===n);});
+    window.scrollTo(0,0);
+  }
+  window.pindahTabN3=pindahTab;
+  var lk=document.querySelector('.notice a[href="#dataTitle"]');
+  if(lk)lk.addEventListener("click",function(){pindahTab("progres");});
+  pindahTab("beranda");
+})();
 var bn=document.getElementById("btnIntroNext");if(bn)bn.addEventListener("click",function(){showGuideStep(2);});
 var bk=document.getElementById("btnGuideBack");if(bk)bk.addEventListener("click",function(){showGuideStep(1);});
 var bsk=document.getElementById("btnIntroSkip");if(bsk)bsk.addEventListener("click",closeGuide);
