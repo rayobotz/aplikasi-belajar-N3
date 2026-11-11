@@ -1919,7 +1919,20 @@ function vocabQuiz(catIdx){
   }
   startQuizOnly(qs,cards,title,id);
 }
-function ctxSets(){return [VOCAB_CTX_LESSON,VOCAB_CTX_SET2,VOCAB_CTX_SET3];}
+var CTX_FEED_SETS=[];
+function ctxSets(){return [VOCAB_CTX_LESSON,VOCAB_CTX_SET2,VOCAB_CTX_SET3].concat(CTX_FEED_SETS);}
+function muatSoalFeed(){
+  try{
+    fetch("soal.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+      if(!j||!Array.isArray(j.sets))return;
+      var aya={};ctxSets().forEach(function(x){aya[x.id]=1;});
+      var nambah=0;
+      j.sets.forEach(function(st){if(st&&st.id&&Array.isArray(st.questions)&&Array.isArray(st.cards)&&!aya[st.id]){CTX_FEED_SETS.push(st);nambah++;}});
+      if(nambah&&typeof renderBoost==="function")renderBoost();
+    }).catch(function(){});
+  }catch(e){}
+}
+muatSoalFeed();
 function startCtxLesson(){
   var sets=ctxSets(),pick=null,i;
   for(i=0;i<sets.length;i++){if(!state.done[sets[i].id]){pick=sets[i];break;}}
@@ -2032,6 +2045,7 @@ function summaryText(){
     eiS.dExam>=0?("Hitung mundur: H-"+eiS.dExam+" ke JLPT N3 (Minggu, 6 Desember 2026) \u2022 target materi selesai 22 November 2026"):("JLPT N3 (6 Desember 2026) sudah lewat"),
     eiS.dTarget>0&&eiS.sisaMisi?("Ritme: sisa "+eiS.sisaMisi+" materi & "+eiS.sisaKartu+" kartu baru \u2192 cukup \u00B1"+eiS.ritmeMisi+" materi/hari & \u00B1"+eiS.ritmeKartu+" kartu/hari"):(eiS.sisaMisi?("Sisa materi: "+eiS.sisaMisi+" materi & "+eiS.sisaKartu+" kartu baru"):("Semua materi inti selesai \u2014 tinggal menjaga yang sudah nempel")),
     "Level "+levelFromXp(state.xp).level+" \u2022 "+state.xp+" XP"+(studyMeta.streakDays?(" \u2022 Rangkaian belajar: "+studyMeta.streakDays+" hari"):""),""];
+  try{var cxd=ctxSets().filter(function(x){return state.done[x.id];}).length;var tdr=0;TADOKU.forEach(function(t){if(state.tadokuRead&&state.tadokuRead[t.id])tdr++;});lines.push("Kuis Konteks: "+cxd+"/"+ctxSets().length+" set selesai • Tadoku: "+tdr+"/"+TADOKU.length+" cerita dibaca");}catch(e){}
   cats.forEach(function(c){var s=catStat(c);lines.push(c.label+" ("+c.jp+"): "+s.done+"/"+s.total+" selesai ("+s.pct+"%) \u2014 "+s.status+(s.extraTotal?(" • penguat "+s.extraDone+"/"+s.extraTotal):""));});
   var sc=scoredUnits().slice().sort(function(a,b){return (b.score/b.max)-(a.score/a.max);});
   var strongL=sc.filter(function(u){return u.score/u.max>=0.75;}).slice(0,3);
