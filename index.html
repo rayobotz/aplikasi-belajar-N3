@@ -132,6 +132,10 @@ section{margin-top:30px}
 .review-box p{color:var(--muted);font-size:.92rem}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .chip{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 12px;font-size:.9rem}
+.review-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.review-item{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.review-item .ri-front{margin:0;font-size:.92rem;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.review-item small{display:block;margin-top:4px;color:var(--muted)}
 .sources{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
 .sources h3{margin-bottom:8px}
 .sources p,.sources li{font-size:.92rem;color:var(--muted)}
@@ -431,7 +435,7 @@ body{background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linea
       <div class="review-box tape tape-matcha">
         <h3 id="reviewHeading">Tumpukan ulang: 0 kartu</h3>
         <p id="reviewText">Kerjakan satu misi dulu — kartu yang belum nempel akan berkumpul di sini buat diulang di sesi yang sama.</p>
-        <div class="chips" id="reviewChips"></div>
+        <div class="review-list" id="reviewChips"></div>
         <div class="actions">
           <button class="btn btn-accent" id="btnReview" type="button" disabled>Ulang tumpukan ini sekarang</button>
         </div>
@@ -799,7 +803,7 @@ function renderHome(){
   // review
   el("reviewHeading").textContent="Tumpukan ulang: "+state.review.length+" kartu";
   el("reviewText").textContent=state.review.length?"Kartu-kartu ini belum nempel. Tumpukan ini tersimpan, jadi boleh diulang sekarang atau nanti saat kamu buka lagi — tandai ‘Sudah hafal’ buat mengeluarkannya dari tumpukan.":"Kerjakan satu misi dulu — kartu yang belum nempel akan berkumpul di sini dan tersimpan buat diulang kapan saja.";
-  el("reviewChips").innerHTML=state.review.map(function(c){return '<span class="chip jp">'+esc(c.front)+' <small style="color:var(--muted)">'+esc(c.reading)+'</small></span>';}).join("");
+  el("reviewChips").innerHTML=state.review.map(function(c){return '<div class="review-item"><p class="ri-front jp">'+esc(c.front)+'</p><small>'+esc(c.reading)+'</small></div>';}).join("");
   el("btnReview").disabled=state.review.length===0;
   var btns=document.querySelectorAll("[data-start]");
   for(var i=0;i<btns.length;i++){btns[i].addEventListener("click",function(){startLesson(this.getAttribute("data-start"));});}
