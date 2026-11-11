@@ -451,7 +451,7 @@ body{padding-bottom:74px}
 
     <section aria-labelledby="gameTitle">
       <div class="sources tape tape-kinako">
-        <h3 id="gameTitle">🎮 Main sebentar — Cocokkeun Kata</h3>
+        <h3 id="gameTitle">🎮 Main sebentar — Cocokkan Kata</h3>
         <p style="margin:0 0 10px">Istirahat sambil main: pasangkan kartu kata dengan artinya. Santai saja, tidak ada nilai yang dipertaruhkan — salah pun tidak apa-apa.</p>
         <button class="btn btn-accent" type="button" id="btnGame">🎴 Mulai main</button>
       </div>
@@ -862,7 +862,7 @@ function stopGameTimer(){if(gameTimer){clearInterval(gameTimer);gameTimer=null;}
 function bukaGame(){
   reviewMode=false;
   openLessonView();
-  el("lvTitle").textContent="🎮 Cocokkeun Kata";
+  el("lvTitle").textContent="🎮 Cocokkan Kata";
   el("lvStepText").textContent="Game kosakata";
   el("lvBar").style.width="100%";
   renderGamePicker();
@@ -889,7 +889,7 @@ function teksStatusGame(){var g=gameState;return "Pasangan: "+g.pasang+"/"+g.tot
 function renderGameBoard(){
   var g=gameState;if(!g)return;
   el("lvStepText").textContent=teksStatusGame();
-  var html='<div class="cardbox"><span class="step-label">Cocokkeun Kata • '+(gameCfg.kat<0?"Campuran":esc(VOCAB_CATS[gameCfg.kat].name))+'</span><div class="gpapan" style="margin-top:12px">';
+  var html='<div class="cardbox"><span class="step-label">Cocokkan Kata • '+(gameCfg.kat<0?"Campuran":esc(VOCAB_CATS[gameCfg.kat].name))+'</span><div class="gpapan" style="margin-top:12px">';
   g.tiles.forEach(function(t,i){
     var muka=g.cocog[i]||g.kabuka[i];
     var cls="gk"+(g.cocog[i]?" cocok":muka?" buka":" tutup");
