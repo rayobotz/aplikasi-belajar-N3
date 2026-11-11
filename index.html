@@ -512,12 +512,10 @@ body{padding-bottom:74px}
       <div class="sec-head"><h2 id="boostTitle">Materi dari bukumu</h2><span class="hint">日本語の森『JLPT N3 この一冊で合格する』</span></div>
       <p class="sec-desc">Materi intimu: <strong>70 pola bunpō</strong> &amp; <strong>kosakata hari 1–12</strong> dari bukumu, diuji lagi pelan-pelan sampai nempel. Salah itu wajar — yang salah masuk tumpukan ulang, bukan tanda gagal. <strong>Ekspansi 1</strong> kebuka otomatis setelah materi inti selesai.</p>
       <h3 id="bunpoHead" style="margin:16px 0 10px;font-size:1.02rem">Bunpō — 89 pola (Bab 2, tema 1–11; tema 9–11 = Ekspansi 1)</h3>
-      <div class="lesson-grid" id="boostGrammar"></div>
+      <div id="boostGrammar"></div>
       <div class="actions" style="margin-top:12px;position:relative">
         <button class="btn btn-accent" type="button" id="btnGramAll">Kuis campuran — semua pola</button><span id="gramAllStamp" class="card-stamp jp" style="display:none" aria-hidden="true">済</span>
       </div>
-      <h3 id="kotobaHead" style="margin:22px 0 10px;font-size:1.02rem">Kosakata — hari 1–15 (daftar Bab 1, menurut kategori buku + lanjutan)</h3>
-      <div class="lesson-grid" id="boostVocab"></div>
       <div class="boost-card" style="margin-top:12px">
         <span class="badges"><span class="badge b-n3">N3</span><span class="badge b-skill">Kuis konteks</span></span>
         <h3>Kuis Konteks Kosakata — model soal JLPT</h3>
@@ -1415,17 +1413,17 @@ var VOCAB_CATS=[
 ];
 var VOCAB_CTX_LESSON={id:"vocab-ctx",level:"N3",skill:"Kosakata",group:"Dari bukumu",title:"Kuis Konteks Kosakata — model JLPT",pattern:"文脈規定・漢字読み",minutes:8,source:"Model soal: Bab 1 buku 日本語の森 (文脈規定・漢字読み) • Soal orisinal",
  introTitle:"Kata yang sama, konteks yang menentukan",intro:"Soal 文脈規定 JLPT tidak menanyakan arti kata secara langsung — kamu harus memilih kata yang pas dengan konteks kalimatnya. Delapan soal ini memakai kata-kata dari bank hari 1–12. Baca seluruh kalimatnya dulu, jangan cuma lihat kata di dalam kurung.",
- exampleJp:"レポートの締め切りは明日までです。",exampleId:"Batas waktu (deadline) laporannya sampai besok.",
+ exampleJp:"レポートの締《し》め切《き》りは明日《あした》までです。",exampleId:"Batas waktu (deadline) laporannya sampai besok.",
  cards:[{front:"締め切り",reading:"しめきり",meaning:"batas waktu (deadline)"},{front:"乗り換え",reading:"のりかえ",meaning:"pindah kendaraan / transit"},{front:"集める",reading:"あつめる",meaning:"mengumpulkan"}],
  questions:[
-  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"レポートの（　）は明日までですから、今夜中に終わらせます。",choices:["締め切り","知り合い","匂い","引き出し"],answer:0,explain:"締め切り (しめきり) = batas waktu. Untuk laporan, pasangannya memang kata ini."},
-  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"新大阪駅で新幹線に（　）。",choices:["乗り換えます","集めます","表します","飼います"],answer:0,explain:"Pindah kendaraan di stasiun memakai 乗り換える. 集める = mengumpulkan, konteksnya tidak cocok."},
-  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"彼は古い切手を（　）のが趣味です。",choices:["集める","余る","当たる","空ける"],answer:0,explain:"趣味 mengumpulkan perangko lama → 集める (あつめる). 余る = tersisa, tidak bisa jadi hobi dalam kalimat ini."},
-  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"電車がなかなか来なくて、ホームの人たちは（　）います。",choices:["慌てて","飽きて","謝って","怒って"],answer:0,explain:"Kereta tak kunjung datang membuat orang gelisah/panik → 慌てる (あわてる) paling pas."},
-  {kind:"choice",prompt:"漢字読み — cara baca kata yang digarisbawahi.",promptJp:"最近、「悩み」が多くて眠れません。Kata 悩み dibaca…",choices:["なやみ","なさみ","のうみ","なゆみ"],answer:0,explain:"悩み = なやみ (kekhawatiran). Kata ini ada di daftar 名詞（その他） buku, hlm. 29."},
-  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"冷めたスープを、もう一度（　）。",choices:["温めます","預けます","与えます","扱います"],answer:0,explain:"Sup yang sudah dingin dihangatkan lagi → 温める (あたためる)."},
-  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"この牛乳は、（　）まで冷蔵庫に入れておけば大丈夫です。",choices:["消費期限","証明写真","生年月日","天気予報"],answer:0,explain:"Untuk makanan/minuman, tanggal batas konsumsi = 消費期限 (しょうひきげん)."},
-  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"かばんは机の上に（　）ください。",choices:["置いて","飼って","余って","当たって"],answer:0,explain:"Meletakkan tas di atas meja → 置く (おく). 飼う khusus untuk memelihara hewan."}
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"レポートの（　）は明日《あした》までですから、今夜中《こんやちゅう》に終《お》わらせます。",choices:["締《し》め切《き》り","知《し》り合《あ》い","匂《にお》い","引《ひ》き出《だ》し"],answer:0,explain:"締め切り (しめきり) = batas waktu. Untuk laporan, pasangannya memang kata ini."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"新大阪駅《しんおおさかえき》で新幹線《しんかんせん》に（　）。",choices:["乗《の》り換《か》えます","集《あつ》めます","表《あらわ》します","飼《か》います"],answer:0,explain:"Pindah kendaraan di stasiun memakai 乗り換える. 集める = mengumpulkan, konteksnya tidak cocok."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"彼《かれ》は古《ふる》い切手《きって》を（　）のが趣味《しゅみ》です。",choices:["集《あつ》める","余《あま》る","当《あ》たる","空《あ》ける"],answer:0,explain:"趣味 mengumpulkan perangko lama → 集める (あつめる). 余る = tersisa, tidak bisa jadi hobi dalam kalimat ini."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"電車《でんしゃ》がなかなか来《こ》なくて、ホームの人《ひと》たちは（　）います。",choices:["慌《あわ》てて","飽《あ》きて","謝《あやま》って","怒《おこ》って"],answer:0,explain:"Kereta tak kunjung datang membuat orang gelisah/panik → 慌てる (あわてる) paling pas."},
+  {kind:"choice",prompt:"漢字読み — cara baca kata yang digarisbawahi.",promptJp:"最近《さいきん》、「悩み」が多《おお》くて眠《ねむ》れません。Kata 悩み dibaca…",choices:["なやみ","なさみ","のうみ","なゆみ"],answer:0,explain:"悩み = なやみ (kekhawatiran). Kata ini ada di daftar 名詞（その他） buku, hlm. 29."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"冷《さ》めたスープを、もう一度《いちど》（　）。",choices:["温《あたた》めます","預《あず》けます","与《あた》えます","扱《あつか》います"],answer:0,explain:"Sup yang sudah dingin dihangatkan lagi → 温める (あたためる)."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"この牛乳《ぎゅうにゅう》は、（　）まで冷蔵庫《れいぞうこ》に入《い》れておけば大丈夫《だいじょうぶ》です。",choices:["消費《しょうひ》期限《きげん》","証明《しょうめい》写真《しゃしん》","生年月日《せいねんがっぴ》","天気《てんき》予報《よほう》"],answer:0,explain:"Untuk makanan/minuman, tanggal batas konsumsi = 消費期限 (しょうひきげん)."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"かばんは机《つくえ》の上《うえ》に（　）ください。",choices:["置《お》いて","飼《か》って","余《あま》って","当《あ》たって"],answer:0,explain:"Meletakkan tas di atas meja → 置く (おく). 飼う khusus untuk memelihara hewan."}
  ]};
 
 /* ===== Boost engines: decks + generated quizzes ===== */
@@ -1876,10 +1874,10 @@ function wireBoostButtons(scope){
   map.forEach(function(pair){var bs=scope.querySelectorAll("["+pair[0]+"]");for(var j=0;j<bs.length;j++){bs[j].addEventListener("click",function(){pair[1](parseInt(this.getAttribute(pair[0]),10));});}});
 }
 function renderBoost(){
-  var gEl=el("boostGrammar"),vEl=el("boostVocab");if(!gEl||!vEl)return;
-  gEl.innerHTML=GRAM_THEMES.map(function(t,i){return gramThemeCardHtml(t,i);}).join("");
-  vEl.innerHTML=VOCAB_CATS.map(function(c,i){return vocabCatCardHtml(c,i);}).join("");
-  wireBoostButtons(document);
+  var gEl=el("boostGrammar");if(!gEl)return;
+  gEl.innerHTML='<button class="btn btn-indigo" type="button" id="btnRoomBunpo" style="width:100%;margin-bottom:8px;text-align:left">\u{1F9E9} Ruang Bunp\u014D — 11 tema pola <span style="font-weight:400;font-size:.85em">dari bukumu</span></button><button class="btn btn-indigo" type="button" id="btnRoomKotoba" style="width:100%;text-align:left">\u{1F4DA} Ruang Kosakata — 4 kategori <span style="font-weight:400;font-size:.85em">dari bukumu</span></button>';
+  el("btnRoomBunpo").addEventListener("click",function(){openCatView("bunpo");});
+  el("btnRoomKotoba").addEventListener("click",function(){openCatView("kotoba");});
   var allBtn=el("btnGramAll");if(allBtn)allBtn.addEventListener("click",function(){gramQuiz(-1);});var gStamp=el("gramAllStamp");if(gStamp)gStamp.style.display=state.done["gq-all"]?"flex":"none";
   var ctxBtn=el("btnVocabCtx");if(ctxBtn)ctxBtn.addEventListener("click",startCtxLesson);var cStamp=el("ctxStamp");if(cStamp)cStamp.style.display=(typeof VOCAB_CTX_LESSON!=="undefined"&&state.done[VOCAB_CTX_LESSON.id])?"flex":"none";
 }
