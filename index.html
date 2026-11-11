@@ -641,7 +641,7 @@ fetch(N3_TRACK_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/p
 }
 window.addEventListener("load",function(){setTimeout(kirimLaporanN3,3000);});
 function saveProgress(){try{studyMeta.savedAt=new Date().toISOString();studyMeta.lastOpenedAt=studyMeta.savedAt;var payload={version:1,state:state,meta:studyMeta};localStorage.setItem(STORAGE_KEY,JSON.stringify(payload));jadwalLaporN3();var sh=document.getElementById("saveHint");if(sh){sh.textContent="Tersimpan di browser ini"+(studyMeta.streakDays?(" • Rangkaian belajar: "+studyMeta.streakDays+" hari"):"")+" • Terakhir disimpan: "+new Date().toLocaleString("id-ID");}var ss=document.getElementById("saveStatus");if(ss&&studyMeta.savedAt){/* keep base text; status shown via saveHint */}}catch(e){/* storage penuh / mode privat — aplikasi tetap jalan tanpa menyimpan */}}
-function loadProgress(){try{var raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;var data=JSON.parse(raw);if(!data||typeof data!=="object")return;if(data.state&&typeof data.state==="object"){state.xp=typeof data.state.xp==="number"?data.state.xp:0;state.done=data.state.done&&typeof data.state.done==="object"?data.state.done:{};state.scores=data.state.scores&&typeof data.state.scores==="object"?data.state.scores:{};state.review=Array.isArray(data.state.review)?data.state.review:[];state.badges=data.state.badges&&typeof data.state.badges==="object"?data.state.badges:{};state.correctStreak=typeof data.state.correctStreak==="number"?data.state.correctStreak:0;state.attempts=data.state.attempts&&typeof data.state.attempts==="object"?data.state.attempts:{};state.lastTryout=data.state.lastTryout&&typeof data.state.lastTryout==="object"?data.state.lastTryout:null;state.tryoutWrong=Array.isArray(data.state.tryoutWrong)?data.state.tryoutWrong:[];state.tryoutCount=typeof data.state.tryoutCount==="number"?data.state.tryoutCount:0;}if(data.meta&&typeof data.meta==="object"){for(var k in DEFAULT_META){if(Object.prototype.hasOwnProperty.call(data.meta,k))studyMeta[k]=data.meta[k];}}}catch(e){/* data rusak — mulai dari awal tanpa crash */}}
+function loadProgress(){try{var raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;var data=JSON.parse(raw);if(!data||typeof data!=="object")return;if(data.state&&typeof data.state==="object"){state.xp=typeof data.state.xp==="number"?data.state.xp:0;state.done=data.state.done&&typeof data.state.done==="object"?data.state.done:{};state.scores=data.state.scores&&typeof data.state.scores==="object"?data.state.scores:{};state.review=(Array.isArray(data.state.review)?data.state.review:[]).filter(function(c){return !c.front||String(c.front).indexOf("〜")<0;});state.badges=data.state.badges&&typeof data.state.badges==="object"?data.state.badges:{};state.correctStreak=typeof data.state.correctStreak==="number"?data.state.correctStreak:0;state.attempts=data.state.attempts&&typeof data.state.attempts==="object"?data.state.attempts:{};state.lastTryout=data.state.lastTryout&&typeof data.state.lastTryout==="object"?data.state.lastTryout:null;state.tryoutWrong=Array.isArray(data.state.tryoutWrong)?data.state.tryoutWrong:[];state.tryoutCount=typeof data.state.tryoutCount==="number"?data.state.tryoutCount:0;}if(data.meta&&typeof data.meta==="object"){for(var k in DEFAULT_META){if(Object.prototype.hasOwnProperty.call(data.meta,k))studyMeta[k]=data.meta[k];}}}catch(e){/* data rusak — mulai dari awal tanpa crash */}}
 loadProgress();
 (function(){var now=new Date().toISOString();if(!studyMeta.firstOpenedAt)studyMeta.firstOpenedAt=now;studyMeta.lastOpenedAt=now;studyMeta.totalOpens=(studyMeta.totalOpens||0)+1;})();
 window.addEventListener("beforeunload",function(){try{saveProgress();}catch(e){}});
@@ -652,6 +652,8 @@ function el(id){return document.getElementById(id);}
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");}
 function fjp(s){return esc(s).replace(/([一-龯々〆ヶ]+)《([ぁ-んァ-ヶー・]+)》/g,"<ruby>$1<rt>$2</rt></ruby>");}
 function isDokkaiLesson(l){return !!(l&&l.skill==="Dokkai");}
+function isKotobaLesson(l){return !!(l&&(l.skill==="Kosakata"||l.skill==="Kanji"));}
+function lessonAdaKartu(l){return !!(isKotobaLesson(l)&&l.cards&&l.cards.length);}
 function dokkaiAllAnswered(){return !!(current&&isDokkaiLesson(current)&&current.questions&&qAnswered>=current.questions.length&&current.questions.length>0);}
 function dokkaiBannerHtml(){return '<div class="dokkai-banner" role="note">📖 <strong>Mode Dokkai — seperti ujian beneran:</strong> Baca dulu teks Jepangnya dan jawab semua soalnya. Terjemahan &amp; pembahasan Bahasa Indonesia baru terbuka setelah kamu selesai menjawab — seperti ujian beneran, tidak ada terjemahan.</div>';}
 function dokkaiLockedHtml(){return '<div class="dokkai-locked" id="dokkaiLocked">🔒 <strong>Terjemahan &amp; pembahasan terkunci.</strong> Selesaikan semua soal dalam pelajaran ini dulu — terjemahan isi teks akan terbuka otomatis setelah soal terakhir dijawab. Tidak ada tombol pintas untuk membukanya lebih awal.</div>';}
@@ -866,8 +868,9 @@ if(window.addEventListener){window.addEventListener("popstate",function(){if(el(
 function stopAudio(){var a=document.querySelectorAll("audio");for(var i=0;i<a.length;i++){try{a[i].pause();}catch(e){}}}
 function setProgress(){
   if(!current)return;
-  var total=2+current.questions.length; // intro+cards counted as 2 blocks + questions + result handled separately
-  var cur=step===0?1:step===1?2:2+qIndex+1;
+  var blokAwal=lessonAdaKartu(current)?2:1;
+  var total=blokAwal+current.questions.length;
+  var cur=step===0?1:step===1?2:blokAwal+qIndex+1;
   if(step===3)cur=total+1;
   el("lvBar").style.width=Math.min(100,Math.round(cur/(total+1)*100))+"%";
   el("lvStepText").textContent=(step===0?"Baca kilat":step===1?"Flashcard":step===2?"Soal "+(qIndex+1)+"/"+current.questions.length:"Hasil");
@@ -892,8 +895,8 @@ function renderIntro(){
   }else if(isDok){
     passageHtml=bannerHtml;
   }
-  el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">Langkah 1 • Baca kilat — 1 menit</span><h2>'+esc(l.introTitle)+'</h2><p class="lead">'+esc(l.intro)+'</p>'+exampleHtml+audioHtml+passageHtml+'<p class="meta" style="color:var(--muted);font-size:.82rem;margin-top:14px">'+esc(l.source)+' • Pola: <span class="jp">'+esc(l.pattern)+'</span></p><div class="actions"><button class="btn btn-accent" id="btnToCards" type="button">Lanjut ke flashcard →</button></div></div>';
-  el("btnToCards").addEventListener("click",function(){step=1;fcIndex=0;fcFlipped=false;renderStep();});
+  el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">Langkah 1 • Baca kilat — 1 menit</span><h2>'+esc(l.introTitle)+'</h2><p class="lead">'+esc(l.intro)+'</p>'+exampleHtml+audioHtml+passageHtml+'<p class="meta" style="color:var(--muted);font-size:.82rem;margin-top:14px">'+esc(l.source)+' • Pola: <span class="jp">'+esc(l.pattern)+'</span></p><div class="actions"><button class="btn btn-accent" id="btnToCards" type="button">'+(lessonAdaKartu(l)?'Lanjut ke flashcard →':'Lanjut ke soal →')+'</button></div></div>';
+  el("btnToCards").addEventListener("click",function(){if(lessonAdaKartu(current)){step=1;fcIndex=0;}else{step=2;qIndex=0;}fcFlipped=false;renderStep();});
 }
 function renderCards(){
   var l=current,c=l.cards[fcIndex];
@@ -905,7 +908,7 @@ function renderCards(){
 }
 function renderQuestion(){
   var l=current,q=l.questions[qIndex];
-  var head='<div class="cardbox"><span class="step-label">Langkah 3 • Soal '+(qIndex+1)+'/'+l.questions.length+' — '+(q.kind==="listen"?"Listening":q.kind==="arrange"?"Susun kalimat":"Pilihan ganda")+'</span>';
+  var head='<div class="cardbox"><span class="step-label">'+(lessonAdaKartu(current)?'Langkah 3':'Langkah 2')+' • Soal '+(qIndex+1)+'/'+l.questions.length+' — '+(q.kind==="listen"?"Listening":q.kind==="arrange"?"Susun kalimat":"Pilihan ganda")+'</span>';
   var passageHtml="";
   if(l.passageJp&&(qIndex===0||l.skill==="Dokkai")){
     if(isDokkaiLesson(l)){
@@ -950,7 +953,7 @@ function bindChoices(q){
 function finishQuestion(ok,q,explainText){
   qAnswered++;
   if(ok){qCorrect++;state.correctStreak++;}
-  else{state.correctStreak=0;queueReviewFor(q);}
+  else{state.correctStreak=0;if(isKotobaLesson(current))queueReviewFor(q);}
   var ex=el("explain");ex.className="explain show "+(ok?"ok":"no");
   if(isDokkaiLesson(current)&&!dokkaiAllAnswered()){ex.innerHTML="<strong>"+(ok?("Betul! +"+xpPerCorrect()+" XP"):"Belum tepat.")+"</strong> Pembahasan soal ini masih terkunci — terbuka setelah semua soal di teks ini selesai dijawab.";}
   else{ex.innerHTML="<strong>"+(ok?("Betul! +"+xpPerCorrect()+" XP"):"Belum tepat.")+"</strong> "+fjp(explainText);}
@@ -1209,9 +1212,7 @@ function prodMark(k,ok,pr){
   var st=el("prodState"+k);
   if(ok){st.textContent="\u2713 Sudah bisa \u2014 mantap!";st.style.color="#5B7A3A";}
   else{
-    var gi=gramItemOf(prodState.theme,pr.p);
-    addReview({front:pr.p,reading:gi?gi.m:"",meaning:"Contoh: "+pr.model+" \u2014 "+pr.modelId,note:gi?(gi.note||""):""});
-    st.textContent="Dicatat \u2014 pola ini masuk tumpukan ulangmu.";st.style.color="var(--shu)";
+    st.textContent="Dicatat \u2014 pola ini bakal muncul lagi di Antrean Perlu Diulang.";st.style.color="var(--shu)";
   }
   el("prodOk"+k).disabled=true;el("prodRagu"+k).disabled=true;
   el("lvBar").style.width=Math.round(prodState.count/prodState.total*100)+"%";
@@ -1769,7 +1770,7 @@ function finishTryout(auto){
   var merged=(state.tryoutWrong||[]).filter(function(w){return !tryoutQs.some(function(q,i){return q.front===w.front&&tryoutAnswers[i]===q.answer;});});
   wrongQs.forEach(function(q){
     if(!merged.some(function(w){return w.front===q.front;}))merged.push({skill:q.skill,front:q.front,reading:q.reading||"",meaning:q.meaning||q.explain||"",explain:q.explain||""});
-    addReview({front:q.front,reading:q.reading||q.skill,meaning:"Jawaban benar: "+stripFuri(q.choices[q.answer])+" — "+(q.explain||"")});
+    if(q.skill==="Kosakata")addReview({front:q.front,reading:q.reading||q.skill,meaning:"Jawaban benar: "+stripFuri(q.choices[q.answer])+" — "+(q.explain||"")});
   });
   state.tryoutWrong=merged;
   markStudyToday();saveProgress();
