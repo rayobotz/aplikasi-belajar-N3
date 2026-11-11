@@ -664,7 +664,7 @@ function explainSingkat(teks){
   if(i<0)return fjp(t);
   return fjp(t.slice(0,i))+'<details style="margin-top:6px"><summary style="cursor:pointer;font-weight:700">Bukti &amp; rinciannya \u25BE</summary><div style="margin-top:4px">'+fjp(t.slice(i))+'</div></details>';
 }
-function promptHtmlSoal(q){return '<h2 class="q-prompt">'+esc(q.prompt)+'</h2>'+(q.promptJp?'<div class="q-prompt-jp jp">'+fjp(q.promptJp)+'</div>':"");}
+function promptHtmlSoal(q){return '<h2 class="q-prompt">'+fjp(q.prompt)+'</h2>'+(q.promptJp?'<div class="q-prompt-jp jp">'+fjp(q.promptJp)+'</div>':"");}
 function dokkaiUnlockedHtml(){var l=current;if(!l)return "";var h='<div class="dokkai-unlocked" id="dokkaiUnlocked"><span class="du-badge">✓ Terjemahan &amp; pembahasan sudah terbuka</span>';if(l.passageId){h+='<h3>Terjemahan teks</h3><p class="du-trans">'+esc(l.passageId)+'</p>';}if(l.exampleId){h+='<h3>Arti contoh kalimat</h3><p class="du-trans">'+esc(l.exampleId)+'</p>';}if(l.questions&&l.questions.length){h+='<h3>Pembahasan semua soal</h3><ol>'+l.questions.map(function(q,i){return '<li><strong>Soal '+(i+1)+'.</strong> '+explainSingkat(q.explain||"")+'</li>';}).join("")+'</ol>';}return h+'</div>';}
 function applyFuri(){var off=studyMeta.furiOn===false;document.body.classList.toggle("furi-off",off);var bs=document.querySelectorAll(".btnFuri");for(var i=0;i<bs.length;i++){bs[i].textContent="Furigana: "+(off?"OFF":"ON");}}
 function shuffle(a){var b=a.slice(),i,j,t;for(i=b.length-1;i>0;i--){j=Math.floor(Math.random()*(i+1));t=b[i];b[i]=b[j];b[j]=t;}return b;}
