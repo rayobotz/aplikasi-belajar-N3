@@ -348,6 +348,10 @@ body{padding-bottom:74px}
 .gk .gr{display:block;font-size:.72rem;color:var(--muted);font-weight:400;margin-top:2px}
 .gk.tutup{background:#C73E2E;border-color:#A93424;color:#fff;font-size:1.35rem}
 .gk.cocok{background:#E7F2DA;border-color:#5B7A3A}
+.fakta-visual{border-radius:10px;overflow:hidden;margin-bottom:10px;border:2px solid #E7DFC9}
+.fakta-visual svg{display:block;width:100%;height:auto}
+.fakta-baris{display:flex;gap:10px;align-items:flex-start}
+#faktaEmoji{font-size:2.1rem;line-height:1.15}
 </style>
 </head>
 <body>
@@ -435,8 +439,9 @@ body{padding-bottom:74px}
 
     <section aria-labelledby="faktaTitle">
       <div class="sources tape tape-matcha">
+        <div class="fakta-visual" aria-hidden="true"><svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" role="img"><defs><linearGradient id="fklangit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE3B3"/><stop offset="1" stop-color="#FFF6E5"/></linearGradient></defs><rect width="640" height="200" fill="url(#fklangit)"/><circle cx="528" cy="50" r="25" fill="#C73E2E" opacity="0.85"/><g fill="#FFFDF5" opacity="0.85"><ellipse cx="120" cy="42" rx="42" ry="12"/><ellipse cx="152" cy="34" rx="28" ry="10"/><ellipse cx="392" cy="30" rx="34" ry="10"/></g><path d="M118 172 L292 58 L466 172 Z" fill="#7A86B8"/><path d="M292 58 L334 88 L310 81 L292 92 L274 81 L250 88 Z" fill="#FFFDF5"/><path d="M0 176 Q150 148 320 170 T640 168 V200 H0 Z" fill="#A8C69F"/><path d="M0 188 Q200 168 420 184 T640 182 V200 H0 Z" fill="#7FA96F"/><g fill="#C73E2E"><rect x="26" y="86" width="128" height="11" rx="5"/><rect x="38" y="108" width="104" height="8" rx="4"/><rect x="44" y="86" width="10" height="92"/><rect x="126" y="86" width="10" height="92"/></g><path d="M640 6 Q580 26 540 16" stroke="#6B4A2F" stroke-width="5" fill="none" stroke-linecap="round"/><g><circle cx="556" cy="22" r="10" fill="#F6B8C8"/><circle cx="584" cy="12" r="12" fill="#F29BB4"/><circle cx="610" cy="26" r="9" fill="#F6B8C8"/><circle cx="592" cy="36" r="8" fill="#F8CBDA"/><circle cx="632" cy="10" r="10" fill="#F29BB4"/></g></svg></div>
         <h3 id="faktaTitle">🌸 Fakta seru hari ini</h3>
-        <p id="faktaIsi" style="margin:0"></p>
+        <div class="fakta-baris"><span id="faktaEmoji" aria-hidden="true">🌸</span><p id="faktaIsi" style="margin:0"></p></div>
       </div>
     </section>
 
@@ -928,8 +933,9 @@ var FAKTA_SERU=[
 "Wabi-sabi adalah cara pandang khas Jepang: keindahan justru ada pada hal yang tidak sempurna dan tidak abadi \u2014 seperti retakan kecil pada cangkir kesayangan.",
 "Kawasan metropolitan Tokyo adalah yang terpadat di dunia, dihuni sekitar 37 juta orang \u2014 hampir sepersepuluh penduduk Jepang tinggal di satu kawasan ini."
 ];
+var FAKTA_EMOJI=["🍫","🏝️","🎤","💮","🍜","4️⃣","😴","💼","🚉","🍗","🗻","♻️","🅰️","🌸","🏪","♨️","🗾","🧑‍🏫","📮","🥤","🌊","🪙","🙇","🍉","🔥","🔤","📚","🎂","🍵","🗼"];
 function renderHome(){
-  var fi=el("faktaIsi");if(fi){var nowF=new Date();var awalF=new Date(nowF.getFullYear(),0,0);var poeF=Math.floor((nowF-awalF)/86400000);fi.textContent=FAKTA_SERU[poeF%FAKTA_SERU.length];}
+  var fi=el("faktaIsi");if(fi){var nowF=new Date();var awalF=new Date(nowF.getFullYear(),0,0);var poeF=Math.floor((nowF-awalF)/86400000);var idxF=poeF%FAKTA_SERU.length;fi.textContent=FAKTA_SERU[idxF];var fe=el("faktaEmoji");if(fe)fe.textContent=FAKTA_EMOJI[idxF];}
   el("statXp").textContent=state.xp;
   var lv=levelFromXp(state.xp);el("statLevel").textContent=lv.level;
   el("xpBar").style.width=Math.min(100,Math.round(lv.into/lv.span*100))+"%";
