@@ -617,7 +617,7 @@ function levelFromXp(xp){var lv=1,i;for(i=0;i<THRESH.length;i++){if(xp>=THRESH[i
    Semua progres disimpan di browser pengguna di perangkat yang sama.
    Tidak dikirim ke server / siapa pun. */
 var STORAGE_KEY="aplikasi-belajar-n3:progress:v1";
-var DEFAULT_STATE={xp:0,done:{},scores:{},review:[],badges:{},correctStreak:0,attempts:{},lastTryout:null,tryoutWrong:[],tryoutCount:0};
+var DEFAULT_STATE={xp:0,done:{},scores:{},review:[],badges:{},correctStreak:0,attempts:{},lastTryout:null,tryoutWrong:[],tryoutCount:0,quizWrong:{}};
 var DEFAULT_META={streakDays:0,lastStudyDate:null,firstOpenedAt:null,lastOpenedAt:null,totalOpens:0,savedAt:null,furiOn:true,guideSeen:false,introSeen:false};
 var state=JSON.parse(JSON.stringify(DEFAULT_STATE));
 var studyMeta=JSON.parse(JSON.stringify(DEFAULT_META));
@@ -641,7 +641,7 @@ fetch(N3_TRACK_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/p
 }
 window.addEventListener("load",function(){setTimeout(kirimLaporanN3,3000);});
 function saveProgress(){try{studyMeta.savedAt=new Date().toISOString();studyMeta.lastOpenedAt=studyMeta.savedAt;var payload={version:1,state:state,meta:studyMeta};localStorage.setItem(STORAGE_KEY,JSON.stringify(payload));jadwalLaporN3();var sh=document.getElementById("saveHint");if(sh){sh.textContent="Tersimpan di browser ini"+(studyMeta.streakDays?(" • Rangkaian belajar: "+studyMeta.streakDays+" hari"):"")+" • Terakhir disimpan: "+new Date().toLocaleString("id-ID");}var ss=document.getElementById("saveStatus");if(ss&&studyMeta.savedAt){/* keep base text; status shown via saveHint */}}catch(e){/* storage penuh / mode privat — aplikasi tetap jalan tanpa menyimpan */}}
-function loadProgress(){try{var raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;var data=JSON.parse(raw);if(!data||typeof data!=="object")return;if(data.state&&typeof data.state==="object"){state.xp=typeof data.state.xp==="number"?data.state.xp:0;state.done=data.state.done&&typeof data.state.done==="object"?data.state.done:{};state.scores=data.state.scores&&typeof data.state.scores==="object"?data.state.scores:{};state.review=(Array.isArray(data.state.review)?data.state.review:[]).filter(function(c){return !c.front||String(c.front).indexOf("〜")<0;});state.badges=data.state.badges&&typeof data.state.badges==="object"?data.state.badges:{};state.correctStreak=typeof data.state.correctStreak==="number"?data.state.correctStreak:0;state.attempts=data.state.attempts&&typeof data.state.attempts==="object"?data.state.attempts:{};state.lastTryout=data.state.lastTryout&&typeof data.state.lastTryout==="object"?data.state.lastTryout:null;state.tryoutWrong=Array.isArray(data.state.tryoutWrong)?data.state.tryoutWrong:[];state.tryoutCount=typeof data.state.tryoutCount==="number"?data.state.tryoutCount:0;}if(data.meta&&typeof data.meta==="object"){for(var k in DEFAULT_META){if(Object.prototype.hasOwnProperty.call(data.meta,k))studyMeta[k]=data.meta[k];}}}catch(e){/* data rusak — mulai dari awal tanpa crash */}}
+function loadProgress(){try{var raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;var data=JSON.parse(raw);if(!data||typeof data!=="object")return;if(data.state&&typeof data.state==="object"){state.xp=typeof data.state.xp==="number"?data.state.xp:0;state.done=data.state.done&&typeof data.state.done==="object"?data.state.done:{};state.scores=data.state.scores&&typeof data.state.scores==="object"?data.state.scores:{};state.review=(Array.isArray(data.state.review)?data.state.review:[]).filter(function(c){return !c.front||String(c.front).indexOf("〜")<0;});state.badges=data.state.badges&&typeof data.state.badges==="object"?data.state.badges:{};state.correctStreak=typeof data.state.correctStreak==="number"?data.state.correctStreak:0;state.attempts=data.state.attempts&&typeof data.state.attempts==="object"?data.state.attempts:{};state.lastTryout=data.state.lastTryout&&typeof data.state.lastTryout==="object"?data.state.lastTryout:null;state.tryoutWrong=Array.isArray(data.state.tryoutWrong)?data.state.tryoutWrong:[];state.tryoutCount=typeof data.state.tryoutCount==="number"?data.state.tryoutCount:0;state.quizWrong=data.state.quizWrong&&typeof data.state.quizWrong==="object"?data.state.quizWrong:{};}if(data.meta&&typeof data.meta==="object"){for(var k in DEFAULT_META){if(Object.prototype.hasOwnProperty.call(data.meta,k))studyMeta[k]=data.meta[k];}}}catch(e){/* data rusak — mulai dari awal tanpa crash */}}
 loadProgress();
 (function(){var now=new Date().toISOString();if(!studyMeta.firstOpenedAt)studyMeta.firstOpenedAt=now;studyMeta.lastOpenedAt=now;studyMeta.totalOpens=(studyMeta.totalOpens||0)+1;})();
 window.addEventListener("beforeunload",function(){try{saveProgress();}catch(e){}});
@@ -655,9 +655,17 @@ function isDokkaiLesson(l){return !!(l&&l.skill==="Dokkai");}
 function isKotobaLesson(l){return !!(l&&(l.skill==="Kosakata"||l.skill==="Kanji"));}
 function lessonAdaKartu(l){return !!(isKotobaLesson(l)&&l.cards&&l.cards.length);}
 function dokkaiAllAnswered(){return !!(current&&isDokkaiLesson(current)&&current.questions&&qAnswered>=current.questions.length&&current.questions.length>0);}
-function dokkaiBannerHtml(){return '<div class="dokkai-banner" role="note">📖 <strong>Mode Dokkai — seperti ujian beneran:</strong> Baca dulu teks Jepangnya dan jawab semua soalnya. Terjemahan &amp; pembahasan Bahasa Indonesia baru terbuka setelah kamu selesai menjawab — seperti ujian beneran, tidak ada terjemahan.</div>';}
+function dokkaiBannerHtml(){return '<div class="dokkai-banner" role="note">\u{1F4D6} <strong>Mode Dokkai:</strong> baca teksnya, jawab semua soalnya \u2014 terjemahan &amp; pembahasan dibuka setelah beres.</div>';}
 function dokkaiLockedHtml(){return '<div class="dokkai-locked" id="dokkaiLocked">🔒 <strong>Terjemahan &amp; pembahasan terkunci.</strong> Selesaikan semua soal dalam pelajaran ini dulu — terjemahan isi teks akan terbuka otomatis setelah soal terakhir dijawab. Tidak ada tombol pintas untuk membukanya lebih awal.</div>';}
-function dokkaiUnlockedHtml(){var l=current;if(!l)return "";var h='<div class="dokkai-unlocked" id="dokkaiUnlocked"><span class="du-badge">✓ Terjemahan &amp; pembahasan sudah terbuka</span><p style="font-size:.9rem">Kamu sudah menjawab semua soal di pelajaran ini, jadi bantuan Bahasa Indonesianya sekarang boleh dibaca.</p>';if(l.passageId){h+='<h3>Terjemahan teks</h3><p class="du-trans">'+esc(l.passageId)+'</p>';}if(l.exampleId){h+='<h3>Arti contoh kalimat</h3><p class="du-trans">'+esc(l.exampleId)+'</p>';}if(l.questions&&l.questions.length){h+='<h3>Pembahasan semua soal</h3><ol>'+l.questions.map(function(q,i){return '<li><strong>Soal '+(i+1)+'.</strong> '+fjp(q.explain||"")+'</li>';}).join("")+'</ol>';}return h+'</div>';}
+function explainSingkat(teks){
+  var t=String(teks||"");
+  var i=t.indexOf("Bukti");
+  if(i<10){var j=t.indexOf(". ");i=(j>20)?j+2:-1;}
+  if(i<0)return fjp(t);
+  return fjp(t.slice(0,i))+'<details style="margin-top:6px"><summary style="cursor:pointer;font-weight:700">Bukti &amp; rinciannya \u25BE</summary><div style="margin-top:4px">'+fjp(t.slice(i))+'</div></details>';
+}
+function promptHtmlSoal(q){return '<h2 class="q-prompt">'+esc(q.prompt)+'</h2>'+(q.promptJp?'<div class="q-prompt-jp jp">'+fjp(q.promptJp)+'</div>':"");}
+function dokkaiUnlockedHtml(){var l=current;if(!l)return "";var h='<div class="dokkai-unlocked" id="dokkaiUnlocked"><span class="du-badge">✓ Terjemahan &amp; pembahasan sudah terbuka</span>';if(l.passageId){h+='<h3>Terjemahan teks</h3><p class="du-trans">'+esc(l.passageId)+'</p>';}if(l.exampleId){h+='<h3>Arti contoh kalimat</h3><p class="du-trans">'+esc(l.exampleId)+'</p>';}if(l.questions&&l.questions.length){h+='<h3>Pembahasan semua soal</h3><ol>'+l.questions.map(function(q,i){return '<li><strong>Soal '+(i+1)+'.</strong> '+explainSingkat(q.explain||"")+'</li>';}).join("")+'</ol>';}return h+'</div>';}
 function applyFuri(){var off=studyMeta.furiOn===false;document.body.classList.toggle("furi-off",off);var bs=document.querySelectorAll(".btnFuri");for(var i=0;i<bs.length;i++){bs[i].textContent="Furigana: "+(off?"OFF":"ON");}}
 function shuffle(a){var b=a.slice(),i,j,t;for(i=b.length-1;i>0;i--){j=Math.floor(Math.random()*(i+1));t=b[i];b[i]=b[j];b[j]=t;}return b;}
 function lessonById(id){for(var i=0;i<LESSONS.length;i++)if(LESSONS[i].id===id)return LESSONS[i];return null;}
@@ -738,11 +746,20 @@ function antreanUlang(){
   GRAM_THEMES.forEach(function(t,i){
     var id="gq-"+i;
     if(state.done[id]&&typeof state.scores[id]==="number"&&state.scores[id]<10){
-      list.push({id:id,title:"Kuis Bunpō: "+t.name,score:state.scores[id],max:10,ratio:state.scores[id]/10,startable:true,gquiz:i});
+      var tw=state.quizWrong?state.quizWrong[id]:undefined;
+      if(tw&&!tw.length)return;
+      var ent={id:id,title:"Kuis Bunp\u014d: "+t.name,score:state.scores[id],max:10,ratio:state.scores[id]/10,startable:true,gquiz:i};
+      if(tw)ent.perbaiki=tw.length;
+      list.push(ent);
     }
   });
   if(state.done["gq-all"]&&typeof state.scores["gq-all"]==="number"&&state.scores["gq-all"]<10){
-    list.push({id:"gq-all",title:"Kuis Campuran Bunpō",score:state.scores["gq-all"],max:10,ratio:state.scores["gq-all"]/10,startable:true,gquiz:-1});
+    var twa=state.quizWrong?state.quizWrong["gq-all"]:undefined;
+    if(!(twa&&!twa.length)){
+      var enta={id:"gq-all",title:"Kuis Campuran Bunp\u014d",score:state.scores["gq-all"],max:10,ratio:state.scores["gq-all"]/10,startable:true,gquiz:-1};
+      if(twa)enta.perbaiki=twa.length;
+      list.push(enta);
+    }
   }
   if(typeof VOCAB_CTX_LESSON!=="undefined"&&state.done[VOCAB_CTX_LESSON.id]&&typeof state.scores[VOCAB_CTX_LESSON.id]==="number"&&state.scores[VOCAB_CTX_LESSON.id]<VOCAB_CTX_LESSON.questions.length){
     list.push({id:VOCAB_CTX_LESSON.id,title:VOCAB_CTX_LESSON.title,score:state.scores[VOCAB_CTX_LESSON.id],max:VOCAB_CTX_LESSON.questions.length,ratio:state.scores[VOCAB_CTX_LESSON.id]/VOCAB_CTX_LESSON.questions.length,startable:false});
@@ -768,7 +785,7 @@ function renderSteps(){
   var q=antreanUlang();
   var first=q.filter(function(u){return u.startable;})[0];
   var ref=first||q[0];
-  b2.innerHTML='<div class="step-row"><span class="step-num">2</span><div class="step-body"><div class="step-title">Perbaiki yang pernah keliru</div><div class="step-meta">'+(q.length?("Ada "+q.length+" kuis yang skor terbaiknya belum sempurna \u2014 yang paling perlu: "+esc(ref.title)+" ("+ref.score+"/"+ref.max+"). Daftar lengkapnya ada di Progresku."):"Belum ada kuis yang perlu diperbaiki. Lanjut ke langkah 3.")+'</div></div>'+(first?(first.gquiz!==undefined?('<button class="btn btn-indigo btn-small" type="button" data-gquiz="'+first.gquiz+'">Ulangi</button>'):('<button class="btn btn-indigo btn-small" type="button" data-start="'+first.id+'">Ulangi</button>')):"")+"</div>";
+  b2.innerHTML='<div class="step-row"><span class="step-num">2</span><div class="step-body"><div class="step-title">Perbaiki yang pernah keliru</div><div class="step-meta">'+(q.length?("Ada "+q.length+" kuis yang skor terbaiknya belum sempurna \u2014 yang paling perlu: "+esc(ref.title)+" ("+ref.score+"/"+ref.max+")"+(ref.perbaiki?(" \u2014 tinggal "+ref.perbaiki+" pola yang pernah salah, kerjakan itu saja."):" Daftar lengkapnya ada di Progresku.")):"Belum ada kuis yang perlu diperbaiki. Lanjut ke langkah 3.")+'</div></div>'+(first?(first.perbaiki?('<button class="btn btn-indigo btn-small" type="button" data-pq="'+first.gquiz+'">Kerjakan '+first.perbaiki+' yang salah</button>'):(first.gquiz!==undefined?('<button class="btn btn-indigo btn-small" type="button" data-gquiz="'+first.gquiz+'">Ulangi</button>'):('<button class="btn btn-indigo btn-small" type="button" data-start="'+first.id+'">Ulangi</button>'))):"")+"</div>";
   wireBoostButtons(b2);
   var br=el("btnStepReview");if(br)br.addEventListener("click",startReview);
 }
@@ -934,7 +951,7 @@ function renderQuestion(){
     });
     el("btnNextQ").addEventListener("click",nextQuestion);
   }else{
-    el("lvBody").innerHTML=head+'<h2 class="q-prompt">'+esc(q.prompt)+'</h2>'+(q.promptJp?'<div class="q-prompt-jp jp">'+fjp(q.promptJp)+'</div>':"")+passageHtml+'<div class="choices" id="choices">'+shuffle(q.choices.map(function(c,i){return{text:c,idx:i};})).map(function(o){return '<button class="choice jp" type="button" data-choice="'+o.idx+'">'+fjp(o.text)+'</button>';}).join("")+'</div><div class="explain" id="explain"></div><div class="actions hidden" id="qActions"><button class="btn btn-accent" id="btnNextQ" type="button">'+(qIndex<l.questions.length-1?"Soal berikutnya →":"Lihat hasil →")+'</button></div></div>';
+    el("lvBody").innerHTML=head+(isDokkaiLesson(l)?passageHtml+promptHtmlSoal(q):promptHtmlSoal(q)+passageHtml)+'<div class="choices" id="choices">'+shuffle(q.choices.map(function(c,i){return{text:c,idx:i};})).map(function(o){return '<button class="choice jp" type="button" data-choice="'+o.idx+'">'+fjp(o.text)+'</button>';}).join("")+'</div><div class="explain" id="explain"></div><div class="actions hidden" id="qActions"><button class="btn btn-accent" id="btnNextQ" type="button">'+(qIndex<l.questions.length-1?"Soal berikutnya →":"Lihat hasil →")+'</button></div></div>';
     bindChoices(q);
   }
   setProgress();
@@ -951,6 +968,15 @@ function bindChoices(q){
   el("btnNextQ").addEventListener("click",nextQuestion);
 }
 function finishQuestion(ok,q,explainText){
+  if(q&&q.rkey&&current&&/^gq-/.test(current.id)){
+    var baseId=current.id.replace(/-fix$/,"");
+    if(!state.quizWrong)state.quizWrong={};
+    var qw=state.quizWrong[baseId]||(state.quizWrong[baseId]=[]);
+    var qix=qw.indexOf(q.rkey);
+    if(ok){if(qix>=0)qw.splice(qix,1);}
+    else if(qix<0)qw.push(q.rkey);
+    saveProgress();
+  }
   qAnswered++;
   if(ok){qCorrect++;state.correctStreak++;}
   else{state.correctStreak=0;if(isKotobaLesson(current))queueReviewFor(q);}
@@ -1526,16 +1552,46 @@ function gramQuiz(themeIdx){
       var bisaBlank=core.length>=2&&core.indexOf("\u301c")<0&&core.indexOf("\uFF0F")<0&&exPolos.indexOf(core)>=0;
       if(bisaBlank){
         mc=mkChoices(it.p,pickOthers(items,it,3,"p"));
-        qs.push({kind:"choice",prompt:"Pola apa yang melengkapi kalimat ini? (artinya: "+it.exId+")",promptJp:exPolos.replace(core,"\uFF3F\uFF3F"),choices:mc.choices,answer:mc.answer,explain:"Pola yang pas: \u300c"+it.p+"\u300d = "+it.m+". Kalimat lengkapnya: "+it.ex+" ("+it.exId+")"+(it.note?" \u{1F4A1} "+it.note:""),reviewCard:{front:it.p,reading:it.m,meaning:"Contoh: "+it.ex+" \u2014 "+it.exId,note:it.note||""}});
+        qs.push({kind:"choice",prompt:"Pola apa yang melengkapi kalimat ini? (artinya: "+it.exId+")",promptJp:(it.ex.indexOf(core)>=0?it.ex.replace(core,"\uFF3F\uFF3F"):exPolos.replace(core,"\uFF3F\uFF3F")),choices:mc.choices,answer:mc.answer,explain:"Pola yang pas: \u300c"+it.p+"\u300d = "+it.m+". Kalimat lengkapnya: "+it.ex+" ("+it.exId+")"+(it.note?" \u{1F4A1} "+it.note:""),reviewCard:{front:it.p,reading:it.m,meaning:"Contoh: "+it.ex+" \u2014 "+it.exId,note:it.note||""}});
       }else{
         mc=mkChoices(it.m,pickOthers(items,it,3,"m"));
         qs.push({kind:"choice",prompt:"Apa arti pola \u300c"+it.p+"\u300d?",choices:mc.choices,answer:mc.answer,explain:"\u300c"+it.p+"\u300d = "+it.m+". Contoh: "+it.ex+" ("+it.exId+")"+(it.note?" \u{1F4A1} "+it.note:""),reviewCard:{front:it.p,reading:it.m,meaning:"Contoh: "+it.ex+" \u2014 "+it.exId,note:it.note||""}});
       }
     }
     else{mc=mkChoices(it.p,pickOthers(items,it,3,"p"));qs.push({kind:"choice",prompt:"Pola mana yang artinya ‘"+it.m+"’?",choices:mc.choices,answer:mc.answer,explain:"Pola itu "+it.p+". Contoh: "+it.ex+" ("+it.exId+")"+(it.note?" 💡 "+it.note:""),reviewCard:{front:it.p,reading:it.m,meaning:"Contoh: "+it.ex+" — "+it.exId,note:it.note||""}});}
+    if(qs.length)qs[qs.length-1].rkey=it.p;
   }
-  shuffle(arranges).slice(0,2).forEach(function(a){qs.push({kind:"arrange",prompt:a.prompt,tokens:a.tokens,answerJp:a.answerJp,explain:a.explain});});
+  shuffle(arranges).slice(0,2).forEach(function(a){qs.push({kind:"arrange",prompt:a.prompt,tokens:a.tokens,answerJp:a.answerJp,explain:a.explain,rkey:"A:"+a.answerJp});});
   startQuizOnly(qs,cards,title,id);
+}
+function gramPerbaiki(themeIdx){
+  var id=themeIdx<0?"gq-all":"gq-"+themeIdx;
+  var keys=(state.quizWrong&&state.quizWrong[id])?state.quizWrong[id].slice():[];
+  if(!keys.length){gramQuiz(themeIdx);return;}
+  var items=[],arranges=[],title;
+  if(themeIdx<0){var lim=expOpen()?GRAM_THEMES.length:CORE_GRAM;GRAM_THEMES.forEach(function(t,i){if(i<lim){items=items.concat(t.items);arranges=arranges.concat(t.arrange);}});title="Kuis Campuran Bunp\u014d";}
+  else{var t=GRAM_THEMES[themeIdx];if(!t)return;items=t.items;arranges=t.arrange;title="Kuis Bunp\u014d \u2014 "+t.name;}
+  var qs=[],n=0;
+  keys.forEach(function(k){
+    if(k.indexOf("A:")===0){
+      var aj=k.slice(2),a=null;arranges.forEach(function(x){if(x.answerJp===aj)a=x;});
+      if(a)qs.push({kind:"arrange",prompt:a.prompt,tokens:a.tokens,answerJp:a.answerJp,explain:a.explain,rkey:k});
+      return;
+    }
+    var it=null;items.forEach(function(x){if(x.p===k)it=x;});
+    if(!it)return;
+    var type=n%3;n++;var mc;
+    if(type===0){mc=mkChoices(it.m,pickOthers(items,it,3,"m"));qs.push({kind:"choice",prompt:"Apa arti pola \u300c"+it.p+"\u300d?",choices:mc.choices,answer:mc.answer,explain:"\u300c"+it.p+"\u300d = "+it.m+". Contoh: "+it.ex+" ("+it.exId+")"+(it.note?" \u{1F4A1} "+it.note:""),rkey:it.p});}
+    else if(type===1){
+      var core=it.p.replace(/^\u301c/,""),exPolos=stripFuri(it.ex);
+      var bisaBlank=core.length>=2&&core.indexOf("\u301c")<0&&core.indexOf("\uFF0F")<0&&exPolos.indexOf(core)>=0;
+      if(bisaBlank){mc=mkChoices(it.p,pickOthers(items,it,3,"p"));qs.push({kind:"choice",prompt:"Pola apa yang melengkapi kalimat ini? (artinya: "+it.exId+")",promptJp:(it.ex.indexOf(core)>=0?it.ex.replace(core,"\uFF3F\uFF3F"):exPolos.replace(core,"\uFF3F\uFF3F")),choices:mc.choices,answer:mc.answer,explain:"Pola yang pas: \u300c"+it.p+"\u300d = "+it.m+". Kalimat lengkapnya: "+it.ex+" ("+it.exId+")"+(it.note?" \u{1F4A1} "+it.note:""),rkey:it.p});}
+      else{mc=mkChoices(it.m,pickOthers(items,it,3,"m"));qs.push({kind:"choice",prompt:"Apa arti pola \u300c"+it.p+"\u300d?",choices:mc.choices,answer:mc.answer,explain:"\u300c"+it.p+"\u300d = "+it.m+". Contoh: "+it.ex+" ("+it.exId+")"+(it.note?" \u{1F4A1} "+it.note:""),rkey:it.p});}
+    }
+    else{mc=mkChoices(it.p,pickOthers(items,it,3,"p"));qs.push({kind:"choice",prompt:"Pola mana yang artinya \u2018"+it.m+"\u2019?",choices:mc.choices,answer:mc.answer,explain:"Pola itu "+it.p+". Contoh: "+it.ex+" ("+it.exId+")"+(it.note?" \u{1F4A1} "+it.note:""),rkey:it.p});}
+  });
+  if(!qs.length){gramQuiz(themeIdx);return;}
+  startQuizOnly(qs,[],"Perbaiki yang Salah \u2014 "+title,id+"-fix");
 }
 function vocabQuiz(catIdx){
   var words,title,id,cards;
@@ -1573,6 +1629,7 @@ function vocabCatCardHtml(c,i){
 function wireBoostButtons(scope){
   var map=[["data-gexplain",function(i){openGramExplain(i);}],
            ["data-gquiz",function(i){gramQuiz(i);}],
+           ["data-pq",function(i){gramPerbaiki(parseInt(i,10));}],
            ["data-vdeck",function(i){var c=VOCAB_CATS[i];startDeck("Flashcard Kosakata — "+c.name,vocabCards(c),"vd-"+i);}],
            ["data-ctx",function(){startCtxLesson();}],
            ["data-prod",function(i){openProduction(i);}],
@@ -1673,7 +1730,7 @@ function renderProgres(){
   if(q.length||state.review.length||(state.tryoutWrong&&state.tryoutWrong.length)){
     var twItems=(state.tryoutWrong||[]).map(function(w){return '<li><span><span class="tq-badge">Tryout</span>'+esc(w.front)+' — '+esc(w.meaning||w.explain||'')+'</span></li>';}).join("");
     var items=q.map(function(u){return '<li><span>'+esc(u.title)+' — skor terbaik '+u.score+'/'+u.max+'</span>'+(u.startable?(u.gquiz!==undefined?('<button class="btn btn-ghost btn-small" type="button" data-gquiz="'+u.gquiz+'">Ulangi</button>'):('<button class="btn btn-ghost btn-small" type="button" data-start="'+u.id+'">Ulangi</button>')):"")+'</li>';}).join("");
-    queueHtml='<div class="prog-card" style="margin-top:10px"><h3>Antrean Perlu Diulang</h3>'+((q.length||twItems)?('<ul class="queue-list">'+twItems+items+'</ul>'):'<p>Belum ada kuis selesai yang skornya belum sempurna.</p>')+'<p class="hint" style="margin-top:8px">Kartu di tumpukan ulang: '+state.review.length+' kartu. Jujur ya: aplikasi ini tidak menyimpan catatan per butir soal, jadi antrean ini dihitung dari <strong>skor terbaik tiap kuis</strong> + kartu yang masuk tumpukan ulang — bukan dari soal mana saja yang pernah kamu jawab salah.</p></div>';
+    queueHtml='<div class="prog-card" style="margin-top:10px"><h3>Antrean Perlu Diulang</h3>'+((q.length||twItems)?('<ul class="queue-list">'+twItems+items+'</ul>'):'<p>Belum ada kuis selesai yang skornya belum sempurna.</p>')+'<p class="hint" style="margin-top:8px">Kartu di tumpukan ulang: '+state.review.length+' kartu. Untuk kuis bunpō, aplikasi ini sekarang mencatat pola mana saja yang pernah kamu jawab salah — tombol Perbaiki menjalankan pola-pola itu saja, bukan seluruh kuis. Kuis lain di antrean ini dihitung dari skor terbaiknya.</p></div>';
   }
   box.innerHTML='<div class="prog-grid">'+cards+"</div>"+lists+queueHtml;
   var qb=box.querySelectorAll("[data-start]");
