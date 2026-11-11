@@ -378,7 +378,7 @@ body{padding-bottom:74px}
         <div class="progressbar" aria-hidden="true"><i id="xpBar"></i></div>
         <p class="sec-head" style="margin-top:8px"><span class="hint" id="xpHint">Kumpulkan 100 XP buat naik ke Level 2.</span></p>
         <p class="sec-head" style="margin-top:4px"><span class="hint" id="saveHint">Progres tersimpan di browser ini.</span></p>
-        <div class="actions" style="margin-top:10px"><button class="btn btn-ghost btnFuri" type="button">Furigana: tampil</button><span class="hint" style="align-self:center">Furigana = bacaan kecil di atas kanji.</span></div>
+        <div class="actions" style="margin-top:10px"><button class="btn btn-ghost btnFuri" type="button">Furigana: ON</button></div>
         <div class="earned" id="badgeRow" aria-label="Lencana"></div>
       </div>
     </header>
@@ -502,7 +502,7 @@ body{padding-bottom:74px}
           <li><strong>Tidak ada yang mengawasi:</strong> aplikasi ini tidak mengirim kabar ke siapa pun — termasuk ke Ray — misalnya kalau kamu beberapa hari tidak membukanya. Semangat belajarmu tetap dari kamu sendiri (dan Ray, langsung).</li>
         </ul>
         <div class="actions">
-          <button class="btn btn-ghost btnFuri" type="button">Furigana: tampil</button>
+          <button class="btn btn-ghost btnFuri" type="button">Furigana: ON</button>
           <button class="btn btn-ghost" id="btnResetProgress" type="button">Reset progres — hapus semua simpanan</button>
         </div>
         <p style="margin-top:10px;font-size:.86rem">Tombol reset akan meminta konfirmasi dua kali. Setelah direset, XP, tanda selesai, skor, dan tumpukan ulang kembali ke nol dan tidak bisa dikembalikan.</p>
@@ -531,7 +531,7 @@ body{padding-bottom:74px}
   <div id="lessonView" aria-live="polite">
     <div class="lv-top">
       <button class="btn btn-indigo back" id="btnBack" type="button">← Kembali ke Beranda</button>
-      <button class="btn btn-ghost btn-small btnFuri" type="button">Furigana: tampil</button>
+      <button class="btn btn-ghost btn-small btnFuri" type="button">Furigana: ON</button>
       <div class="lv-progress">
         <div class="lv-title-row"><div class="lv-t" id="lvTitle">Misi</div><div class="lv-s" id="lvStepText">1/4</div></div>
         <div class="progressbar"><i id="lvBar"></i></div>
@@ -544,7 +544,7 @@ body{padding-bottom:74px}
   <div id="catView" aria-live="polite">
     <div class="lv-top">
       <button class="btn btn-indigo back" id="btnCatBack" type="button">← Kembali ke Beranda</button>
-      <button class="btn btn-ghost btn-small btnFuri" type="button">Furigana: tampil</button>
+      <button class="btn btn-ghost btn-small btnFuri" type="button">Furigana: ON</button>
       <div class="lv-progress">
         <div class="lv-t" id="catTitle" style="font-size:.95rem">Kategori</div>
         <div style="font-weight:700;font-size:.8rem;color:var(--muted)" id="catSub"></div>
@@ -658,7 +658,7 @@ function dokkaiAllAnswered(){return !!(current&&isDokkaiLesson(current)&&current
 function dokkaiBannerHtml(){return '<div class="dokkai-banner" role="note">📖 <strong>Mode Dokkai — seperti ujian beneran:</strong> Baca dulu teks Jepangnya dan jawab semua soalnya. Terjemahan &amp; pembahasan Bahasa Indonesia baru terbuka setelah kamu selesai menjawab — seperti ujian beneran, tidak ada terjemahan.</div>';}
 function dokkaiLockedHtml(){return '<div class="dokkai-locked" id="dokkaiLocked">🔒 <strong>Terjemahan &amp; pembahasan terkunci.</strong> Selesaikan semua soal dalam pelajaran ini dulu — terjemahan isi teks akan terbuka otomatis setelah soal terakhir dijawab. Tidak ada tombol pintas untuk membukanya lebih awal.</div>';}
 function dokkaiUnlockedHtml(){var l=current;if(!l)return "";var h='<div class="dokkai-unlocked" id="dokkaiUnlocked"><span class="du-badge">✓ Terjemahan &amp; pembahasan sudah terbuka</span><p style="font-size:.9rem">Kamu sudah menjawab semua soal di pelajaran ini, jadi bantuan Bahasa Indonesianya sekarang boleh dibaca.</p>';if(l.passageId){h+='<h3>Terjemahan teks</h3><p class="du-trans">'+esc(l.passageId)+'</p>';}if(l.exampleId){h+='<h3>Arti contoh kalimat</h3><p class="du-trans">'+esc(l.exampleId)+'</p>';}if(l.questions&&l.questions.length){h+='<h3>Pembahasan semua soal</h3><ol>'+l.questions.map(function(q,i){return '<li><strong>Soal '+(i+1)+'.</strong> '+fjp(q.explain||"")+'</li>';}).join("")+'</ol>';}return h+'</div>';}
-function applyFuri(){var off=studyMeta.furiOn===false;document.body.classList.toggle("furi-off",off);var bs=document.querySelectorAll(".btnFuri");for(var i=0;i<bs.length;i++){bs[i].textContent="Furigana: "+(off?"sembunyi":"tampil");}}
+function applyFuri(){var off=studyMeta.furiOn===false;document.body.classList.toggle("furi-off",off);var bs=document.querySelectorAll(".btnFuri");for(var i=0;i<bs.length;i++){bs[i].textContent="Furigana: "+(off?"OFF":"ON");}}
 function shuffle(a){var b=a.slice(),i,j,t;for(i=b.length-1;i>0;i--){j=Math.floor(Math.random()*(i+1));t=b[i];b[i]=b[j];b[j]=t;}return b;}
 function lessonById(id){for(var i=0;i<LESSONS.length;i++)if(LESSONS[i].id===id)return LESSONS[i];return null;}
 /* Aturan XP anti-ternak: percobaan pertama sebuah misi/kuis/deck dihargai penuh.
@@ -813,7 +813,7 @@ function renderHome(){
   var tbs=el("missionList").querySelectorAll("[data-tryout-start]");for(var tbi=0;tbi<tbs.length;tbi++){tbs[tbi].addEventListener("click",startTryoutMini);}
   // review
   el("reviewHeading").textContent="Tumpukan ulang: "+state.review.length+" kartu";
-  el("reviewText").textContent=state.review.length?"Kartu-kartu ini belum nempel. Tumpukan ini tersimpan, jadi boleh diulang sekarang atau nanti saat kamu buka lagi — tandai ‘Sudah hafal’ buat mengeluarkannya dari tumpukan.":"Kerjakan satu misi dulu — kartu yang belum nempel akan berkumpul di sini dan tersimpan buat diulang kapan saja.";
+  el("reviewText").textContent=state.review.length?"Kartu-kartu ini belum nempel. Kerjakan sesinya: ketik cara bacanya \u2014 yang benar keluar dari tumpukan, yang masih salah tetap tinggal buat diulang lagi.":"Kerjakan satu misi dulu \u2014 kartu yang belum nempel akan berkumpul di sini dan tersimpan buat diulang kapan saja.";
   el("reviewChips").innerHTML=state.review.map(function(c){return '<div class="review-item"><p class="ri-front jp">'+esc(c.front)+'</p><small>'+esc(c.reading)+'</small></div>';}).join("");
   el("btnReview").disabled=state.review.length===0;
   var btns=document.querySelectorAll("[data-start]");
@@ -980,21 +980,70 @@ function renderResult(){
   el("btnAgain").addEventListener("click",function(){startLesson(l.id);});
   el("btnHome").addEventListener("click",closeLessonView);
 }
-/* Review mode: flashcard-only loop over the session review pile */
+/* Review mode: sesi cek bacaan — nu dijawab bener kaluar tina tumpukan, nu masih salah tetep tinggal */
+var reviewRetry=[],reviewLolos=0,reviewRonde=1,reviewBerjalan=false;
+function reviewBacaanKana(c){
+  var r=String((c&&c.reading)||"");
+  if(!r||r===c.front)return "";
+  return /^[ぁ-んァ-ヶー・\s]+$/.test(r)?r:"";
+}
+function kanaSaruakeun(teks){
+  return String(teks||"").replace(/\s+/g,"").replace(/[ァ-ヶ]/g,function(ch){return String.fromCharCode(ch.charCodeAt(0)-0x60);});
+}
 function startReview(){
   if(!state.review.length)return;
-  reviewMode=true;reviewCards=state.review.slice();reviewIdx=0;
+  reviewMode=true;reviewCards=state.review.slice();reviewIdx=0;reviewRetry=[];reviewLolos=0;reviewRonde=1;
   current={id:"review",title:"Pengulangan terjadwal (sesi ini)",questions:[]};
   openLessonView();el("lvTitle").textContent=current.title;el("lvStepText").textContent="Ulang kartu";el("lvBar").style.width="50%";
   renderReviewCard();
 }
+function reviewSelesai(){
+  var sisa=state.review.length;
+  el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">Pengulangan selesai</span><div class="result-score">'+reviewLolos+' kartu lolos</div><p class="result-sub">Tumpukan sekarang: '+sisa+' kartu'+(sisa?' \u2014 anu masih salah tetap tinggal di sini, diulang lagi di sesi berikutnya.':' \u2014 kosong. Bersih!')+'</p><div class="actions"><button class="btn btn-accent" id="btnHome2" type="button">Kembali ke jalur</button></div></div>';
+  el("btnHome2").addEventListener("click",closeLessonView);
+}
+function nextReview(){
+  fcFlipped=false;
+  if(reviewIdx<reviewCards.length-1){reviewIdx++;renderReviewCard();}
+  else if(reviewRetry.length){reviewCards=reviewRetry;reviewRetry=[];reviewIdx=0;reviewRonde=2;renderReviewCard();}
+  else reviewSelesai();
+}
 function renderReviewCard(){
   var c=reviewCards[reviewIdx];
-  el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">Pengulangan • Kartu '+(reviewIdx+1)+'/'+reviewCards.length+'</span><h2>Tebak dulu, baru balik</h2><button class="flashcard" id="fcCard" type="button"><div class="front jp">'+esc(c.front)+'</div>'+(fcFlipped?'<div class="reading jp">'+esc(c.reading)+'</div><div class="meaning">'+fjp(c.meaning)+'</div>'+(c.note?'<div class="fc-note">💡 <strong>Penjelasan:</strong> '+esc(c.note)+'</div>':''):'<div class="tap">Ketuk kartu buat lihat cara baca &amp; artinya</div>')+'</button><div class="fc-nav"><button class="btn btn-ghost" id="btnRNo" type="button">Masih belum hafal</button><button class="btn btn-accent" id="btnRYes" type="button">Sudah hafal — keluarkan</button></div></div>';
-  el("fcCard").addEventListener("click",function(){fcFlipped=!fcFlipped;renderReviewCard();});
-  el("btnRYes").addEventListener("click",function(){removeReview(c.front);state.xp+=5;markStudyToday();saveProgress();nextReview();});
-  el("btnRNo").addEventListener("click",function(){nextReview();});
-  function nextReview(){fcFlipped=false;if(reviewIdx<reviewCards.length-1){reviewIdx++;renderReviewCard();}else{el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">Pengulangan selesai</span><div class="result-score">Beres!</div><p class="result-sub">Tumpukan sekarang: '+state.review.length+' kartu. Yang masih tersisa tersimpan dan akan tetap ada saat kamu membuka halaman ini lagi.</p><div class="actions"><button class="btn btn-accent" id="btnHome2" type="button">Kembali ke jalur</button></div></div>';el("btnHome2").addEventListener("click",closeLessonView);}}
+  var labelKartu='Pengulangan \u2022 Kartu '+(reviewIdx+1)+'/'+reviewCards.length+(reviewRonde===2?' \u2022 Kesempatan kedua':'');
+  var bacaan=reviewBacaanKana(c);
+  if(!bacaan){
+    el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">'+labelKartu+'</span><h2>Tebak dulu, baru balik</h2><button class="flashcard" id="fcCard" type="button"><div class="front jp">'+esc(c.front)+'</div>'+(fcFlipped?'<div class="reading jp">'+esc(c.reading)+'</div><div class="meaning">'+fjp(c.meaning)+'</div>'+(c.note?'<div class="fc-note">\u{1F4A1} <strong>Penjelasan:</strong> '+esc(c.note)+'</div>':''):'<div class="tap">Ketuk kartu buat lihat cara baca &amp; artinya</div>')+'</button><div class="fc-nav"><button class="btn btn-ghost" id="btnRNo" type="button">Masih belum hafal</button><button class="btn btn-accent" id="btnRYes" type="button">Sudah hafal \u2014 keluarkan</button></div></div>';
+    el("fcCard").addEventListener("click",function(){fcFlipped=!fcFlipped;renderReviewCard();});
+    el("btnRYes").addEventListener("click",function(){removeReview(c.front);reviewLolos++;state.xp+=5;markStudyToday();saveProgress();nextReview();});
+    el("btnRNo").addEventListener("click",function(){if(reviewRonde===1)reviewRetry.push(c);nextReview();});
+    return;
+  }
+  reviewBerjalan=false;
+  el("lvBody").innerHTML='<div class="cardbox"><span class="step-label">'+labelKartu+'</span><h2>Ketik cara bacanya</h2><div class="front jp" style="font-size:2.2rem;text-align:center;margin:10px 0 4px">'+esc(c.front)+'</div><p class="result-sub" style="text-align:center">Tulis bacaan kata ini pakai hiragana/katakana. Benar \u2192 kartunya keluar dari tumpukan.</p><input id="revInput" type="text" autocomplete="off" autocapitalize="none" placeholder="mis. \u305F\u3079\u308B" style="width:100%;box-sizing:border-box;padding:12px;border:2px solid #E7DFC9;border-radius:10px;font-size:1.15rem;text-align:center"><div id="revFeedback" style="margin-top:12px"></div><div class="fc-nav"><button class="btn btn-ghost" id="btnRNo" type="button">Belum bisa \u2014 lewati</button><button class="btn btn-accent" id="btnRCek" type="button">Cek</button></div></div>';
+  var input=el("revInput");if(input)input.focus();
+  function gagal(){
+    if(reviewRonde===1)reviewRetry.push(c);
+    el("revFeedback").innerHTML='<div class="explain show"><strong>Belum pas.</strong> Bacaan yang benar: <span class="jp" style="font-size:1.15rem">'+esc(c.reading)+'</span><br>'+fjp(c.meaning)+'</div>';
+    el("btnRCek").textContent="Lanjut \u2192";
+    reviewBerjalan=true;
+  }
+  function lanjut(){nextReview();}
+  el("btnRCek").addEventListener("click",function(){
+    if(reviewBerjalan){lanjut();return;}
+    var jawab=kanaSaruakeun(input.value);
+    if(!jawab){el("revFeedback").innerHTML='<div class="explain show">Jawaban masih kosong \u2014 ketik dulu bacaannya, atau penc\u00e9t \u201cBelum bisa\u201d.</div>';return;}
+    if(jawab===kanaSaruakeun(c.reading)){
+      removeReview(c.front);reviewLolos++;state.xp+=(reviewRonde===1?5:2);markStudyToday();saveProgress();
+      el("revFeedback").innerHTML='<div class="explain show"><strong>\u2713 Benar!</strong> <span class="jp">'+esc(c.reading)+'</span> \u2014 '+fjp(c.meaning)+'<br>Kartu ini keluar dari tumpukan.</div>';
+      el("btnRCek").textContent="Lanjut \u2192";reviewBerjalan=true;
+    }else gagal();
+  });
+  el("btnRNo").addEventListener("click",function(){
+    if(reviewBerjalan){lanjut();return;}
+    gagal();
+  });
+  if(input)input.addEventListener("keydown",function(ev){if(ev.key==="Enter"){ev.preventDefault();el("btnRCek").click();}});
 }
 /* ===== MODE PENGUAT — data following the book 『JLPT N3 この一冊で合格する』 (日本語の森).
    Grammar: Bab 2 items 1–70 (themes 1–8), order & grouping follow the book's grammar index.
@@ -1168,7 +1217,7 @@ function nextDeck(){
   el("btnDeckAgain").addEventListener("click",function(){startDeck(d.title,d.cards,d.doneId);});
   el("btnDeckHome").addEventListener("click",closeLessonView);
 }
-function startQuizOnly(qs,cards,title,id){current={id:id,title:title,questions:qs,cards:cards,source:"",pattern:"",introTitle:"",intro:"",exampleJp:"",exampleId:""};qAttempt=beginAttempt(id);qXpEarned=0;saveProgress();step=2;qIndex=0;qCorrect=0;qAnswered=0;reviewMode=false;openLessonView();renderQuestion();}
+function startQuizOnly(qs,cards,title,id){current={id:id,title:title,questions:qs,cards:cards,skill:(id.indexOf("vq-")===0||id==="vq-all")?"Kosakata":"Grammar",source:"",pattern:"",introTitle:"",intro:"",exampleJp:"",exampleId:""};qAttempt=beginAttempt(id);qXpEarned=0;saveProgress();step=2;qIndex=0;qCorrect=0;qAnswered=0;reviewMode=false;openLessonView();renderQuestion();}
 function pickOthers(pool,self,n,key){var others=pool.filter(function(x){return x!==self;});return shuffle(others).slice(0,n).map(function(x){return x[key];});}
 function mkChoices(correct,distractors){var all=shuffle([correct].concat(distractors));return{choices:all,answer:all.indexOf(correct)};}
 function openGramExplain(i){
@@ -1472,7 +1521,17 @@ function gramQuiz(themeIdx){
   var pool=shuffle(items),qs=[],i,it,mc,type;
   for(i=0;i<8;i++){it=pool[i%pool.length];type=i%3;
     if(type===0){mc=mkChoices(it.m,pickOthers(items,it,3,"m"));qs.push({kind:"choice",prompt:"Apa arti pola 「"+it.p+"」?",choices:mc.choices,answer:mc.answer,explain:"「"+it.p+"」= "+it.m+". Contoh: "+it.ex+" ("+it.exId+")"+(it.note?" 💡 "+it.note:""),reviewCard:{front:it.p,reading:it.m,meaning:"Contoh: "+it.ex+" — "+it.exId,note:it.note||""}});}
-    else if(type===1){mc=mkChoices(it.ex,pickOthers(items,it,3,"ex"));qs.push({kind:"choice",prompt:"Kalimat mana yang memakai pola 「"+it.p+"」("+it.m+")?",choices:mc.choices,answer:mc.answer,explain:"Kalimat itu memakai "+it.p+": "+it.exId+(it.note?" 💡 "+it.note:""),reviewCard:{front:it.p,reading:it.m,meaning:"Contoh: "+it.ex+" — "+it.exId,note:it.note||""}});}
+    else if(type===1){
+      var core=it.p.replace(/^\u301c/,""),exPolos=stripFuri(it.ex);
+      var bisaBlank=core.length>=2&&core.indexOf("\u301c")<0&&core.indexOf("\uFF0F")<0&&exPolos.indexOf(core)>=0;
+      if(bisaBlank){
+        mc=mkChoices(it.p,pickOthers(items,it,3,"p"));
+        qs.push({kind:"choice",prompt:"Pola apa yang melengkapi kalimat ini? (artinya: "+it.exId+")",promptJp:exPolos.replace(core,"\uFF3F\uFF3F"),choices:mc.choices,answer:mc.answer,explain:"Pola yang pas: \u300c"+it.p+"\u300d = "+it.m+". Kalimat lengkapnya: "+it.ex+" ("+it.exId+")"+(it.note?" \u{1F4A1} "+it.note:""),reviewCard:{front:it.p,reading:it.m,meaning:"Contoh: "+it.ex+" \u2014 "+it.exId,note:it.note||""}});
+      }else{
+        mc=mkChoices(it.m,pickOthers(items,it,3,"m"));
+        qs.push({kind:"choice",prompt:"Apa arti pola \u300c"+it.p+"\u300d?",choices:mc.choices,answer:mc.answer,explain:"\u300c"+it.p+"\u300d = "+it.m+". Contoh: "+it.ex+" ("+it.exId+")"+(it.note?" \u{1F4A1} "+it.note:""),reviewCard:{front:it.p,reading:it.m,meaning:"Contoh: "+it.ex+" \u2014 "+it.exId,note:it.note||""}});
+      }
+    }
     else{mc=mkChoices(it.p,pickOthers(items,it,3,"p"));qs.push({kind:"choice",prompt:"Pola mana yang artinya ‘"+it.m+"’?",choices:mc.choices,answer:mc.answer,explain:"Pola itu "+it.p+". Contoh: "+it.ex+" ("+it.exId+")"+(it.note?" 💡 "+it.note:""),reviewCard:{front:it.p,reading:it.m,meaning:"Contoh: "+it.ex+" — "+it.exId,note:it.note||""}});}
   }
   shuffle(arranges).slice(0,2).forEach(function(a){qs.push({kind:"arrange",prompt:a.prompt,tokens:a.tokens,answerJp:a.answerJp,explain:a.explain});});
@@ -1497,10 +1556,11 @@ function startCtxLesson(){qAttempt=beginAttempt(VOCAB_CTX_LESSON.id);qXpEarned=0
 function gramThemeCardHtml(t,i){
   var exp=i>=CORE_GRAM;
   if(exp&&!expOpen()){
-    return '<div class="boost-card"><span class="badges"><span class="badge b-skill">Ekspansi 1</span><span class="badge b-n3">\u{1F512} Terkunci</span></span><h3>'+esc(t.name)+'</h3><div class="meta">'+t.items.length+' pola lanjutan dari bukumu ('+esc(t.pages)+'). Terkunci dulu \u2014 kebuka otomatis setelah semua materi inti selesai. Anggap ini bonus tahap berikutnya.</div><div class="src">Sumber pola &amp; urutan: \u300e\u3053\u306e\u4e00\u518a\u3067\u5408\u683c\u3059\u308b\u300f'+esc(t.pages)+'</div></div>';
+    return '<div class="boost-card" style="padding:12px 14px"><h3 style="margin:0 0 2px;font-size:1rem">'+esc(t.name)+'</h3><div class="meta">\u{1F512} Ekspansi 1 \u2022 '+t.items.length+' pola \u2022 kebuka setelah materi inti selesai</div></div>';
   }
-  var doneD=state.done["gd-"+i],doneQ=state.done["gq-"+i];
-  return '<div class="boost-card"><span class="badges"><span class="badge b-n3">Bunp\u014d '+(t.items.length)+' pola</span>'+(exp?'<span class="badge b-skill">Ekspansi 1</span>':'')+(doneQ?'<span class="badge b-done">Kuis selesai</span>':'')+'</span>'+(doneQ?'<span class="card-stamp jp" aria-hidden="true">\u6e08</span>':'')+'<h3>'+esc(t.name)+'</h3><div class="pattern jp">'+t.items.map(function(it){return esc(it.p);}).join(" \u30fb ")+'</div><div class="meta">Penjelasan pola dari kami, kuis pilihan, dan susun kalimat.</div><div class="src">Sumber pola &amp; urutan: \u300e\u3053\u306e\u4e00\u518a\u3067\u5408\u683c\u3059\u308b\u300f'+esc(t.pages)+' \u2022 Contoh &amp; soal orisinal</div><div class="boost-actions"><button class="btn btn-ghost btn-small" type="button" data-gexplain="'+i+'">Penjelasan</button><button class="btn btn-accent btn-small" type="button" data-gquiz="'+i+'">Kuis tema ini</button><button class="btn btn-ghost btn-small" type="button" data-prod="'+i+'">\u270d\u{fe0f} Bikin kalimat</button></div></div>';
+  var doneQ=state.done["gq-"+i];
+  var skor=(typeof state.scores["gq-"+i]==="number")?state.scores["gq-"+i]:null;
+  return '<div class="boost-card" style="padding:12px 14px"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><h3 style="margin:0;font-size:1rem">'+esc(t.name)+'</h3>'+(doneQ?'<span class="badge b-done">Kuis selesai</span>':'')+'</div><div class="meta">'+t.items.length+' pola \u2022 '+esc(t.pages)+(skor!==null?' \u2022 kuis terbaik '+skor+'/10':'')+(exp?' \u2022 Ekspansi 1':'')+'</div><div class="boost-actions"><button class="btn btn-ghost btn-small" type="button" data-gexplain="'+i+'">Penjelasan</button><button class="btn btn-accent btn-small" type="button" data-gquiz="'+i+'">Kuis tema ini</button><button class="btn btn-ghost btn-small" type="button" data-prod="'+i+'">\u270d\u{fe0f} Bikin kalimat</button></div></div>';
 }
 function vocabCatCardHtml(c,i){
   var exp=i>=CORE_VOCAB;
