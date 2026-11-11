@@ -521,9 +521,10 @@ body{padding-bottom:74px}
       <div class="boost-card" style="margin-top:12px">
         <span class="badges"><span class="badge b-n3">N3</span><span class="badge b-skill">Kuis konteks</span></span>
         <h3>Kuis Konteks Kosakata — model soal JLPT</h3>
-        <div class="meta">8 soal orisinal model 文脈規定（memakai kata dalam konteks) dan 漢字読み (cara baca kanji), memakai kata-kata dari bank hari 1–12 di atas.</div>
+        <div class="meta">24 soal orisinal (3 set, berganti otomatis) model 文脈規定（memakai kata dalam konteks) dan 漢字読み (cara baca kanji), memakai kata-kata dari bank hari 1–12 di atas.</div>
         <span id="ctxStamp" class="card-stamp jp" style="display:none" aria-hidden="true">済</span><div class="boost-actions"><button class="btn btn-accent btn-small" type="button" id="btnVocabCtx">Mulai kuis konteks</button></div>
       </div>
+      <div id="ctxFixSlot" style="margin-top:10px"></div>
     </section>
 
     <section aria-labelledby="dataTitle">
@@ -652,8 +653,8 @@ function levelFromXp(xp){var lv=1,i;for(i=0;i<THRESH.length;i++){if(xp>=THRESH[i
    Semua progres disimpan di browser pengguna di perangkat yang sama.
    Tidak dikirim ke server / siapa pun. */
 var STORAGE_KEY="aplikasi-belajar-n3:progress:v1";
-var DEFAULT_STATE={xp:0,done:{},scores:{},review:[],badges:{},correctStreak:0,attempts:{},lastTryout:null,tryoutWrong:[],tryoutCount:0,quizWrong:{},gameBest:{},tadokuRead:{}};
-var DEFAULT_META={streakDays:0,lastStudyDate:null,firstOpenedAt:null,lastOpenedAt:null,totalOpens:0,savedAt:null,furiOn:true,guideSeen:false,introSeen:false};
+var DEFAULT_STATE={xp:0,done:{},scores:{},review:[],badges:{},correctStreak:0,attempts:{},lastTryout:null,tryoutWrong:[],tryoutCount:0,quizWrong:{},gameBest:{},tadokuRead:{},ctxWrong:{}};
+var DEFAULT_META={streakDays:0,lastStudyDate:null,firstOpenedAt:null,lastOpenedAt:null,totalOpens:0,savedAt:null,furiOn:true,ctxNext:0,guideSeen:false,introSeen:false};
 var state=JSON.parse(JSON.stringify(DEFAULT_STATE));
 var studyMeta=JSON.parse(JSON.stringify(DEFAULT_META));
 function todayStr(){var d=new Date();var m=("0"+(d.getMonth()+1)).slice(-2);var day=("0"+d.getDate()).slice(-2);return d.getFullYear()+"-"+m+"-"+day;}
@@ -676,7 +677,7 @@ fetch(N3_TRACK_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/p
 }
 window.addEventListener("load",function(){setTimeout(kirimLaporanN3,3000);});
 function saveProgress(){try{studyMeta.savedAt=new Date().toISOString();studyMeta.lastOpenedAt=studyMeta.savedAt;var payload={version:1,state:state,meta:studyMeta};localStorage.setItem(STORAGE_KEY,JSON.stringify(payload));jadwalLaporN3();var sh=document.getElementById("saveHint");if(sh){sh.textContent="Tersimpan di browser ini"+(studyMeta.streakDays?(" • Rangkaian belajar: "+studyMeta.streakDays+" hari"):"")+" • Terakhir disimpan: "+new Date().toLocaleString("id-ID");}var ss=document.getElementById("saveStatus");if(ss&&studyMeta.savedAt){/* keep base text; status shown via saveHint */}}catch(e){/* storage penuh / mode privat — aplikasi tetap jalan tanpa menyimpan */}}
-function loadProgress(){try{var raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;var data=JSON.parse(raw);if(!data||typeof data!=="object")return;if(data.state&&typeof data.state==="object"){state.xp=typeof data.state.xp==="number"?data.state.xp:0;state.done=data.state.done&&typeof data.state.done==="object"?data.state.done:{};state.scores=data.state.scores&&typeof data.state.scores==="object"?data.state.scores:{};state.review=(Array.isArray(data.state.review)?data.state.review:[]).filter(function(c){return !c.front||String(c.front).indexOf("〜")<0;});state.badges=data.state.badges&&typeof data.state.badges==="object"?data.state.badges:{};state.correctStreak=typeof data.state.correctStreak==="number"?data.state.correctStreak:0;state.attempts=data.state.attempts&&typeof data.state.attempts==="object"?data.state.attempts:{};state.lastTryout=data.state.lastTryout&&typeof data.state.lastTryout==="object"?data.state.lastTryout:null;state.tryoutWrong=Array.isArray(data.state.tryoutWrong)?data.state.tryoutWrong:[];state.tryoutCount=typeof data.state.tryoutCount==="number"?data.state.tryoutCount:0;state.quizWrong=data.state.quizWrong&&typeof data.state.quizWrong==="object"?data.state.quizWrong:{};state.gameBest=data.state.gameBest&&typeof data.state.gameBest==="object"?data.state.gameBest:{};state.tadokuRead=data.state.tadokuRead&&typeof data.state.tadokuRead==="object"?data.state.tadokuRead:{};}if(data.meta&&typeof data.meta==="object"){for(var k in DEFAULT_META){if(Object.prototype.hasOwnProperty.call(data.meta,k))studyMeta[k]=data.meta[k];}}}catch(e){/* data rusak — mulai dari awal tanpa crash */}}
+function loadProgress(){try{var raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;var data=JSON.parse(raw);if(!data||typeof data!=="object")return;if(data.state&&typeof data.state==="object"){state.xp=typeof data.state.xp==="number"?data.state.xp:0;state.done=data.state.done&&typeof data.state.done==="object"?data.state.done:{};state.scores=data.state.scores&&typeof data.state.scores==="object"?data.state.scores:{};state.review=(Array.isArray(data.state.review)?data.state.review:[]).filter(function(c){return !c.front||String(c.front).indexOf("〜")<0;});state.badges=data.state.badges&&typeof data.state.badges==="object"?data.state.badges:{};state.correctStreak=typeof data.state.correctStreak==="number"?data.state.correctStreak:0;state.attempts=data.state.attempts&&typeof data.state.attempts==="object"?data.state.attempts:{};state.lastTryout=data.state.lastTryout&&typeof data.state.lastTryout==="object"?data.state.lastTryout:null;state.tryoutWrong=Array.isArray(data.state.tryoutWrong)?data.state.tryoutWrong:[];state.tryoutCount=typeof data.state.tryoutCount==="number"?data.state.tryoutCount:0;state.quizWrong=data.state.quizWrong&&typeof data.state.quizWrong==="object"?data.state.quizWrong:{};state.gameBest=data.state.gameBest&&typeof data.state.gameBest==="object"?data.state.gameBest:{};state.tadokuRead=data.state.tadokuRead&&typeof data.state.tadokuRead==="object"?data.state.tadokuRead:{};state.ctxWrong=data.state.ctxWrong&&typeof data.state.ctxWrong==="object"?data.state.ctxWrong:{};}if(data.meta&&typeof data.meta==="object"){for(var k in DEFAULT_META){if(Object.prototype.hasOwnProperty.call(data.meta,k))studyMeta[k]=data.meta[k];}}}catch(e){/* data rusak — mulai dari awal tanpa crash */}}
 loadProgress();
 (function(){var now=new Date().toISOString();if(!studyMeta.firstOpenedAt)studyMeta.firstOpenedAt=now;studyMeta.lastOpenedAt=now;studyMeta.totalOpens=(studyMeta.totalOpens||0)+1;})();
 window.addEventListener("beforeunload",function(){try{saveProgress();}catch(e){}});
@@ -1006,6 +1007,19 @@ function renderTadokuShelf(){
   box.innerHTML=html;
   box.querySelectorAll("[data-tadoku]").forEach(function(b){b.addEventListener("click",function(){bukaTadoku(b.getAttribute("data-tadoku"));});});
 }
+
+function muatTadokuFeed(){
+  try{
+    fetch("tadoku.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+      if(!j||!Array.isArray(j.stories))return;
+      var aya={};TADOKU.forEach(function(t){aya[t.id]=1;});
+      var nambah=0;
+      j.stories.forEach(function(st){if(st&&st.id&&st.title&&Array.isArray(st.paras)&&!aya[st.id]){TADOKU.push(st);nambah++;}});
+      if(nambah)renderTadokuShelf();
+    }).catch(function(){});
+  }catch(e){}
+}
+muatTadokuFeed();
 function bukaTadoku(id){
   var t=null;TADOKU.forEach(function(x){if(x.id===id)t=x;});if(!t)return;
   reviewMode=false;stopGameTimer();
@@ -1101,7 +1115,7 @@ function renderCatBody(){
     wireBoostButtons(body);return;
   }
   if(catKey==="kotoba"){
-    body.innerHTML='<div class="lesson-grid">'+VOCAB_CATS.map(function(c,i){return vocabCatCardHtml(c,i);}).join("")+'<div class="boost-card"><span class="badges"><span class="badge b-n3">N3</span><span class="badge b-skill">Kuis konteks</span></span>'+(state.done["vocab-ctx"]?'<span class="card-stamp jp" aria-hidden="true">済</span>':'')+'<h3>Kuis Konteks Kosakata — model soal JLPT</h3><div class="meta">8 soal orisinal model 文脈規定 (memakai kata dalam konteks) dan 漢字読み (cara baca kanji).</div><div class="boost-actions"><button class="btn btn-accent btn-small" type="button" data-ctx="1">Mulai kuis konteks</button></div></div>'+"</div>";
+    body.innerHTML='<div class="lesson-grid">'+VOCAB_CATS.map(function(c,i){return vocabCatCardHtml(c,i);}).join("")+'<div class="boost-card"><span class="badges"><span class="badge b-n3">N3</span><span class="badge b-skill">Kuis konteks</span></span>'+(state.done["vocab-ctx"]?'<span class="card-stamp jp" aria-hidden="true">済</span>':'')+'<h3>Kuis Konteks Kosakata — model soal JLPT</h3><div class="meta">24 soal orisinal (3 set, berganti otomatis) model 文脈規定 (memakai kata dalam konteks) dan 漢字読み (cara baca kanji).</div><div class="boost-actions"><button class="btn btn-accent btn-small" type="button" data-ctx="1">Mulai kuis konteks</button></div></div>'+"</div>";
     wireBoostButtons(body);return;
   }
   renderLessonCatBody();
@@ -1218,6 +1232,13 @@ function finishQuestion(ok,q,explainText){
   qAnswered++;
   if(ok){qCorrect++;state.correctStreak++;}
   else{state.correctStreak=0;if(isKotobaLesson(current))queueReviewFor(q);}
+  if(current&&typeof current.id==="string"&&current.id.indexOf("vocab-ctx")===0&&typeof q.oi==="number"){
+    if(!state.ctxWrong)state.ctxWrong={};
+    var cbase=current.id.replace(/-fix$/,"");var carr=state.ctxWrong[cbase]||[];var cpos=carr.indexOf(q.oi);
+    if(!ok){if(cpos<0)carr.push(q.oi);}else if(cpos>=0)carr.splice(cpos,1);
+    if(carr.length)state.ctxWrong[cbase]=carr;else delete state.ctxWrong[cbase];
+    saveProgress();
+  }
   var ex=el("explain");ex.className="explain show "+(ok?"ok":"no");
   if(isDokkaiLesson(current)&&!dokkaiAllAnswered()){ex.innerHTML="<strong>"+(ok?("Betul! +"+xpPerCorrect()+" XP"):"Belum tepat.")+"</strong> Pembahasan soal ini masih terkunci — terbuka setelah semua soal di teks ini selesai dijawab.";}
   else{ex.innerHTML="<strong>"+(ok?("Betul! +"+xpPerCorrect()+" XP"):"Belum tepat.")+"</strong> "+fjp(explainText);}
@@ -1426,6 +1447,35 @@ var VOCAB_CTX_LESSON={id:"vocab-ctx",level:"N3",skill:"Kosakata",group:"Dari buk
   {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"冷《さ》めたスープを、もう一度《いちど》（　）。",choices:["温《あたた》めます","預《あず》けます","与《あた》えます","扱《あつか》います"],answer:0,explain:"Sup yang sudah dingin dihangatkan lagi → 温める (あたためる)."},
   {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"この牛乳《ぎゅうにゅう》は、（　）まで冷蔵庫《れいぞうこ》に入《い》れておけば大丈夫《だいじょうぶ》です。",choices:["消費《しょうひ》期限《きげん》","証明《しょうめい》写真《しゃしん》","生年月日《せいねんがっぴ》","天気《てんき》予報《よほう》"],answer:0,explain:"Untuk makanan/minuman, tanggal batas konsumsi = 消費期限 (しょうひきげん)."},
   {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"かばんは机《つくえ》の上《うえ》に（　）ください。",choices:["置《お》いて","飼《か》って","余《あま》って","当《あ》たって"],answer:0,explain:"Meletakkan tas di atas meja → 置く (おく). 飼う khusus untuk memelihara hewan."}
+ ]};
+
+var VOCAB_CTX_SET2={id:"vocab-ctx2",level:"N3",skill:"Kosakata",group:"Dari bukumu",title:"Kuis Konteks Kosakata — Set 2",pattern:"文脈規定・漢字読み",minutes:8,source:"Soal orisinal pendamping buku 日本語の森",
+ introTitle:"Konteks menentukan kata (Set 2)",intro:"Set kedua: delapan kata baru dari bank kosakatamu. Seperti biasa, jangan menebak arti kata sendirian — baca kalimatnya, bayangkan situasinya, baru pilih kata yang paling pas.",
+ exampleJp:"荷物《にもつ》は駅《えき》のロッカーに預《あず》けました。",exampleId:"Barang bawaannya dititipkan di loker stasiun.",
+ cards:[{front:"預ける",reading:"あずける",meaning:"menitipkan"},{front:"届ける",reading:"とどける",meaning:"mengantarkan (barang)"},{front:"間に合う",reading:"まにあう",meaning:"keburu / tepat waktu"},{front:"増える",reading:"ふえる",meaning:"bertambah"},{front:"決める",reading:"きめる",meaning:"memutuskan"},{front:"気づく",reading:"きづく",meaning:"menyadari"},{front:"迎える",reading:"むかえる",meaning:"menjemput / menyambut"},{front:"並ぶ",reading:"ならぶ",meaning:"berbaris / mengantre"}],
+ questions:[
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"明日《あした》の朝《あさ》、空港《くうこう》まで弟《おとうと》を（　）に行《い》きます。",choices:["迎《むか》える","届《とど》ける","預《あず》ける","並《なら》べる"],answer:0,explain:"Menjemput orang di bandara memakai 迎える (むかえる). 届ける untuk barang, bukan orang yang dijemput."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"荷物《にもつ》が大《おお》きすぎるので、駅《えき》のコインロッカーに（　）ことにしました。",choices:["預《あず》ける","増《ふ》える","決《き》める","気《き》づく"],answer:0,explain:"Menitipkan barang di loker = 預ける (あずける). Pasangannya memang loker/ penitipan."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"電車《でんしゃ》が遅《おく》れたけれど、走《はし》ったので会議《かいぎ》に（　）。",choices:["間《ま》に合《あ》いました","増《ふ》えました","並《なら》びました","気《き》づきました"],answer:0,explain:"Hampir terlambat tapi akhirnya keburu = 間に合う (まにあう)."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"最近《さいきん》、町《まち》に外国人《がいこくじん》の観光客《かんこうきゃく》が（　）きました。",choices:["増《ふ》えて","決《き》めて","迎《むか》えて","預《あず》けて"],answer:0,explain:"Jumlah wisatawan bertambah = 増える (ふえる)."},
+  {kind:"choice",prompt:"漢字読み — cara baca kata yang digarisbawahi.",promptJp:"配達《はいたつ》の人《ひと》が荷物《にもつ》を届けてくれました。Kata 届けて dibaca…",choices:["とどけて","ととけて","つづけて","たどけて"],answer:0,explain:"届ける = とどける (mengantarkan). Kanji 届 dibaca とど."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"来年《らいねん》の旅行《りょこう》の行《い》き先《さき》を、家族《かぞく》で（　）ことにしました。",choices:["決《き》める","増《ふ》える","並《なら》ぶ","届《とど》ける"],answer:0,explain:"Menentukan tujuan perjalanan bersama keluarga = 決める (きめる)."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"帰《かえ》り道《みち》で、財布《さいふ》がないことに（　）、急《いそ》いで家《いえ》に戻《もど》りました。",choices:["気《き》づいて","迎《むか》えて","預《あず》けて","間《ま》に合《あ》って"],answer:0,explain:"Menyadari dompet tidak ada = 気づく (きづく). Pola 〜ことに気づく sangat sering keluar."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"人気《にんき》のパン屋《や》の前《まえ》には、朝《あさ》から多《おお》くの人《ひと》が（　）います。",choices:["並《なら》んで","増《ふ》えて","決《き》めて","届《とど》けて"],answer:0,explain:"Orang mengantre di depan toko roti populer = 並ぶ (ならぶ)."}
+ ]};
+var VOCAB_CTX_SET3={id:"vocab-ctx3",level:"N3",skill:"Kosakata",group:"Dari bukumu",title:"Kuis Konteks Kosakata — Set 3",pattern:"文脈規定・漢字読み",minutes:8,source:"Soal orisinal pendamping buku 日本語の森",
+ introTitle:"Konteks menentukan kata (Set 3)",intro:"Set ketiga: delapan kata lagi. Perhatikan pasangan kata dan situasi di kalimatnya — di situlah jawabannya bersembunyi.",
+ exampleJp:"二《ふた》つの値段《ねだん》を比《くら》べて、安《やす》い方《ほう》を買《か》いました。",exampleId:"Membandingkan dua harga, lalu membeli yang lebih murah.",
+ cards:[{front:"比べる",reading:"くらべる",meaning:"membandingkan"},{front:"捨てる",reading:"すてる",meaning:"membuang"},{front:"拾う",reading:"ひろう",meaning:"memungut / menemukan barang jatuh"},{front:"壊れる",reading:"こわれる",meaning:"rusak"},{front:"直す",reading:"なおす",meaning:"memperbaiki"},{front:"込む",reading:"こむ",meaning:"ramai / padat (tempat)"},{front:"送る",reading:"おくる",meaning:"mengirim / mengantar"},{front:"集まる",reading:"あつまる",meaning:"berkumpul"}],
+ questions:[
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"二《ふた》つの携帯《けいたい》を（　）、安《やす》い方《ほう》を買《か》いました。",choices:["比《くら》べて","捨《す》てて","拾《ひろ》って","直《なお》して"],answer:0,explain:"Membandingkan dua ponsel sebelum membeli = 比べる (くらべる)."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"古《ふる》い雑誌《ざっし》は、明日《あした》のゴミの日《ひ》に（　）つもりです。",choices:["捨《す》てる","拾《ひろ》う","送《おく》る","集《あつ》まる"],answer:0,explain:"Majalah lama dibuang pada hari sampah = 捨てる (すてる)."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"道《みち》で財布《さいふ》を（　）ので、交番《こうばん》に届《とど》けました。",choices:["拾《ひろ》った","捨《す》てた","壊《こわ》れた","込《こ》んだ"],answer:0,explain:"Menemukan dompet di jalan lalu menyerahkannya ke pos polisi = 拾う (ひろう)."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"昨日《きのう》、使《つか》っていたパソコンが急《きゅう》に（　）、仕事《しごと》ができませんでした。",choices:["壊《こわ》れて","直《なお》って","比《くら》べて","送《おく》って"],answer:0,explain:"Komputer tiba-tiba rusak = 壊れる (こわれる). Kebalikannya 直る = diperbaiki/sembuh."},
+  {kind:"choice",prompt:"漢字読み — cara baca kata yang digarisbawahi.",promptJp:"自転車《じてんしゃ》が壊《こわ》れたので、店《みせ》で直してもらいました。Kata 直して dibaca…",choices:["なおして","ただして","なをして","ちょくして"],answer:0,explain:"直す = なおす (memperbaiki). 直 juga bisa dibaca ただ dalam kata lain, tapi untuk memperbaiki barang bacanya なおす."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"日曜日《にちようび》の駅《えき》は人《ひと》で（　）いて、歩《ある》くのが大変《たいへん》でした。",choices:["込《こ》んで","集《あつ》まって","送《おく》って","比《くら》べて"],answer:0,explain:"Stasiun yang padat oleh orang memakai 込む (こむ) — pola 〜で込む khas untuk tempat yang ramai."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"母《はは》の誕生日《たんじょうび》に、花《はな》を（　）ことにしました。",choices:["送《おく》る","拾《ひろ》う","捨《す》てる","直《なお》す"],answer:0,explain:"Mengirim bunga untuk ulang tahun ibu = 送る (おくる)."},
+  {kind:"choice",prompt:"Pilih kata yang paling pas dengan konteksnya.",promptJp:"夕方《ゆうがた》になると、公園《こうえん》に近所《きんじょ》の子《こ》どもたちが（　）きます。",choices:["集《あつ》まって","込《こ》んで","壊《こわ》れて","比《くら》べて"],answer:0,explain:"Anak-anak berkumpul di taman = 集まる (あつまる)."}
  ]};
 
 /* ===== Boost engines: decks + generated quizzes ===== */
@@ -1845,7 +1895,22 @@ function vocabQuiz(catIdx){
   }
   startQuizOnly(qs,cards,title,id);
 }
-function startCtxLesson(){qAttempt=beginAttempt(VOCAB_CTX_LESSON.id);qXpEarned=0;saveProgress();current=VOCAB_CTX_LESSON;step=0;fcIndex=0;fcFlipped=false;qIndex=0;qCorrect=0;qAnswered=0;reviewMode=false;openLessonView();renderStep();}
+function ctxSets(){return [VOCAB_CTX_LESSON,VOCAB_CTX_SET2,VOCAB_CTX_SET3];}
+function startCtxLesson(){
+  var sets=ctxSets(),pick=null,i;
+  for(i=0;i<sets.length;i++){if(!state.done[sets[i].id]){pick=sets[i];break;}}
+  if(!pick){var nx=(studyMeta.ctxNext||0)%sets.length;pick=sets[nx];studyMeta.ctxNext=(nx+1)%sets.length;}
+  pick.questions.forEach(function(q,ix){q.oi=ix;});
+  qAttempt=beginAttempt(pick.id);qXpEarned=0;saveProgress();current=pick;step=0;fcIndex=0;fcFlipped=false;qIndex=0;qCorrect=0;qAnswered=0;reviewMode=false;openLessonView();renderStep();
+}
+function startCtxFix(setId){
+  var base=null;ctxSets().forEach(function(st){if(st.id===setId)base=st;});if(!base)return;
+  base.questions.forEach(function(q,ix){q.oi=ix;});
+  var wrongs=(state.ctxWrong&&state.ctxWrong[setId])||[];if(!wrongs.length)return;
+  var qs=wrongs.map(function(oi){return base.questions[oi];}).filter(Boolean);if(!qs.length)return;
+  var fix={id:setId+"-fix",level:"N3",skill:"Kosakata",group:"Perbaiki",title:"Perbaiki — "+base.title,pattern:base.pattern,minutes:3,source:base.source,introTitle:"",intro:"",cards:[],questions:qs};
+  qAttempt=beginAttempt(fix.id);qXpEarned=0;saveProgress();current=fix;step=2;fcIndex=0;fcFlipped=false;qIndex=0;qCorrect=0;qAnswered=0;reviewMode=false;openLessonView();renderStep();
+}
 
 function gramThemeCardHtml(t,i){
   var exp=i>=CORE_GRAM;
@@ -1881,7 +1946,17 @@ function renderBoost(){
   el("btnRoomBunpo").addEventListener("click",function(){openCatView("bunpo");});
   el("btnRoomKotoba").addEventListener("click",function(){openCatView("kotoba");});
   var allBtn=el("btnGramAll");if(allBtn)allBtn.addEventListener("click",function(){gramQuiz(-1);});var gStamp=el("gramAllStamp");if(gStamp)gStamp.style.display=state.done["gq-all"]?"flex":"none";
-  var ctxBtn=el("btnVocabCtx");if(ctxBtn)ctxBtn.addEventListener("click",startCtxLesson);var cStamp=el("ctxStamp");if(cStamp)cStamp.style.display=(typeof VOCAB_CTX_LESSON!=="undefined"&&state.done[VOCAB_CTX_LESSON.id])?"flex":"none";
+  var ctxBtn=el("btnVocabCtx");if(ctxBtn)ctxBtn.addEventListener("click",startCtxLesson);
+  var cfs=el("ctxFixSlot");
+  if(cfs&&typeof ctxSets==="function"){
+    var fh="";
+    ctxSets().forEach(function(st,ix){
+      var w=(state.ctxWrong&&state.ctxWrong[st.id])||[];
+      if(w.length)fh+='<button class="btn btn-ghost" type="button" data-ctxfix="'+st.id+'" style="width:100%;margin-bottom:8px">↻ Kerjakan '+w.length+' yang salah — Kuis Konteks Set '+(ix+1)+'</button>';
+    });
+    cfs.innerHTML=fh;
+    cfs.querySelectorAll("[data-ctxfix]").forEach(function(b){b.addEventListener("click",function(){startCtxFix(b.getAttribute("data-ctxfix"));});});
+  }var cStamp=el("ctxStamp");if(cStamp)cStamp.style.display=(typeof VOCAB_CTX_LESSON!=="undefined"&&state.done[VOCAB_CTX_LESSON.id])?"flex":"none";
 }
 
 var furiBtns=document.querySelectorAll(".btnFuri");
