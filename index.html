@@ -428,6 +428,13 @@ body{padding-bottom:74px}
       </div>
     </section>
 
+    <section aria-labelledby="faktaTitle">
+      <div class="sources tape tape-matcha">
+        <h3 id="faktaTitle">\u{1F338} Fakta seru hari ini</h3>
+        <p id="faktaIsi" style="margin:0"></p>
+      </div>
+    </section>
+
     <section aria-label="Jalan pintas materi dari bukumu">
       <div class="boost-jump tape tape-kinako">
         <div>
@@ -789,7 +796,41 @@ function renderSteps(){
   wireBoostButtons(b2);
   var br=el("btnStepReview");if(br)br.addEventListener("click",startReview);
 }
+
+var FAKTA_SERU=[
+"KitKat di Jepang punya ratusan rasa, dan namanya mirip ucapan \u201ckitto katsu\u201d (pasti menang) \u2014 makanya cokelat ini jadi jimat favorit menjelang ujian.",
+"Jepang ternyata punya lebih dari 14.000 pulau. Hitungan resmi tahun 2023 menemukan jauh lebih banyak daripada angka lama yang terkenal, 6.852 pulau.",
+"Kata \u201ckaraoke\u201d lahir dari \u201ckara\u201d (kosong) dan \u201coke\u201d (orkestra) \u2014 orkestra yang kosong, tanpa penyanyinya. Kamulah penyanyinya.",
+"Di Jepang, dokumen penting tidak ditandatangani, tapi dicap pakai cap nama pribadi bernama hanko. Cap kecil itu kedudukannya seperti tanda tangan resmi.",
+"Menyeruput mi dengan bunyi keras di Jepang itu sopan \u2014 tandanya mi-nya enak dan kamu menghargai yang memasak.",
+"Angka 4 dibaca \u201cshi\u201d, sama bunyinya dengan kata \u201cmati\u201d. Karena itu nomor 4 sering dilewati di rumah sakit dan hotel.",
+"Tidur sebentar di tempat kerja (inemuri) di Jepang tidak selalu dianggap malas \u2014 kadang malah dibaca sebagai tanda seseorang sudah bekerja sangat keras.",
+"Bahasa Jepang punya kata khusus untuk \u201cmeninggal karena terlalu banyak bekerja\u201d: kar\u014dshi. Kata ini jadi pengingat supaya tetap istirahat, ya.",
+"Setiap stasiun kereta di Jepang punya melodi keberangkatannya sendiri-sendiri. Penumpang hafal stasiun dari bunyinya, bukan hanya dari pengumuman.",
+"Malam Natal di Jepang identik dengan ayam goreng KFC \u2014 tradisi unik yang mulai dari kampanye iklan tahun 1974 dan bertahan sampai sekarang.",
+"Gunung Fuji bisa terlihat dari Tokyo pada pagi musim dingin yang cerah, padahal jaraknya sekitar 100 kilometer.",
+"\u201cMottainai\u201d adalah seruan khas Jepang saat ada sesuatu yang terbuang sia-sia \u2014 kira-kira artinya: sayang banget kalau dibuang!",
+"Di Jepang, golongan darah sering dipercaya menentukan sifat seseorang \u2014 mirip peran zodiak di Indonesia. Makanya orang Jepang suka menanyakan golongan darah saat kenalan.",
+"Prakiraan mekarnya bunga sakura diumumkan seperti prakiraan cuaca, lengkap dengan peta per wilayah. Namanya sakura zensen \u2014 garis depan sakura.",
+"\u201cIrasshaimase!\u201d yang diteriakkan staf toko artinya selamat datang. Kamu tidak perlu menjawabnya \u2014 cukup senyum dan angguk kecil saja.",
+"Sebelum berendam di onsen, semua orang wajib mandi bersih dulu di luar bak, dan handuk tidak boleh ikut masuk ke air rendaman.",
+"Jepang punya 47 prefektur. Yang istimewa: Tokyo disebut \u201cto\u201d, Hokkaido \u201cd\u014d\u201d, Osaka dan Kyoto \u201cfu\u201d, sisanya \u201cken\u201d.",
+"Panggilan \u201csensei\u201d bukan hanya untuk guru. Dokter, pengacara, penulis, dan anggota parlemen di Jepang juga dipanggil sensei.",
+"Alamat di Jepang ditulis dari yang terbesar ke yang terkecil: prefektur, kota, distrik, lalu nomor blok. Banyak jalan kecil bahkan tidak punya nama.",
+"Mesin penjual otomatis di Jepang ada jutaan unit dan isinya bukan cuma minuman \u2014 ada yang menjual payung, telur, sampai mi panas siap makan.",
+"Kata \u201ctsunami\u201d berasal dari bahasa Jepang: \u201ctsu\u201d artinya pelabuhan dan \u201cnami\u201d artinya ombak \u2014 ombak besar yang menerjang pelabuhan.",
+"Isyarat lingkaran dari jempol dan telunjuk di Jepang artinya bukan OK, tapi \u201cuang\u201d \u2014 karena bentuknya seperti koin.",
+"Permintaan maaf dalam bahasa Jepang berlapis-lapis: dari \u201cgomen\u201d yang santai, \u201csumimasen\u201d yang umum, sampai yang sangat formal untuk urusan kerja.",
+"Semangka di Jepang bisa jadi hadiah mewah. Semangka hitam Densuke dari Hokkaido pernah terjual ratusan ribu yen per buah di pelelangan.",
+"Di rumah Jepang ada kotatsu: meja rendah berpenghangat yang ditutup selimut tebal. Sekali masuk kaki ke kotatsu di musim dingin, susah keluar lagi.",
+"Jepang memakai tiga huruf sekaligus: hiragana, katakana, dan kanji. Katakana khusus untuk kata serapan asing \u2014 makanya es krim jadi \u201caisukur\u012bmu\u201d.",
+"Jumlah kanji yang resmi dipakai sehari-hari di Jepang (j\u014dy\u014d kanji) ada 2.136 karakter. Kamu tidak sendirian kalau merasa banyak \u2014 orang Jepang pun belajar bertahun-tahun di sekolah.",
+"Sejak 2022, usia dewasa resmi di Jepang turun dari 20 tahun menjadi 18 tahun. Tapi aturan minum alkohol dan merokok tetap mulai usia 20 tahun.",
+"Wabi-sabi adalah cara pandang khas Jepang: keindahan justru ada pada hal yang tidak sempurna dan tidak abadi \u2014 seperti retakan kecil pada cangkir kesayangan.",
+"Kawasan metropolitan Tokyo adalah yang terpadat di dunia, dihuni sekitar 37 juta orang \u2014 hampir sepersepuluh penduduk Jepang tinggal di satu kawasan ini."
+];
 function renderHome(){
+  var fi=el("faktaIsi");if(fi){var nowF=new Date();var awalF=new Date(nowF.getFullYear(),0,0);var poeF=Math.floor((nowF-awalF)/86400000);fi.textContent=FAKTA_SERU[poeF%FAKTA_SERU.length];}
   el("statXp").textContent=state.xp;
   var lv=levelFromXp(state.xp);el("statLevel").textContent=lv.level;
   el("xpBar").style.width=Math.min(100,Math.round(lv.into/lv.span*100))+"%";
@@ -1774,7 +1815,7 @@ var bl=document.getElementById("btnLanjut");if(bl)bl.addEventListener("click",fu
 (function(){
   var hv=document.getElementById("homeView");if(!hv)return;
   function S(l){return document.querySelector('section[aria-labelledby="'+l+'"]');}
-  var panes={"examTitle":"beranda","missionTitle":"beranda","noteTitle":"beranda","sprintTitle":"materi","boostTitle":"materi","reviewTitle":"ulang","progresTitle":"progres","methodTitle":"progres","dataTitle":"progres","srcTitle":"progres"};
+  var panes={"examTitle":"beranda","missionTitle":"beranda","noteTitle":"beranda","faktaTitle":"beranda","sprintTitle":"materi","boostTitle":"materi","reviewTitle":"ulang","progresTitle":"progres","methodTitle":"progres","dataTitle":"progres","srcTitle":"progres"};
   Object.keys(panes).forEach(function(k){var sec=S(k);if(sec)sec.setAttribute("data-pane",panes[k]);});
   var jump=document.querySelector('section[aria-label="Jalan pintas materi dari bukumu"]');if(jump)jump.setAttribute("data-pane","materi");
   var nav=document.createElement("nav");nav.className="tabbar";nav.setAttribute("aria-label","Menu utama");
