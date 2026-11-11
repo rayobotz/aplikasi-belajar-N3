@@ -440,7 +440,7 @@ body{background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linea
 
 
     <section aria-labelledby="progresTitle">
-      <div class="sec-head"><h2 id="progresTitle">Progresku — tunjukkan ke Ray</h2><span class="hint">Ringkasan per bagian, siap ditunjukkan pas ketemu atau disalin buat dikirim</span></div>
+      <div class="sec-head"><h2 id="progresTitle">Progresku — tunjukkan ke Ray</h2><span class="hint">Ringkasan per bagian — progresmu terkirim otomatis ke Ray, jadi pas ketemu tinggal dibahas bareng</span></div>
       <p class="sec-desc">Bagian mana yang sudah kamu pahami, mana yang masih perlu diulang — semuanya terangkum di sini dari progres yang tersimpan di HP ini. Semua persen dihitung dari materi bukumu: kuis bunpō, flashcard kosakata, dan kuis konteks.</p>
       <div class="daruma-row">
         <svg width="64" height="72" viewBox="0 0 64 72" role="img" aria-label="Daruma tujuan: lulus JLPT N3 Desember 2026" style="flex-shrink:0">
@@ -456,7 +456,7 @@ body{background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linea
         <p><strong>Daruma untuk Desember 2026.</strong> <span id="darumaCaption">Mata pertama terisi saat misi inti pertamamu selesai; mata kedua terisi saat semua misi inti tuntas — seperti daruma sungguhan: satu mata saat memasang tekad, satu mata saat tekadnya tercapai.</span></p>
       </div>
       <div id="progresBody"></div>
-      <div class="actions" style="margin-top:14px"><button class="btn btn-accent" id="btnCopySummary" type="button">Salin Ringkasan buat Ray</button><span class="hint" id="copyDone" style="align-self:center"></span></div>
+      
     </section>
 
 
@@ -563,7 +563,7 @@ body{background-image:linear-gradient(var(--gridline) 1px,transparent 1px),linea
           <li><span class="g-num">1</span><p><strong>Ikuti “Misi Hari Ini — 3 Langkah” di beranda.</strong> Urutannya selalu sama: <strong>1</strong> ulang kartu yang menunggu di tumpukan, <strong>2</strong> perbaiki kuis yang skornya belum sempurna, <strong>3</strong> lanjut materi dari bukumu yang berikutnya. Di atasnya ada hitung mundur ke ujian 6 Desember 2026 plus ritme harianmu — jadi kamu selalu tahu hari ini cukup ngapain. Nggak perlu milih-milih dulu.</p></li>
           <li><span class="g-num">2</span><p><strong>Di dalam materi:</strong> baca penjelasannya, lalu jawab kuis / flashcard-nya sampai selesai. Tebak dulu, baru lihat benar-salahnya — di situlah materinya nempel. Skor dan XP tersimpan otomatis di HP ini.</p></li>
           <li><span class="g-num">3</span><p><strong>Furigana</strong> (bacaan kecil di atas kanji) bisa dinyalakan atau dimatikan pakai sakelar di dalam misi. Nyalakan saja kalau kanjinya belum lancar.</p></li>
-                    <li><span class="g-num">4</span><p><strong>Jawaban yang salah masuk tumpukan “Ulang”</strong> — sesekali kerjakan di sana biar yang lemah jadi nempel. Di tab <strong>Progres</strong> kamu bisa lihat bagian mana yang sudah nempel dan mana yang perlu diulang, dan tombol <strong>Salin Ringkasan</strong> membuat laporan belajarmu buat dibahas bareng Ray.</p></li>
+                    <li><span class="g-num">4</span><p><strong>Jawaban yang salah masuk tumpukan “Ulang”</strong> — sesekali kerjakan di sana biar yang lemah jadi nempel. Di tab <strong>Progres</strong> kamu bisa lihat bagian mana yang sudah nempel dan mana yang perlu diulang, dan progresmu terkirim otomatis ke Ray buat dibahas bareng pas ketemu.</p></li>
         </ol>
         <p class="guide-note">Pengenalan ini muncul sekali di awal. Nanti bisa dibuka lagi kapan pun lewat tombol “Cara Main &amp; Urutan Belajar” di beranda.</p>
       </div>
@@ -1611,16 +1611,9 @@ function renderProgres(){
   if(e2)e2.style.display=(dTotal>0&&dDone>=dTotal)?"":"none";
   if(cap)cap.textContent=(dTotal>0&&dDone>=dTotal)?"Kedua mata sudah terisi — semua misi inti tuntas. Tinggal jaga yang sudah nempel sampai hari ujian.":dDone>0?("Sudah "+dDone+" dari "+dTotal+" misi inti selesai — mata pertama terisi. Mata kedua menunggu misi inti terakhir."):"Mata pertama terisi saat misi inti pertamamu selesai; mata kedua terisi saat semua misi inti tuntas — seperti daruma sungguhan: satu mata saat memasang tekad, satu mata saat tekadnya tercapai.";
 }
-function copySummary(){
-  var txt=summaryText(),done=document.getElementById("copyDone");
-  function ok(){if(done){done.textContent="Tersalin \u2713 \u2014 tinggal tempel & kirim ke Ray.";setTimeout(function(){done.textContent="";},4000);}}
-  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,function(){fallback();});}else{fallback();}
-  function fallback(){var ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");ok();}catch(e){if(done)done.textContent="Gagal menyalin otomatis \u2014 tangkap layar bagian ini saja.";}document.body.removeChild(ta);}
-}
 var RAY_NOTES=["Satu misi aja hari ini cukup. Pelan nggak apa-apa, yang penting nggak berhenti.","Kalau lagi capek, buka yang paling gampang dulu. Mulai aja, sisanya ngikut.","Yang kemarin salah itu bukan gagal — itu bahan ulang. Memang begitu cara nempelnya.","Delapan menit sekarang lebih berharga daripada dua jam yang cuma direncanain.","Kamu sudah sampai sejauh ini di bukumu. Buktiin ke diri sendiri, bukan ke siapa-siapa.","Hari ini nggak harus sempurna. Sedikit lebih bisa dari kemarin juga kemajuan.","Kalau ada materi yang terasa salah atau membingungkan, catat nomor misinya — nanti kubenerin.","Istirahat juga bagian dari belajar. Tapi sebelum istirahat, satu misi dulu ya.","Ingat kenapa mulai: Desember nanti, kamu duduk di ruang ujian itu dengan tenang.","Aku nggak bisa nemenin di ruang ujian — aplikasi ini yang nemenin dari sekarang."];
 (function(){var t=document.getElementById("rayNoteText");if(t){var d=Math.floor(Date.now()/86400000);t.textContent=RAY_NOTES[d%RAY_NOTES.length];}})();
 el("btnReview").addEventListener("click",startReview);
-var cpBtn=el("btnCopySummary");if(cpBtn)cpBtn.addEventListener("click",copySummary);
 var resetBtn=el("btnResetProgress");
 if(resetBtn){resetBtn.addEventListener("click",function(){
   if(!window.confirm("Hapus SEMUA progres tersimpan? XP, misi selesai, skor, dan tumpukan ulang akan kembali ke nol."))return;
