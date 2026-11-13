@@ -419,13 +419,14 @@ body{padding-bottom:74px}
 
     <section aria-labelledby="sprintTitle">
       <div class="exam-card tape tape-matcha sprint-card">
-        <h3 id="sprintTitle">🏃 Mode Sprint — pemanasan ujian</h3>
+        <h3 id="sprintTitle">🏃 Latihan Campuran</h3>
         <p class="sprint-lead" id="sprintLead"></p>
         <div id="sprintInfo" style="margin:8px 0"></div>
         <div id="sprintSkills"></div>
         <p id="sprintLastTry" class="hint" style="margin-top:8px"></p>
-        <div class="actions" style="margin-top:10px">
-          <button class="btn btn-accent" type="button" id="btnTryoutStart">Mulai Tryout Mini — 20 soal • 25 menit</button>
+        <div class="actions" style="margin-top:10px;position:relative">
+          <button class="btn btn-accent" type="button" id="btnGramAll">Mulai Latihan Campuran — semua pola • tanpa timer</button><span id="gramAllStamp" class="card-stamp jp" style="display:none" aria-hidden="true">済</span>
+          <button class="btn btn-accent" type="button" id="btnTryoutStart">Mulai Tryout Mini — 20 soal • 25 menit (timer)</button>
           <button class="btn btn-ghost" type="button" id="btnSprintQueue">Lihat yang perlu diulang ↓</button>
         </div>
       </div>
@@ -514,9 +515,6 @@ body{padding-bottom:74px}
 
     <section aria-labelledby="boostTitle">
       <span id="boostTitle" hidden></span><div id="boostGrammar"></div>
-      <div class="actions" style="margin-top:12px;position:relative">
-        <button class="btn btn-accent" type="button" id="btnGramAll">Kuis campuran — semua pola</button><span id="gramAllStamp" class="card-stamp jp" style="display:none" aria-hidden="true">済</span>
-      </div>
       <div class="boost-card" style="margin-top:12px">
         <span class="badges"><span class="badge b-n3">N3</span><span class="badge b-skill">Kuis konteks</span></span>
         <h3>Kuis Konteks Kosakata — model soal JLPT</h3>
@@ -1976,9 +1974,7 @@ function wireBoostButtons(scope){
 }
 function renderBoost(){
   var gEl=el("boostGrammar");if(!gEl)return;
-  gEl.innerHTML='<button class="btn btn-indigo" type="button" id="btnRoomBunpo" style="width:100%;margin-bottom:8px;text-align:left">\u{1F9E9} Ruang Bunp\u014D — 11 tema pola <span style="font-weight:400;font-size:.85em">dari bukumu</span></button><button class="btn btn-indigo" type="button" id="btnRoomKotoba" style="width:100%;text-align:left">\u{1F4DA} Ruang Kosakata — 4 kategori <span style="font-weight:400;font-size:.85em">dari bukumu</span></button>';
-  el("btnRoomBunpo").addEventListener("click",function(){openCatView("bunpo");});
-  el("btnRoomKotoba").addEventListener("click",function(){openCatView("kotoba");});
+  gEl.innerHTML="";
   var allBtn=el("btnGramAll");if(allBtn)allBtn.addEventListener("click",function(){gramQuiz(-1);});var gStamp=el("gramAllStamp");if(gStamp)gStamp.style.display=state.done["gq-all"]?"flex":"none";
   var ctxBtn=el("btnVocabCtx");if(ctxBtn)ctxBtn.addEventListener("click",startCtxLesson);
   var cfs=el("ctxFixSlot");
