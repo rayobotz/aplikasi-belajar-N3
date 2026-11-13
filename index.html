@@ -458,16 +458,6 @@ body{padding-bottom:74px}
       </div>
     </section>
 
-    <section aria-label="Jalan pintas materi dari bukumu">
-      <div class="boost-jump tape tape-kinako">
-        <div>
-          <h3>🎯 Materi dari bukumu — matengin yang sudah kamu pelajari</h3>
-          <p>89 pola &amp; kosakata dari bukumu. Di sinilah mereka nempel beneran.</p>
-        </div>
-        <button class="btn btn-accent" type="button" id="btnBoostJump">Ke materinya ↓</button>
-      </div>
-    </section>
-
     <section aria-labelledby="reviewTitle">
       <div class="sec-head"><h2 id="reviewTitle">Pengulangan terjadwal</h2><span class="hint">Sistem Leitner • tersimpan di browser ini</span></div>
       <p class="sec-desc">Kartu yang belum nempel berkumpul di sini buat diulang — tersimpan di browser ini, bisa dikerjakan kapan saja.</p>
@@ -1094,11 +1084,14 @@ function renderHome(){
   if(nTheme>=0&&!sprintPhase){var tt=GRAM_THEMES[nTheme];mItems.push('<div class="mission-item"><div class="mi-body"><div class="mi-title">Bunpō Tema '+(nTheme+1)+' — '+esc(tt.name)+'</div><div class="mi-meta">'+tt.items.length+' pola dari bukumu • baca Penjelasan dulu, lalu kuisnya (10 soal)</div></div><button class="btn btn-ghost btn-small" type="button" data-gexplain="'+nTheme+'">Penjelasan</button><button class="btn btn-indigo btn-small" type="button" data-gquiz="'+nTheme+'">Kuis</button></div>');}
   var nDeck=-1,nDeckMax=expOpen()?VOCAB_CATS.length:CORE_VOCAB;VOCAB_CATS.forEach(function(c,i){if(i<nDeckMax&&nDeck<0&&!state.done["vd-"+i])nDeck=i;});
   if(nDeck>=0&&!sprintPhase){var cc=VOCAB_CATS[nDeck];mItems.push('<div class="mission-item"><div class="mi-body"><div class="mi-title">Flashcard Kosakata — '+esc(cc.name)+'</div><div class="mi-meta">'+cc.words.length+' kata dari bukumu • per mini deck 10 kartu, santai aja</div></div><button class="btn btn-indigo btn-small" type="button" data-vdeck="'+nDeck+'">Mulai</button></div>');}
+  var nDok=null;LESSONS.forEach(function(l){if(!nDok&&l.skill==="Dokkai"&&!state.done[l.id])nDok=l;});
+  if(nDok&&!sprintPhase){mItems.push('<div class="mission-item"><div class="mi-body"><div class="mi-title">Dokkai — '+esc(nDok.title)+'</div><div class="mi-meta">Bacaan + '+nDok.questions.length+' soal ala ujian • terjemahannya terbuka setelah semua soal dijawab</div></div><button class="btn btn-indigo btn-small" type="button" data-dokkai="'+nDok.id+'">Mulai</button></div>');}
   if(!mItems.length&&!state.done[VOCAB_CTX_LESSON.id]){mItems.push('<div class="mission-item"><div class="mi-body"><div class="mi-title">Kuis Konteks Kosakata — model soal JLPT</div><div class="mi-meta">8 soal orisinal memakai kata hari 1–12 dari bukumu</div></div><button class="btn btn-indigo btn-small" type="button" data-ctx="1">Mulai</button></div>');}
   if(!mItems.length){el("missionList").innerHTML=step3Head+'<p style="opacity:.9">Semua materi dari bukumu sudah selesai. Ulang tumpukan pengulangan di bawah, atau ulangi tema favoritmu.</p>';}
   else{el("missionList").innerHTML=step3Head+mItems.join("");}
   wireBoostButtons(el("missionList"));
   var tbs=el("missionList").querySelectorAll("[data-tryout-start]");for(var tbi=0;tbi<tbs.length;tbi++){tbs[tbi].addEventListener("click",startTryoutMini);}
+  var dbs=el("missionList").querySelectorAll("[data-dokkai]");for(var dbi=0;dbi<dbs.length;dbi++){dbs[dbi].addEventListener("click",function(){startLesson(this.getAttribute("data-dokkai"));});}
   // review
   el("reviewHeading").textContent="Tumpukan ulang: "+state.review.length+" kartu";
   el("reviewText").textContent=state.review.length?"Kartu-kartu ini belum nempel. Kerjakan sesinya: ketik cara bacanya \u2014 yang benar keluar dari tumpukan, yang masih salah tetap tinggal buat diulang lagi.":"Kerjakan satu misi dulu \u2014 kartu yang belum nempel akan berkumpul di sini dan tersimpan buat diulang kapan saja.";
@@ -1994,7 +1987,6 @@ for(var fi=0;fi<furiBtns.length;fi++){furiBtns[fi].addEventListener("click",func
 applyFuri();
 el("btnBack").addEventListener("click",closeLessonView);
 el("btnCatBack").addEventListener("click",closeCatView);
-var bj=el("btnBoostJump");if(bj)bj.addEventListener("click",function(){if(window.pindahTabN3)window.pindahTabN3("materi");var t=el("boostTitle");if(t)setTimeout(function(){t.scrollIntoView();},80);});
 
 /* ===== Progresku: ringkasan per bagian + salin ringkasan ===== */
 function catUnits(){
