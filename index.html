@@ -431,6 +431,13 @@ body{padding-bottom:74px}
           <button class="btn btn-ghost" type="button" id="btnSprintQueue">Lihat yang perlu diulang ↓</button>
         </div>
       </div>
+      <div class="boost-card" style="margin-top:12px">
+        <span class="badges"><span class="badge b-n3">N3</span><span class="badge b-skill">Kuis konteks</span></span>
+        <h3>Kuis Konteks Kosakata — model soal JLPT</h3>
+        <div class="meta">24 soal orisinal (3 set, berganti otomatis) model 文脈規定（memakai kata dalam konteks) dan 漢字読み (cara baca kanji), memakai kata-kata dari bank kosakata hari 1–12.</div>
+        <span id="ctxStamp" class="card-stamp jp" style="display:none" aria-hidden="true">済</span><div class="boost-actions"><button class="btn btn-accent btn-small" type="button" id="btnVocabCtx">Mulai kuis konteks</button></div>
+      </div>
+      <div id="ctxFixSlot" style="margin-top:10px"></div>
     </section>
 
     <section aria-labelledby="missionTitle">
@@ -508,13 +515,6 @@ body{padding-bottom:74px}
 
     <section aria-labelledby="boostTitle">
       <span id="boostTitle" hidden></span><div id="boostGrammar"></div>
-      <div class="boost-card" style="margin-top:12px">
-        <span class="badges"><span class="badge b-n3">N3</span><span class="badge b-skill">Kuis konteks</span></span>
-        <h3>Kuis Konteks Kosakata — model soal JLPT</h3>
-        <div class="meta">24 soal orisinal (3 set, berganti otomatis) model 文脈規定（memakai kata dalam konteks) dan 漢字読み (cara baca kanji), memakai kata-kata dari bank hari 1–12 di atas.</div>
-        <span id="ctxStamp" class="card-stamp jp" style="display:none" aria-hidden="true">済</span><div class="boost-actions"><button class="btn btn-accent btn-small" type="button" id="btnVocabCtx">Mulai kuis konteks</button></div>
-      </div>
-      <div id="ctxFixSlot" style="margin-top:10px"></div>
     </section>
 
     <section aria-labelledby="dataTitle">
@@ -1970,7 +1970,16 @@ function wireBoostButtons(scope){
 }
 function renderBoost(){
   var gEl=el("boostGrammar");if(!gEl)return;
-  gEl.innerHTML="";
+  var uh="";
+  uh+='<h3 style="margin:2px 0 8px">Bunpō — Tata Bahasa</h3><div class="lesson-grid">'+GRAM_THEMES.map(function(t,i){return gramThemeCardHtml(t,i);}).join("")+'</div>';
+  uh+='<h3 style="margin:16px 0 8px">Kotoba — Kosakata</h3><div class="lesson-grid">'+VOCAB_CATS.map(function(c,i){return vocabCatCardHtml(c,i);}).join("")+'</div>';
+  var dlU=LESSONS.filter(function(l){return l.skill==="Dokkai";});
+  uh+='<h3 style="margin:16px 0 8px">Dokkai — Membaca</h3><div class="lesson-grid">'+dlU.map(function(l){var dn=state.done[l.id];return '<div class="boost-card"><span class="badges"><span class="badge b-n3">Dokkai</span><span class="badge b-skill">'+esc(l.pattern)+'</span>'+(dn?'<span class="badge b-done">Selesai</span>':'')+'</span>'+(dn?'<span class="card-stamp jp" aria-hidden="true">済</span>':'')+'<h3>'+esc(l.title)+'</h3><div class="meta">'+l.questions.length+' soal • ±'+l.minutes+' menit • teks orisinal + tips cara ngerjain. Terjemahan terkunci sampai semua soal dijawab — seperti ujian beneran.</div><div class="boost-actions"><button class="btn btn-accent btn-small" type="button" data-start="'+l.id+'">Mulai</button></div></div>';}).join("")+'</div>';
+  var clU=LESSONS.filter(function(l){return l.skill==="Chōkai";});
+  uh+='<h3 style="margin:16px 0 8px">Listening — Mendengar</h3><div class="lesson-grid">'+clU.map(function(l){var dn=state.done[l.id];return '<div class="boost-card"><span class="badges"><span class="badge b-n3">Chōkai</span><span class="badge b-skill">'+esc(l.pattern)+'</span>'+(dn?'<span class="badge b-done">Selesai</span>':'')+'</span>'+(dn?'<span class="card-stamp jp" aria-hidden="true">済</span>':'')+'<h3>'+esc(l.title)+'</h3><div class="meta">'+l.questions.length+' soal • ±'+l.minutes+' menit • '+esc(l.blurb||'dengarkan satu ucapan pendek, lalu pilih balasan yang paling pas.')+' Transkrip terbuka setelah menjawab. Suara: TTS dua penutur.</div><div class="boost-actions"><button class="btn btn-accent btn-small" type="button" data-start="'+l.id+'">Mulai</button></div></div>';}).join("")+'</div>';
+  gEl.innerHTML=uh;
+  wireBoostButtons(gEl);
+  var sbs=gEl.querySelectorAll("[data-start]");for(var si2=0;si2<sbs.length;si2++){sbs[si2].addEventListener("click",function(){startLesson(this.getAttribute("data-start"));});}
   var allBtn=el("btnGramAll");if(allBtn)allBtn.addEventListener("click",function(){gramQuiz(-1);});var gStamp=el("gramAllStamp");if(gStamp)gStamp.style.display=state.done["gq-all"]?"flex":"none";
   var ctxBtn=el("btnVocabCtx");if(ctxBtn)ctxBtn.addEventListener("click",startCtxLesson);
   var cfs=el("ctxFixSlot");
